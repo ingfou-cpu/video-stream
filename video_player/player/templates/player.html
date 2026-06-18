@@ -1,0 +1,977 @@
+{% extends "base.html" %}
+
+{% block title %}Video Stream Player{% endblock %}
+
+{% block extra_styles %}
+    .input-section {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    #videoUrl {
+        flex: 1;
+        padding: 14px 18px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    #videoUrl::placeholder { color: rgba(255, 255, 255, 0.35); }
+    #videoUrl:focus {
+        border-color: #667eea;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+    }
+
+    #loadVideo {
+        padding: 14px 28px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    #loadVideo:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .video-container {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #000;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        aspect-ratio: 16 / 9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 200px;
+    }
+
+    .video-container video,
+    .video-container iframe,
+    .video-container .yt-player {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: none;
+    }
+
+    .video-container video.active,
+    .video-container iframe.active,
+    .video-container .yt-player.active {
+        display: block;
+    }
+
+    .video-container .yt-player {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .video-placeholder {
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 1.1rem;
+        text-align: center;
+        padding: 40px;
+    }
+
+    .video-placeholder .icon {
+        font-size: 3rem;
+        margin-bottom: 16px;
+        opacity: 0.5;
+    }
+
+    .error {
+        margin-top: 16px;
+        padding: 14px 18px;
+        background: rgba(220, 53, 69, 0.15);
+        border: 1px solid rgba(220, 53, 69, 0.3);
+        border-radius: 12px;
+        color: #f8a8b3;
+        font-size: 0.95rem;
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .error.visible { display: block; }
+
+    .embed-fallback {
+        margin-top: 12px;
+        padding: 16px 20px;
+        background: rgba(255, 193, 7, 0.1);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        border-radius: 12px;
+        color: #ffd54f;
+        font-size: 0.95rem;
+        text-align: center;
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .embed-fallback.visible { display: block; }
+
+    .embed-fallback .btn-platform {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .embed-fallback .btn-platform:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+    }
+
+    .download-section {
+        margin-top: 20px;
+        padding: 16px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .download-section.visible { display: block; }
+
+    .download-title {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+    }
+
+    .download-buttons {
+        display: flex;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .btn-download {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        cursor: pointer;
+        border: none;
+        font-size: 0.95rem;
+        flex: 1;
+    }
+
+    .btn-download:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-download:active {
+        transform: translateY(0);
+    }
+
+    .btn-mp4 {
+        background: linear-gradient(135deg, #1a73e8, #0d47a1);
+        color: white;
+    }
+
+    .btn-mp4:hover {
+        box-shadow: 0 6px 20px rgba(26, 115, 232, 0.4);
+    }
+
+    .btn-mp3 {
+        background: linear-gradient(135deg, #e8a31a, #c77d00);
+        color: white;
+    }
+
+    .btn-mp3:hover {
+        box-shadow: 0 6px 20px rgba(232, 163, 26, 0.4);
+    }
+
+    .dl-icon {
+        font-size: 1.3rem;
+        line-height: 1;
+    }
+
+    .dl-label {
+        font-weight: 700;
+        font-size: 1.05rem;
+    }
+
+    .dl-desc {
+        font-size: 0.8rem;
+        opacity: 0.8;
+        margin-left: auto;
+    }
+
+    .mp4-group,
+    .mp3-group {
+        display: flex;
+        flex: 1;
+        gap: 0;
+    }
+
+    .mp4-group .btn-mp4 {
+        border-radius: 10px 0 0 10px;
+        flex: 1;
+    }
+
+    .mp3-group .btn-mp3 {
+        border-radius: 10px 0 0 10px;
+        flex: 1;
+    }
+
+    .quality-select {
+        padding: 0 8px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-left: none;
+        border-radius: 0 10px 10px 0;
+        color: #fff;
+        font-size: 0.8rem;
+        cursor: pointer;
+        outline: none;
+        min-width: 60px;
+        transition: background 0.2s ease;
+    }
+
+    .quality-select:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .quality-select option {
+        background: #2a2a3e;
+        color: #fff;
+    }
+
+    .video-title-display {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.85);
+        text-align: center;
+        margin-top: 8px;
+        margin-bottom: 4px;
+        min-height: 1.3em;
+        word-break: break-word;
+        display: none;
+    }
+
+    .video-title-display.visible { display: block; }
+
+    .video-title-display .title-label {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .size-info {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+        display: block;
+        text-align: center;
+        margin-top: 6px;
+        min-height: 1.1em;
+    }
+
+    .size-info.loading {
+        opacity: 0.5;
+        animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+
+    .progress-section {
+        margin-top: 12px;
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .progress-section.visible { display: block; }
+
+    .progress-bar-container {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        height: 8px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 8px;
+        transition: width 0.3s ease;
+        position: relative;
+    }
+
+    .progress-bar-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    .progress-text {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 6px;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .progress-percent {
+        font-weight: 600;
+        color: #a78bfa;
+    }
+
+    .progress-status {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 4px;
+        text-align: center;
+    }
+
+    .btn-download.downloading {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    @media (max-width: 600px) {
+        .download-buttons {
+            flex-direction: column;
+        }
+        .mp4-group,
+        .mp3-group {
+            width: 100%;
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+        .container { padding: 24px 16px; border-radius: 16px; }
+        h1 { font-size: 1.5rem; }
+        .input-section { flex-direction: column; }
+        #loadVideo { width: 100%; }
+    }
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Video Stream Player</h1>
+    <p class="subtitle">Entrez une URL video pour la lire en streaming</p>
+
+    <div class="input-section">
+        <input type="text" id="videoUrl" placeholder="https://exemple.com/video.mp4"
+               value="{{ video_url|default:'' }}">
+        <button id="loadVideo">Charger la video</button>
+    </div>
+
+    <div class="video-container" id="videoContainer">
+        <video id="videoPlayer" controls autoplay muted playsinline preload="auto"
+               class="{% if media_type == 'direct' %}active{% endif %}">
+            {% if video_url and media_type == 'direct' %}
+            <source src="{{ video_url }}">
+            {% endif %}
+        </video>
+
+        <iframe id="embedPlayer"
+                class="{% if media_type != 'direct' and media_type != 'youtube' and video_url %}active{% endif %}"
+                allow="autoplay; fullscreen; encrypted-media"
+                allowfullscreen>
+        </iframe>
+
+        <div id="ytPlayer" class="yt-player"></div>
+
+        <div class="video-placeholder" id="placeholder"
+             {% if video_url %}style="display:none"{% endif %}>
+            <div class="icon">&#9654;&#65039;</div>
+            <p>Entrez une URL et cliquez sur "Charger la video"</p>
+            <p style="font-size:0.85rem;margin-top:8px;opacity:0.6">
+                YouTube, Dailymotion, Vimeo et videos directes supportes
+            </p>
+        </div>
+    </div>
+
+    <div id="errorMessage" class="error {% if error_message %}visible{% endif %}">
+        {{ error_message|default:'' }}
+    </div>
+
+    <div class="embed-fallback" id="embedFallback">
+        <p id="fallbackText">Si la video ne se charge pas, ouvrez-la directement.</p>
+        <a id="fallbackBtn" class="btn-platform" href="#" target="_blank" rel="noopener">
+            Ouvrir sur la plateforme
+        </a>
+    </div>
+
+    <div class="download-section" id="downloadSection">
+        <div class="download-title">Telechargement</div>
+        <div class="download-buttons">
+            <div class="mp4-group">
+                <a id="downloadMp4Btn" class="btn-download btn-mp4" href="#" download>
+                    <span class="dl-icon">&#128190;</span>
+                    <span class="dl-label">MP4</span>
+                    <span class="dl-desc" id="mp4QualityLabel">720p</span>
+                </a>
+                <select id="mp4Quality" class="quality-select" aria-label="Qualite video">
+                    <option value="360">360p</option>
+                    <option value="480">480p</option>
+                    <option value="720" selected>720p</option>
+                    <option value="1080">1080p</option>
+                    <option value="2160">4K</option>
+                </select>
+            </div>
+            <div class="mp3-group">
+                <a id="downloadMp3Btn" class="btn-download btn-mp3" href="#" download>
+                    <span class="dl-icon">&#127925;</span>
+                    <span class="dl-label">MP3</span>
+                    <span class="dl-desc" id="mp3QualityLabel">192 kbps</span>
+                </a>
+                <select id="mp3Quality" class="quality-select" aria-label="Qualite MP3">
+                    <option value="128">128 kbps</option>
+                    <option value="192" selected>192 kbps</option>
+                    <option value="256">256 kbps</option>
+                    <option value="320">320 kbps</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="video-title-display" id="videoTitleDisplay">
+            <span class="title-label">Fichier</span>
+            <span id="videoTitleText"></span>
+        </div>
+
+        <div class="size-info" id="sizeInfo">Chargement des tailles...</div>
+
+        <div class="progress-section" id="progressSection">
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressBytes">0 Mo / ? Mo</span>
+                <span class="progress-percent" id="progressPercent">0%</span>
+            </div>
+            <div class="progress-status" id="progressStatus">Preparation...</div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    "use strict";
+
+    var videoUrlInput = document.getElementById('videoUrl');
+    var loadBtn = document.getElementById('loadVideo');
+    var videoEl = document.getElementById('videoPlayer');
+    var embedEl = document.getElementById('embedPlayer');
+    var ytPlayerDiv = document.getElementById('ytPlayer');
+    var errMsg = document.getElementById('errorMessage');
+    var placeholder = document.getElementById('placeholder');
+    var fallbackDiv = document.getElementById('embedFallback');
+    var fallbackText = document.getElementById('fallbackText');
+    var fallbackBtn = document.getElementById('fallbackBtn');
+    var downloadSection = document.getElementById('downloadSection');
+    var downloadMp4Btn = document.getElementById('downloadMp4Btn');
+    var downloadMp3Btn = document.getElementById('downloadMp3Btn');
+    var mp4Quality = document.getElementById('mp4Quality');
+    var mp4QualityLabel = document.getElementById('mp4QualityLabel');
+    var mp3Quality = document.getElementById('mp3Quality');
+    var mp3QualityLabel = document.getElementById('mp3QualityLabel');
+    var videoTitleDisplay = document.getElementById('videoTitleDisplay');
+    var videoTitleText = document.getElementById('videoTitleText');
+    var sizeInfo = document.getElementById('sizeInfo');
+    var progressSection = document.getElementById('progressSection');
+    var progressFill = document.getElementById('progressFill');
+    var progressBytes = document.getElementById('progressBytes');
+    var progressPercent = document.getElementById('progressPercent');
+    var progressStatus = document.getElementById('progressStatus');
+
+    var currentVideoUrl = '';
+    var formatSizes = {};
+    var videoTitle = '';
+    var isDownloading = false;
+    var ytPlayer = null;
+    var ytApiReady = false;
+    var pendingYtId = null;
+
+    // Charger l API YouTube si pas deja fait
+    function loadYtApi() {
+        if (window.YT && window.YT.Player) {
+            ytApiReady = true;
+            return;
+        }
+        if (document.getElementById('yt-api-script')) return;
+        var tag = document.createElement('script');
+        tag.id = 'yt-api-script';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        var first = document.getElementsByTagName('script')[0];
+        first.parentNode.insertBefore(tag, first);
+    }
+
+    window.onYouTubeIframeAPIReady = function() {
+        ytApiReady = true;
+        if (pendingYtId) {
+            createYtPlayer(pendingYtId);
+            pendingYtId = null;
+        }
+    };
+
+    function createYtPlayer(videoId) {
+        if (ytPlayer) {
+            ytPlayer.destroy();
+            ytPlayer = null;
+        }
+        ytPlayer = new YT.Player('ytPlayer', {
+            videoId: videoId,
+            playerVars: { autoplay: 1, rel: 0, playsinline: 1 },
+            events: {
+                onError: function(e) {
+                    var msg = 'Erreur de lecture.';
+                    if (e.data === 101 || e.data === 150) {
+                        msg = 'Cette video YouTube n autorise pas la lecture integree.';
+                        fallbackDiv.classList.add('visible');
+                    } else {
+                        showError('Erreur YouTube: ' + msg);
+                    }
+                },
+                onReady: function() {
+                    fallbackDiv.classList.remove('visible');
+                }
+            }
+        });
+    }
+
+    function showError(msg) {
+        errMsg.textContent = msg;
+        errMsg.classList.add('visible');
+    }
+
+    function getYtId(url) {
+        var m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+        return m ? m[1] : null;
+    }
+
+    function getDmId(url) {
+        var m = url.match(/(?:dailymotion\.com\/video\/|dai\.ly\/)([a-zA-Z0-9]+)/i);
+        return m ? m[1] : null;
+    }
+
+    function getVmId(url) {
+        var m = url.match(/vimeo\.com\/(\d+)/i);
+        return m ? m[1] : null;
+    }
+
+    function platformName(url) {
+        if (getYtId(url)) return 'YouTube';
+        if (getDmId(url)) return 'Dailymotion';
+        if (getVmId(url)) return 'Vimeo';
+        return null;
+    }
+
+    function platformUrl(url) {
+        var yt = getYtId(url);
+        if (yt) return 'https://www.youtube.com/watch?v=' + yt;
+        var dm = getDmId(url);
+        if (dm) return 'https://www.dailymotion.com/video/' + dm;
+        var vm = getVmId(url);
+        if (vm) return 'https://vimeo.com/' + vm;
+        return url;
+    }
+
+    function formatSize(bytes) {
+        if (!bytes || bytes <= 0) return '?';
+        var gb = 1024 * 1024 * 1024;
+        var tb = gb * 1024;
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' Ko';
+        if (bytes < gb) return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
+        if (bytes < tb) return (bytes / gb).toFixed(2) + ' Go';
+        return (bytes / tb).toFixed(2) + ' To';
+    }
+
+    function updateSizeDisplay() {
+        var q = mp4Quality.value;
+        if (isDownloading) return;
+        if (formatSizes && formatSizes[q]) {
+            sizeInfo.textContent = '~' + formatSize(formatSizes[q]);
+            sizeInfo.classList.remove('loading');
+        } else if (formatSizes && formatSizes.direct) {
+            sizeInfo.textContent = '';
+            sizeInfo.classList.remove('loading');
+        } else {
+            sizeInfo.textContent = '';
+            sizeInfo.classList.remove('loading');
+        }
+    }
+
+    function sanitizeFilename(name) {
+        // Supprimer les caracteres invalides pour un nom de fichier Windows/Mac/Linux
+        return name.replace(/[<>:"\/\\|?*\x00-\x1f]/g, '_')
+                   .replace(/\s+/g, ' ')
+                   .replace(/^\s+|\s+$/g, '')
+                   .substring(0, 150) || 'video';
+    }
+
+    function buildFilename(ext, qualityLabel) {
+        if (videoTitle) {
+            return sanitizeFilename(videoTitle) + ' [' + qualityLabel + '].' + ext;
+        }
+        return 'video_' + qualityLabel + '.' + ext;
+    }
+
+    function fetchDownloadInfo(url) {
+        sizeInfo.textContent = 'Estimation...';
+        sizeInfo.classList.add('loading');
+        formatSizes = {};
+        videoTitle = '';
+
+        fetch('/download/info/?video_url=' + encodeURIComponent(url))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                sizeInfo.classList.remove('loading');
+                if (data.title) {
+                    videoTitle = data.title;
+                    videoTitleText.textContent = data.title;
+                    videoTitleDisplay.classList.add('visible');
+                } else {
+                    videoTitleDisplay.classList.remove('visible');
+                }
+                if (data.sizes) {
+                    formatSizes = data.sizes;
+                } else {
+                    formatSizes = { direct: true };
+                }
+                updateSizeDisplay();
+            })
+            .catch(function() {
+                sizeInfo.classList.remove('loading');
+                sizeInfo.textContent = '';
+                formatSizes = { direct: true };
+                videoTitleDisplay.classList.remove('visible');
+            });
+    }
+
+    function startDownload(endpointUrl, filename) {
+        if (isDownloading) return;
+        isDownloading = true;
+
+        // Pour les fichiers > 500 Mo, utiliser le telechargement natif du navigateur
+        // (fetch + Blob consommerait trop de memoire)
+        var isMp4 = endpointUrl.indexOf('/mp4/') > 0;
+        var q = isMp4 ? mp4Quality.value : null;
+        var totalBytes = 0;
+        if (isMp4 && q && formatSizes[q]) {
+            totalBytes = formatSizes[q];
+        }
+
+        if (totalBytes > 500 * 1024 * 1024) {
+            // Fallback: telechargement natif (barre de progression du navigateur)
+            progressSection.classList.add('visible');
+            progressFill.style.width = '100%';
+            progressPercent.textContent = '>500 Mo';
+            progressStatus.textContent = 'Fichier volumineux - telechargement via le navigateur...';
+            progressBytes.textContent = formatSize(totalBytes);
+            // Utiliser un <a> avec download pour forcer le nom de fichier personnalise
+            var a = document.createElement('a');
+            a.href = endpointUrl;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function() {
+                isDownloading = false;
+                downloadMp4Btn.classList.remove('downloading');
+                downloadMp3Btn.classList.remove('downloading');
+                progressSection.classList.remove('visible');
+            }, 3000);
+            return;
+        }
+
+        downloadMp4Btn.classList.add('downloading');
+        downloadMp3Btn.classList.add('downloading');
+        progressSection.classList.add('visible');
+        progressFill.style.width = '0%';
+        progressBytes.textContent = '0 Mo / ? Mo';
+        progressPercent.textContent = '0%';
+        progressStatus.textContent = 'Connexion au serveur...';
+
+        var receivedBytes = 0;
+
+        fetch(endpointUrl)
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Erreur ' + response.status);
+                }
+
+                // On garde le nom de fichier construit par buildFilename()
+                // (ne pas utiliser le Content-Disposition du serveur)
+                var total = totalBytes || parseInt(response.headers.get('Content-Length') || '0') || 0;
+                progressStatus.textContent = 'Telechargement en cours...';
+
+                var reader = response.body.getReader();
+                var chunks = [];
+
+                function pump() {
+                    return reader.read().then(function(result) {
+                        if (result.done) {
+                            var blob = new Blob(chunks);
+                            var blobUrl = URL.createObjectURL(blob);
+                            var a = document.createElement('a');
+                            a.href = blobUrl;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            setTimeout(function() { URL.revokeObjectURL(blobUrl); }, 60000);
+
+                            progressFill.style.width = '100%';
+                            progressPercent.textContent = '100%';
+                            progressStatus.textContent = 'Termine !';
+                            isDownloading = false;
+                            downloadMp4Btn.classList.remove('downloading');
+                            downloadMp3Btn.classList.remove('downloading');
+                            setTimeout(function() {
+                                progressSection.classList.remove('visible');
+                            }, 3000);
+                            return;
+                        }
+
+                        chunks.push(result.value);
+                        receivedBytes += result.value.length;
+
+                        if (total > 0) {
+                            var pct = Math.min(100, Math.round(receivedBytes / total * 100));
+                            progressFill.style.width = pct + '%';
+                            progressPercent.textContent = pct + '%';
+                        } else {
+                            var fakePct = Math.min(95, receivedBytes / (1024 * 1024) * 5);
+                            progressFill.style.width = fakePct + '%';
+                        }
+                        progressBytes.textContent = formatSize(receivedBytes) + ' / ' + (total > 0 ? formatSize(total) : '?');
+
+                        return pump();
+                    });
+                }
+
+                return pump();
+            })
+            .catch(function(err) {
+                progressStatus.textContent = 'Erreur: ' + err.message;
+                isDownloading = false;
+                downloadMp4Btn.classList.remove('downloading');
+                downloadMp3Btn.classList.remove('downloading');
+                setTimeout(function() {
+                    progressSection.classList.remove('visible');
+                }, 4000);
+            });
+    }
+
+    function updateDownloadButtons(url) {
+        if (!url) {
+            downloadSection.classList.remove('visible');
+            progressSection.classList.remove('visible');
+            return;
+        }
+        currentVideoUrl = url;
+        downloadSection.classList.add('visible');
+        fetchDownloadInfo(url);
+    }
+
+    mp4Quality.addEventListener('change', function() {
+        var label = this.value === '2160' ? '4K' : this.value + 'p';
+        mp4QualityLabel.textContent = label;
+        updateSizeDisplay();
+    });
+
+    mp3Quality.addEventListener('change', function() {
+        mp3QualityLabel.textContent = this.value + ' kbps';
+    });
+
+    downloadMp4Btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!currentVideoUrl || isDownloading) return;
+        var encoded = encodeURIComponent(currentVideoUrl);
+        var url = '/download/mp4/?video_url=' + encoded + '&quality=' + mp4Quality.value;
+        var qLabel = mp4Quality.value === '2160' ? '4K' : mp4Quality.value + 'p';
+        startDownload(url, buildFilename('mp4', qLabel));
+    });
+
+    downloadMp3Btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!currentVideoUrl || isDownloading) return;
+        var encoded = encodeURIComponent(currentVideoUrl);
+        var url = '/download/mp3/?video_url=' + encoded + '&quality=' + mp3Quality.value;
+        startDownload(url, buildFilename('mp3', mp3Quality.value + 'kbps'));
+    });
+
+    function loadVideo() {
+        var url = videoUrlInput.value.trim();
+        if (!url) return;
+
+        var ytId = getYtId(url);
+        var dmId = getDmId(url);
+        var vmId = getVmId(url);
+        var isEmbed = ytId || dmId || vmId;
+
+        errMsg.classList.remove('visible');
+        errMsg.textContent = '';
+        placeholder.style.display = 'none';
+        fallbackDiv.classList.remove('visible');
+
+        videoEl.classList.remove('active');
+        embedEl.classList.remove('active');
+        ytPlayerDiv.classList.remove('active');
+
+        if (ytPlayer) {
+            ytPlayer.stopVideo();
+            ytPlayer.destroy();
+            ytPlayer = null;
+        }
+
+        if (ytId) {
+            // YouTube via IFrame API
+            ytPlayerDiv.classList.add('active');
+            loadYtApi();
+            if (ytApiReady) {
+                createYtPlayer(ytId);
+            } else {
+                pendingYtId = ytId;
+            }
+            fallbackBtn.href = 'https://www.youtube.com/watch?v=' + ytId;
+            fallbackBtn.textContent = 'Ouvrir sur YouTube';
+            fallbackText.textContent = 'Si la video YouTube ne se charge pas, ouvrez-la directement.';
+        } else if (dmId) {
+            // Dailymotion via iframe
+            embedEl.src = 'https://www.dailymotion.com/embed/video/' + dmId + '?autoplay=1';
+            embedEl.classList.add('active');
+            fallbackBtn.href = 'https://www.dailymotion.com/video/' + dmId;
+            fallbackBtn.textContent = 'Ouvrir sur Dailymotion';
+            fallbackText.textContent = 'Si la video Dailymotion ne se charge pas, ouvrez-la directement.';
+            fallbackDiv.classList.add('visible');
+        } else if (vmId) {
+            // Vimeo via iframe
+            embedEl.src = 'https://player.vimeo.com/video/' + vmId + '?autoplay=1&title=0&byline=0&portrait=0';
+            embedEl.classList.add('active');
+            fallbackBtn.href = 'https://vimeo.com/' + vmId;
+            fallbackBtn.textContent = 'Ouvrir sur Vimeo';
+            fallbackText.textContent = 'Si la video Vimeo ne se charge pas, ouvrez-la directement.';
+            fallbackDiv.classList.add('visible');
+        } else {
+            // Video directe
+            while (videoEl.firstChild) {
+                videoEl.removeChild(videoEl.firstChild);
+            }
+            var src = document.createElement('source');
+            src.src = url;
+            videoEl.appendChild(src);
+            videoEl.classList.add('active');
+            videoEl.load();
+            videoEl.play().catch(function() {});
+        }
+
+        updateDownloadButtons(url);
+        history.replaceState(null, '', '?video_url=' + encodeURIComponent(url));
+    }
+
+    videoEl.addEventListener('error', function() {
+        if (!videoEl.classList.contains('active')) return;
+        var details = '';
+        if (videoEl.error) {
+            switch (videoEl.error.code) {
+                case MediaError.MEDIA_ERR_ABORTED: details = 'Chargement annule.'; break;
+                case MediaError.MEDIA_ERR_NETWORK: details = 'Erreur reseau. Verifiez votre connexion.'; break;
+                case MediaError.MEDIA_ERR_DECODE: details = 'Impossible de decoder la video. Format non supporte.'; break;
+                case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED: details = 'Format video non supporte par le navigateur.'; break;
+                default: details = 'Erreur inconnue lors du chargement de la video.';
+            }
+        }
+        showError('Erreur: ' + details);
+    });
+
+    loadBtn.addEventListener('click', loadVideo);
+    videoUrlInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') loadVideo();
+    });
+
+    {% if video_url %}
+    placeholder.style.display = 'none';
+    updateDownloadButtons('{{ video_url|safe }}');
+    {% if media_type == 'direct' %}
+    videoEl.classList.add('active');
+    videoEl.play().catch(function() {});
+    {% elif media_type == 'youtube' %}
+    ytPlayerDiv.classList.add('active');
+    var initYtId = '{{ embed_url|safe }}'.match(/\/embed\/([^?]+)/);
+    if (initYtId) {
+        loadYtApi();
+        if (ytApiReady) {
+            createYtPlayer(initYtId[1]);
+        } else {
+            pendingYtId = initYtId[1];
+        }
+    }
+    fallbackBtn.href = '{{ video_url|safe }}';
+    fallbackBtn.textContent = 'Ouvrir sur YouTube';
+    fallbackText.textContent = 'Si la video YouTube ne se charge pas, ouvrez-la directement.';
+    {% elif media_type == 'dailymotion' %}
+    embedEl.src = '{{ embed_url|safe }}';
+    embedEl.classList.add('active');
+    fallbackBtn.href = '{{ video_url|safe }}';
+    fallbackBtn.textContent = 'Ouvrir sur Dailymotion';
+    fallbackText.textContent = 'Si la video Dailymotion ne se charge pas, ouvrez-la directement.';
+    fallbackDiv.classList.add('visible');
+    {% elif media_type == 'vimeo' %}
+    embedEl.src = '{{ embed_url|safe }}';
+    embedEl.classList.add('active');
+    fallbackBtn.href = '{{ video_url|safe }}';
+    fallbackBtn.textContent = 'Ouvrir sur Vimeo';
+    fallbackText.textContent = 'Si la video Vimeo ne se charge pas, ouvrez-la directement.';
+    fallbackDiv.classList.add('visible');
+    {% endif %}
+    {% endif %}
+})();
+</script>
+{% endblock %}
