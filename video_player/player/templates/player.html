@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Video Stream Player{% endblock %}
+{% block title %}Video Stream Player — Devoxx Style{% endblock %}
 
 {% block extra_styles %}
+    <style>
     .input-section {
         display: flex;
         gap: 12px;
@@ -12,51 +13,188 @@
     #videoUrl {
         flex: 1;
         padding: 14px 18px;
-        background: rgba(255, 255, 255, 0.08);
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        color: #fff;
+        background: rgba(255, 255, 255, 0.07);
+        border: 2px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--devoxx-radius-sm);
+        color: var(--devoxx-text);
+        font-family: 'Open Sans', sans-serif;
         font-size: 1rem;
         outline: none;
         transition: all 0.3s ease;
     }
 
-    #videoUrl::placeholder { color: rgba(255, 255, 255, 0.35); }
+    #videoUrl::placeholder { color: var(--devoxx-text-dim); }
     #videoUrl:focus {
-        border-color: #667eea;
-        background: rgba(255, 255, 255, 0.12);
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+        border-color: var(--devoxx-yellow);
+        background: rgba(255, 255, 255, 0.10);
+        box-shadow: 0 0 0 4px rgba(231, 177, 39, 0.12);
     }
 
     #loadVideo {
         padding: 14px 28px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
+        background: var(--devoxx-gradient);
+        color: #1a1f2e;
         border: none;
-        border-radius: 12px;
+        border-radius: var(--devoxx-radius-sm);
         cursor: pointer;
-        font-size: 1rem;
-        font-weight: 600;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
         transition: all 0.3s ease;
         white-space: nowrap;
     }
 
     #loadVideo:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 8px 25px rgba(231, 177, 39, 0.35);
+    }
+
+    #loadVideo:active {
+        transform: translateY(0);
     }
 
     .video-container {
         position: relative;
-        border-radius: 16px;
+        border-radius: var(--devoxx-radius);
         overflow: hidden;
         background: #000;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--devoxx-border);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         aspect-ratio: 16 / 9;
         display: flex;
         align-items: center;
         justify-content: center;
         min-height: 200px;
+    }
+
+    /* Loading spinner - Devoxx style */
+    .video-loader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 24px;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 10;
+        backdrop-filter: blur(4px);
+    }
+
+    .video-loader.visible {
+        display: flex;
+        animation: loaderFadeIn 0.3s ease;
+    }
+
+    .loader-spinner {
+        width: 64px;
+        height: 64px;
+        position: relative;
+        animation: spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    .loader-spinner .ring {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 3px solid transparent;
+    }
+
+    .loader-spinner .ring:nth-child(1) {
+        border-top-color: var(--devoxx-yellow);
+        animation: spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    .loader-spinner .ring:nth-child(2) {
+        border-right-color: var(--devoxx-orange);
+        animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse;
+        width: 80%;
+        height: 80%;
+        top: 10%;
+        left: 10%;
+    }
+
+    .loader-spinner .ring:nth-child(3) {
+        border-bottom-color: var(--devoxx-alt-yellow);
+        animation: spin 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        width: 60%;
+        height: 60%;
+        top: 20%;
+        left: 20%;
+    }
+
+    .loader-text {
+        font-family: 'Orbitron', monospace;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--devoxx-yellow);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        animation: loaderPulse 1.5s ease-in-out infinite;
+    }
+
+    .loader-dots {
+        display: inline-flex;
+        gap: 2px;
+        margin-left: 2px;
+    }
+
+    .loader-dots span {
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        background: var(--devoxx-yellow);
+        border-radius: 50%;
+        animation: dotBounce 1.4s ease-in-out infinite both;
+    }
+
+    .loader-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .loader-dots span:nth-child(2) { animation-delay: -0.16s; }
+    .loader-dots span:nth-child(3) { animation-delay: 0s; }
+
+    /* Platform-specific loader messages */
+    .loader-platform {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--devoxx-text-dim);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-top: -14px;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    .loader-platform.visible {
+        opacity: 1;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes loaderPulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+
+    @keyframes dotBounce {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+    }
+
+    @keyframes loaderFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
     .video-container video,
@@ -81,7 +219,8 @@
     }
 
     .video-placeholder {
-        color: rgba(255, 255, 255, 0.3);
+        color: var(--devoxx-text-dim);
+        font-family: 'Rajdhani', sans-serif;
         font-size: 1.1rem;
         text-align: center;
         padding: 40px;
@@ -90,16 +229,16 @@
     .video-placeholder .icon {
         font-size: 3rem;
         margin-bottom: 16px;
-        opacity: 0.5;
+        opacity: 0.4;
     }
 
     .error {
         margin-top: 16px;
         padding: 14px 18px;
-        background: rgba(220, 53, 69, 0.15);
-        border: 1px solid rgba(220, 53, 69, 0.3);
-        border-radius: 12px;
-        color: #f8a8b3;
+        background: rgba(253, 199, 207, 0.12);
+        border: 1px solid rgba(253, 199, 207, 0.25);
+        border-radius: var(--devoxx-radius-sm);
+        color: var(--devoxx-pink);
         font-size: 0.95rem;
         display: none;
         animation: fadeIn 0.3s ease;
@@ -110,10 +249,10 @@
     .embed-fallback {
         margin-top: 12px;
         padding: 16px 20px;
-        background: rgba(255, 193, 7, 0.1);
-        border: 1px solid rgba(255, 193, 7, 0.3);
-        border-radius: 12px;
-        color: #ffd54f;
+        background: rgba(231, 177, 39, 0.08);
+        border: 1px solid rgba(231, 177, 39, 0.2);
+        border-radius: var(--devoxx-radius-sm);
+        color: var(--devoxx-alt-yellow);
         font-size: 0.95rem;
         text-align: center;
         display: none;
@@ -126,26 +265,30 @@
         display: inline-block;
         margin-top: 10px;
         padding: 10px 24px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
+        background: var(--devoxx-gradient);
+        color: #1a1f2e;
         text-decoration: none;
-        border-radius: 8px;
-        font-weight: 600;
+        border-radius: var(--devoxx-radius-xs);
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
         font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
         transition: all 0.2s ease;
     }
 
     .embed-fallback .btn-platform:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+        box-shadow: 0 4px 15px rgba(231, 177, 39, 0.4);
     }
 
     .download-section {
         margin-top: 20px;
-        padding: 16px 20px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
+        padding: 20px 24px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--devoxx-border);
+        border-left: 3px solid var(--devoxx-yellow);
+        border-radius: var(--devoxx-radius-sm);
         display: none;
         animation: fadeIn 0.3s ease;
     }
@@ -153,11 +296,13 @@
     .download-section.visible { display: block; }
 
     .download-title {
+        font-family: 'Rajdhani', sans-serif;
         font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.5);
+        font-weight: 600;
+        color: var(--devoxx-yellow);
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 12px;
+        letter-spacing: 2px;
+        margin-bottom: 14px;
     }
 
     .download-buttons {
@@ -171,11 +316,12 @@
         align-items: center;
         gap: 10px;
         padding: 12px 20px;
-        border-radius: 10px;
+        border-radius: var(--devoxx-radius-sm);
         text-decoration: none;
         transition: all 0.25s ease;
         cursor: pointer;
         border: none;
+        font-family: 'Rajdhani', sans-serif;
         font-size: 0.95rem;
         flex: 1;
     }
@@ -190,21 +336,23 @@
     }
 
     .btn-mp4 {
-        background: linear-gradient(135deg, #1a73e8, #0d47a1);
-        color: white;
+        background: linear-gradient(135deg, var(--devoxx-yellow), var(--devoxx-orange));
+        color: #1a1f2e;
+        font-weight: 700;
     }
 
     .btn-mp4:hover {
-        box-shadow: 0 6px 20px rgba(26, 115, 232, 0.4);
+        box-shadow: 0 6px 20px rgba(231, 177, 39, 0.35);
     }
 
     .btn-mp3 {
-        background: linear-gradient(135deg, #e8a31a, #c77d00);
+        background: linear-gradient(135deg, var(--devoxx-green), #304936);
         color: white;
+        font-weight: 700;
     }
 
     .btn-mp3:hover {
-        box-shadow: 0 6px 20px rgba(232, 163, 26, 0.4);
+        box-shadow: 0 6px 20px rgba(96, 150, 137, 0.35);
     }
 
     .dl-icon {
@@ -215,59 +363,170 @@
     .dl-label {
         font-weight: 700;
         font-size: 1.05rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
     }
 
     .dl-desc {
         font-size: 0.8rem;
-        opacity: 0.8;
+        opacity: 0.85;
         margin-left: auto;
+        font-weight: 600;
     }
 
-    .mp4-group,
-    .mp3-group {
+    .video-group,
+    .audio-group {
         display: flex;
         flex: 1;
         gap: 0;
     }
 
-    .mp4-group .btn-mp4 {
-        border-radius: 10px 0 0 10px;
+    .video-group .btn-mp4 {
+        border-radius: var(--devoxx-radius-sm) 0 0 var(--devoxx-radius-sm);
         flex: 1;
     }
 
-    .mp3-group .btn-mp3 {
-        border-radius: 10px 0 0 10px;
+    .audio-group .btn-mp3 {
+        border-radius: var(--devoxx-radius-sm) 0 0 var(--devoxx-radius-sm);
         flex: 1;
     }
 
     .quality-select {
-        padding: 0 8px;
-        background: rgba(255, 255, 255, 0.12);
+        padding: 0 10px;
+        background: rgba(255, 255, 255, 0.10);
         border: 1px solid rgba(255, 255, 255, 0.15);
         border-left: none;
-        border-radius: 0 10px 10px 0;
-        color: #fff;
-        font-size: 0.8rem;
+        border-radius: 0 var(--devoxx-radius-sm) var(--devoxx-radius-sm) 0;
+        color: var(--devoxx-text);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
         cursor: pointer;
         outline: none;
-        min-width: 60px;
-        transition: background 0.2s ease;
+        min-width: 64px;
+        transition: all 0.2s ease;
+        letter-spacing: 0.3px;
     }
 
     .quality-select:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.18);
+    }
+
+    .quality-select:focus {
+        border-color: var(--devoxx-yellow);
     }
 
     .quality-select option {
-        background: #2a2a3e;
-        color: #fff;
+        background: #1a1f2e;
+        color: var(--devoxx-text);
+    }
+
+    /* Options avancees - Devoxx style */
+    .advanced-toggle {
+        margin-top: 14px;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--devoxx-radius-xs);
+        cursor: pointer;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--devoxx-text-muted);
+        transition: all 0.2s ease;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+    }
+
+    .advanced-toggle:hover {
+        background: var(--devoxx-gradient-subtle);
+        border-color: var(--devoxx-border-accent);
+        color: var(--devoxx-yellow);
+    }
+
+    .advanced-toggle .arrow {
+        display: inline-block;
+        transition: transform 0.3s ease;
+        font-size: 0.7rem;
+        color: var(--devoxx-yellow);
+    }
+
+    .advanced-toggle .arrow.open {
+        transform: rotate(90deg);
+    }
+
+    .advanced-options {
+        margin-top: 10px;
+        padding: 16px 18px;
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--devoxx-border-accent);
+        border-radius: var(--devoxx-radius-sm);
+        display: none;
+        animation: fadeIn 0.25s ease;
+    }
+
+    .advanced-options.visible { display: block; }
+
+    .advanced-row {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .advanced-field {
+        flex: 1;
+        min-width: 130px;
+    }
+
+    .advanced-field label {
+        display: block;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--devoxx-yellow);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+    }
+
+    .advanced-field select {
+        width: 100%;
+        padding: 9px 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--devoxx-radius-xs);
+        color: var(--devoxx-text);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.85rem;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.2s ease;
+        appearance: auto;
+    }
+
+    .advanced-field select:hover {
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .advanced-field select:focus {
+        border-color: var(--devoxx-yellow);
+        box-shadow: 0 0 0 3px rgba(231, 177, 39, 0.1);
+    }
+
+    .advanced-field select option {
+        background: #1a1f2e;
+        color: var(--devoxx-text);
     }
 
     .video-title-display {
         font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.85);
+        color: var(--devoxx-text);
         text-align: center;
-        margin-top: 8px;
+        margin-top: 10px;
         margin-bottom: 4px;
         min-height: 1.3em;
         word-break: break-word;
@@ -277,20 +536,24 @@
     .video-title-display.visible { display: block; }
 
     .video-title-display .title-label {
+        font-family: 'Rajdhani', sans-serif;
         font-size: 0.7rem;
-        color: rgba(255, 255, 255, 0.35);
+        font-weight: 600;
+        color: var(--devoxx-yellow);
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         display: block;
         margin-bottom: 2px;
     }
 
     .size-info {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.5);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--devoxx-text-muted);
         display: block;
         text-align: center;
-        margin-top: 6px;
+        margin-top: 8px;
         min-height: 1.1em;
     }
 
@@ -305,7 +568,7 @@
     }
 
     .progress-section {
-        margin-top: 12px;
+        margin-top: 14px;
         display: none;
         animation: fadeIn 0.3s ease;
     }
@@ -313,17 +576,18 @@
     .progress-section.visible { display: block; }
 
     .progress-bar-container {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.08);
         border-radius: 8px;
-        height: 8px;
+        height: 10px;
         overflow: hidden;
         position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .progress-bar-fill {
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, #667eea, #764ba2);
+        background: var(--devoxx-gradient);
         border-radius: 8px;
         transition: width 0.3s ease;
         position: relative;
@@ -339,7 +603,7 @@
         background: linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, 0.3),
+            rgba(255, 255, 255, 0.35),
             transparent
         );
         animation: shimmer 1.5s infinite;
@@ -354,20 +618,25 @@
         display: flex;
         justify-content: space-between;
         margin-top: 6px;
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.6);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--devoxx-text-muted);
     }
 
     .progress-percent {
-        font-weight: 600;
-        color: #a78bfa;
+        font-weight: 700;
+        color: var(--devoxx-yellow);
     }
 
     .progress-status {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.4);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--devoxx-text-dim);
         margin-top: 4px;
         text-align: center;
+        letter-spacing: 0.3px;
     }
 
     .btn-download.downloading {
@@ -375,13 +644,184 @@
         opacity: 0.6;
     }
 
+    /* Devoxx toast notification */
+    .toast-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 10px;
+        pointer-events: none;
+        max-width: 380px;
+        width: 100%;
+    }
+
+    .toast {
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 18px;
+        background: rgba(26, 31, 46, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--devoxx-border-accent);
+        border-left: 3px solid var(--devoxx-yellow);
+        border-radius: var(--devoxx-radius-sm);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(231, 177, 39, 0.1);
+        transform: translateX(120%);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .toast.visible {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .toast.exiting {
+        transform: translateX(120%);
+        opacity: 0;
+        transition: all 0.3s ease-in;
+    }
+
+    .toast-icon {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+
+    .toast-icon.success {
+        background: var(--devoxx-gradient);
+        color: #1a1f2e;
+    }
+
+    .toast-icon.error {
+        background: rgba(253, 199, 207, 0.2);
+        color: var(--devoxx-pink);
+    }
+
+    .toast-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .toast-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--devoxx-yellow);
+        margin-bottom: 2px;
+        letter-spacing: 0.5px;
+    }
+
+    .toast-title.error-text {
+        color: var(--devoxx-pink);
+    }
+
+    .toast-message {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.78rem;
+        color: var(--devoxx-text-muted);
+        line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .toast-close {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        border: none;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        color: var(--devoxx-text-dim);
+        cursor: pointer;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        padding: 0;
+    }
+
+    .toast-close:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--devoxx-text);
+    }
+
+    /* Shimmer line at bottom of toast */
+    .toast::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        background: var(--devoxx-gradient);
+        animation: toastShrink 4s linear forwards;
+    }
+
+    @keyframes toastShrink {
+        from { width: 100%; }
+        to { width: 0%; }
+    }
+
+    .toast.error-toast {
+        border-left-color: var(--devoxx-pink);
+        border-color: rgba(253, 199, 207, 0.2);
+    }
+
+    .toast.error-toast::after {
+        background: var(--devoxx-pink);
+    }
+
+    @media (max-width: 600px) {
+        .toast-container {
+            bottom: 16px;
+            right: 16px;
+            left: 16px;
+            max-width: none;
+        }
+        .toast {
+            padding: 12px 14px;
+        }
+    }
+
+    /* Devoxx-style decorative divider */
+    .section-divider {
+        text-align: center;
+        margin: 12px 0;
+        position: relative;
+    }
+
+    .section-divider::before {
+        content: '';
+        display: block;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--devoxx-yellow), transparent);
+        opacity: 0.3;
+    }
+
     @media (max-width: 600px) {
         .download-buttons {
             flex-direction: column;
         }
-        .mp4-group,
-        .mp3-group {
+        .video-group,
+        .audio-group {
             width: 100%;
+        }
+        .advanced-row {
+            flex-direction: column;
         }
     }
 
@@ -391,12 +831,13 @@
     }
 
     @media (max-width: 600px) {
-        .container { padding: 24px 16px; border-radius: 16px; }
-        h1 { font-size: 1.5rem; }
+        .container { padding: 24px 16px; border-radius: var(--devoxx-radius); }
+        h1 { font-size: 1.3rem; }
         .input-section { flex-direction: column; }
         #loadVideo { width: 100%; }
     }
-{% endblock %}
+    </style>
+    {% endblock %}
 
 {% block content %}
 <div class="container">
@@ -410,6 +851,24 @@
     </div>
 
     <div class="video-container" id="videoContainer">
+        <!-- Loading spinner overlay -->
+        <div class="video-loader" id="videoLoader">
+            <div class="loader-spinner">
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+            </div>
+            <div class="loader-text">
+                Chargement
+                <span class="loader-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </div>
+            <div class="loader-platform" id="loaderPlatform"></div>
+        </div>
+
         <video id="videoPlayer" controls autoplay muted playsinline preload="auto"
                class="{% if media_type == 'direct' %}active{% endif %}">
             {% if video_url and media_type == 'direct' %}
@@ -449,13 +908,13 @@
     <div class="download-section" id="downloadSection">
         <div class="download-title">Telechargement</div>
         <div class="download-buttons">
-            <div class="mp4-group">
-                <a id="downloadMp4Btn" class="btn-download btn-mp4" href="#" download>
-                    <span class="dl-icon">&#128190;</span>
-                    <span class="dl-label">MP4</span>
-                    <span class="dl-desc" id="mp4QualityLabel">720p</span>
+            <div class="video-group">
+                <a id="downloadVideoBtn" class="btn-download btn-mp4" href="#" download>
+                    <span class="dl-icon">&#127910;</span>
+                    <span class="dl-label">Video</span>
+                    <span class="dl-desc" id="videoQualityLabel">720p</span>
                 </a>
-                <select id="mp4Quality" class="quality-select" aria-label="Qualite video">
+                <select id="videoQuality" class="quality-select" aria-label="Qualite video">
                     <option value="360">360p</option>
                     <option value="480">480p</option>
                     <option value="720" selected>720p</option>
@@ -463,18 +922,54 @@
                     <option value="2160">4K</option>
                 </select>
             </div>
-            <div class="mp3-group">
-                <a id="downloadMp3Btn" class="btn-download btn-mp3" href="#" download>
+            <div class="audio-group">
+                <a id="downloadAudioBtn" class="btn-download btn-mp3" href="#" download>
                     <span class="dl-icon">&#127925;</span>
-                    <span class="dl-label">MP3</span>
-                    <span class="dl-desc" id="mp3QualityLabel">192 kbps</span>
+                    <span class="dl-label">Audio</span>
+                    <span class="dl-desc" id="audioQualityLabel">192 kbps</span>
                 </a>
-                <select id="mp3Quality" class="quality-select" aria-label="Qualite MP3">
+                <select id="audioQuality" class="quality-select" aria-label="Qualite audio">
                     <option value="128">128 kbps</option>
                     <option value="192" selected>192 kbps</option>
                     <option value="256">256 kbps</option>
                     <option value="320">320 kbps</option>
                 </select>
+            </div>
+        </div>
+
+        <div class="advanced-toggle" id="advancedToggle">
+            <span class="arrow" id="advancedArrow">&#9654;</span>
+            Options avancees
+        </div>
+        <div class="advanced-options" id="advancedOptions">
+            <div class="advanced-row">
+                <div class="advanced-field">
+                    <label>Conteneur video</label>
+                    <select id="containerFormat">
+                        <option value="mp4" selected>MP4</option>
+                        <option value="webm">WebM</option>
+                        <option value="mkv">MKV</option>
+                    </select>
+                </div>
+                <div class="advanced-field">
+                    <label>Codec video</label>
+                    <select id="videoCodec">
+                        <option value="auto" selected>Auto (meilleur)</option>
+                        <option value="h264">H.264 (AVC)</option>
+                        <option value="hevc">H.265 (HEVC)</option>
+                        <option value="vp9">VP9</option>
+                        <option value="av1">AV1</option>
+                    </select>
+                </div>
+                <div class="advanced-field">
+                    <label>Format audio</label>
+                    <select id="audioFormat">
+                        <option value="mp3" selected>MP3</option>
+                        <option value="m4a">M4A (AAC)</option>
+                        <option value="opus">Opus</option>
+                        <option value="flac">FLAC (sans perte)</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -495,9 +990,11 @@
             </div>
             <div class="progress-status" id="progressStatus">Preparation...</div>
         </div>
-        </div>
     </div>
 </div>
+
+<!-- Toast notification container -->
+<div class="toast-container" id="toastContainer"></div>
 
 <script>
 (function() {
@@ -514,12 +1011,18 @@
     var fallbackText = document.getElementById('fallbackText');
     var fallbackBtn = document.getElementById('fallbackBtn');
     var downloadSection = document.getElementById('downloadSection');
-    var downloadMp4Btn = document.getElementById('downloadMp4Btn');
-    var downloadMp3Btn = document.getElementById('downloadMp3Btn');
-    var mp4Quality = document.getElementById('mp4Quality');
-    var mp4QualityLabel = document.getElementById('mp4QualityLabel');
-    var mp3Quality = document.getElementById('mp3Quality');
-    var mp3QualityLabel = document.getElementById('mp3QualityLabel');
+    var downloadVideoBtn = document.getElementById('downloadVideoBtn');
+    var downloadAudioBtn = document.getElementById('downloadAudioBtn');
+    var videoQuality = document.getElementById('videoQuality');
+    var videoQualityLabel = document.getElementById('videoQualityLabel');
+    var containerFormat = document.getElementById('containerFormat');
+    var audioQuality = document.getElementById('audioQuality');
+    var audioQualityLabel = document.getElementById('audioQualityLabel');
+    var audioFormat = document.getElementById('audioFormat');
+    var advancedToggle = document.getElementById('advancedToggle');
+    var advancedOptions = document.getElementById('advancedOptions');
+    var advancedArrow = document.getElementById('advancedArrow');
+    var videoCodec = document.getElementById('videoCodec');
     var videoTitleDisplay = document.getElementById('videoTitleDisplay');
     var videoTitleText = document.getElementById('videoTitleText');
     var sizeInfo = document.getElementById('sizeInfo');
@@ -529,6 +1032,9 @@
     var progressPercent = document.getElementById('progressPercent');
     var progressStatus = document.getElementById('progressStatus');
 
+    var videoLoader = document.getElementById('videoLoader');
+    var loaderPlatform = document.getElementById('loaderPlatform');
+
     var currentVideoUrl = '';
     var formatSizes = {};
     var videoTitle = '';
@@ -536,6 +1042,88 @@
     var ytPlayer = null;
     var ytApiReady = false;
     var pendingYtId = null;
+
+    function showLoader(msg) {
+        videoLoader.classList.add('visible');
+        if (msg) {
+            loaderPlatform.textContent = msg;
+            loaderPlatform.classList.add('visible');
+        } else {
+            loaderPlatform.classList.remove('visible');
+        }
+    }
+
+    function hideLoader() {
+        videoLoader.classList.remove('visible');
+        loaderPlatform.classList.remove('visible');
+    }
+
+    function showToast(type, title, message, duration) {
+        duration = duration || 4000;
+        var container = document.getElementById('toastContainer');
+        var toast = document.createElement('div');
+        toast.className = 'toast' + (type === 'error' ? ' error-toast' : '');
+
+        var icon = document.createElement('div');
+        icon.className = 'toast-icon ' + type;
+        icon.textContent = type === 'success' ? '\u2713' : '\u2717';
+
+        var content = document.createElement('div');
+        content.className = 'toast-content';
+
+        var titleEl = document.createElement('div');
+        titleEl.className = 'toast-title' + (type === 'error' ? ' error-text' : '');
+        titleEl.textContent = title;
+
+        var msgEl = document.createElement('div');
+        msgEl.className = 'toast-message';
+        msgEl.textContent = message;
+
+        var closeBtn = document.createElement('button');
+        closeBtn.className = 'toast-close';
+        closeBtn.textContent = '\u2715';
+        closeBtn.addEventListener('click', function() { dismissToast(toast); });
+
+        content.appendChild(titleEl);
+        content.appendChild(msgEl);
+        toast.appendChild(icon);
+        toast.appendChild(content);
+        toast.appendChild(closeBtn);
+        container.appendChild(toast);
+
+        // Trigger entrance animation
+        requestAnimationFrame(function() {
+            toast.classList.add('visible');
+        });
+
+        // Auto-dismiss
+        var timeout = setTimeout(function() {
+            dismissToast(toast);
+        }, duration);
+
+        // Pause timeout on hover
+        toast.addEventListener('mouseenter', function() {
+            clearTimeout(timeout);
+        });
+        toast.addEventListener('mouseleave', function() {
+            timeout = setTimeout(function() {
+                dismissToast(toast);
+            }, duration);
+        });
+    }
+
+    function dismissToast(toast) {
+        if (!toast || toast.classList.contains('exiting')) return;
+        toast.classList.remove('visible');
+        toast.classList.add('exiting');
+        setTimeout(function() {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
+    }
+
+
 
     // Charger l API YouTube si pas deja fait
     function loadYtApi() {
@@ -567,8 +1155,8 @@
         ytPlayer = new YT.Player('ytPlayer', {
             videoId: videoId,
             playerVars: { autoplay: 1, rel: 0, playsinline: 1 },
-            events: {
-                onError: function(e) {
+            events: {                    onError: function(e) {
+                    hideLoader();
                     var msg = 'Erreur de lecture.';
                     if (e.data === 101 || e.data === 150) {
                         msg = 'Cette video YouTube n autorise pas la lecture integree.';
@@ -579,6 +1167,7 @@
                 },
                 onReady: function() {
                     fallbackDiv.classList.remove('visible');
+                    hideLoader();
                 }
             }
         });
@@ -632,7 +1221,7 @@
     }
 
     function updateSizeDisplay() {
-        var q = mp4Quality.value;
+        var q = videoQuality.value;
         if (isDownloading) return;
         if (formatSizes && formatSizes[q]) {
             sizeInfo.textContent = '~' + formatSize(formatSizes[q]);
@@ -647,7 +1236,6 @@
     }
 
     function sanitizeFilename(name) {
-        // Supprimer les caracteres invalides pour un nom de fichier Windows/Mac/Linux
         return name.replace(/[<>:"\/\\|?*\x00-\x1f]/g, '_')
                    .replace(/\s+/g, ' ')
                    .replace(/^\s+|\s+$/g, '')
@@ -697,23 +1285,19 @@
         if (isDownloading) return;
         isDownloading = true;
 
-        // Pour les fichiers > 500 Mo, utiliser le telechargement natif du navigateur
-        // (fetch + Blob consommerait trop de memoire)
-        var isMp4 = endpointUrl.indexOf('/mp4/') > 0;
-        var q = isMp4 ? mp4Quality.value : null;
+        var isVideo = endpointUrl.indexOf('/video/') > 0;
+        var q = isVideo ? videoQuality.value : null;
         var totalBytes = 0;
-        if (isMp4 && q && formatSizes[q]) {
+        if (isVideo && q && formatSizes[q]) {
             totalBytes = formatSizes[q];
         }
 
         if (totalBytes > 500 * 1024 * 1024) {
-            // Fallback: telechargement natif (barre de progression du navigateur)
             progressSection.classList.add('visible');
             progressFill.style.width = '100%';
             progressPercent.textContent = '>500 Mo';
             progressStatus.textContent = 'Fichier volumineux - telechargement via le navigateur...';
             progressBytes.textContent = formatSize(totalBytes);
-            // Utiliser un <a> avec download pour forcer le nom de fichier personnalise
             var a = document.createElement('a');
             a.href = endpointUrl;
             a.download = filename;
@@ -721,17 +1305,18 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
+            showToast('success', 'Telechargement lance', filename + ' (>500 Mo) — telechargement via le navigateur');
             setTimeout(function() {
                 isDownloading = false;
-                downloadMp4Btn.classList.remove('downloading');
-                downloadMp3Btn.classList.remove('downloading');
+                downloadVideoBtn.classList.remove('downloading');
+                downloadAudioBtn.classList.remove('downloading');
                 progressSection.classList.remove('visible');
             }, 3000);
             return;
         }
 
-        downloadMp4Btn.classList.add('downloading');
-        downloadMp3Btn.classList.add('downloading');
+        downloadVideoBtn.classList.add('downloading');
+        downloadAudioBtn.classList.add('downloading');
         progressSection.classList.add('visible');
         progressFill.style.width = '0%';
         progressBytes.textContent = '0 Mo / ? Mo';
@@ -746,8 +1331,6 @@
                     throw new Error('Erreur ' + response.status);
                 }
 
-                // On garde le nom de fichier construit par buildFilename()
-                // (ne pas utiliser le Content-Disposition du serveur)
                 var total = totalBytes || parseInt(response.headers.get('Content-Length') || '0') || 0;
                 progressStatus.textContent = 'Telechargement en cours...';
 
@@ -771,8 +1354,9 @@
                             progressPercent.textContent = '100%';
                             progressStatus.textContent = 'Termine !';
                             isDownloading = false;
-                            downloadMp4Btn.classList.remove('downloading');
-                            downloadMp3Btn.classList.remove('downloading');
+                            downloadVideoBtn.classList.remove('downloading');
+                            downloadAudioBtn.classList.remove('downloading');
+                            showToast('success', 'Telechargement termine', filename + ' (' + formatSize(receivedBytes) + ')');
                             setTimeout(function() {
                                 progressSection.classList.remove('visible');
                             }, 3000);
@@ -801,8 +1385,9 @@
             .catch(function(err) {
                 progressStatus.textContent = 'Erreur: ' + err.message;
                 isDownloading = false;
-                downloadMp4Btn.classList.remove('downloading');
-                downloadMp3Btn.classList.remove('downloading');
+                downloadVideoBtn.classList.remove('downloading');
+                downloadAudioBtn.classList.remove('downloading');
+                showToast('error', 'Erreur de telechargement', err.message);
                 setTimeout(function() {
                     progressSection.classList.remove('visible');
                 }, 4000);
@@ -820,31 +1405,52 @@
         fetchDownloadInfo(url);
     }
 
-    mp4Quality.addEventListener('change', function() {
+    videoQuality.addEventListener('change', function() {
         var label = this.value === '2160' ? '4K' : this.value + 'p';
-        mp4QualityLabel.textContent = label;
+        videoQualityLabel.textContent = label;
         updateSizeDisplay();
     });
 
-    mp3Quality.addEventListener('change', function() {
-        mp3QualityLabel.textContent = this.value + ' kbps';
+    audioQuality.addEventListener('change', function() {
+        audioQualityLabel.textContent = this.value + ' kbps';
     });
 
-    downloadMp4Btn.addEventListener('click', function(e) {
+    audioFormat.addEventListener('change', function() {
+        var fmt = this.options[this.selectedIndex].text;
+        if (fmt === 'FLAC (sans perte)') fmt = 'FLAC';
+        audioQualityLabel.textContent = audioQuality.value + ' kbps';
+    });
+
+    // Toggle options avancees
+    advancedToggle.addEventListener('click', function() {
+        var isOpen = advancedOptions.classList.toggle('visible');
+        advancedArrow.classList.toggle('open');
+    });
+
+    downloadVideoBtn.addEventListener('click', function(e) {
         e.preventDefault();
         if (!currentVideoUrl || isDownloading) return;
         var encoded = encodeURIComponent(currentVideoUrl);
-        var url = '/download/mp4/?video_url=' + encoded + '&quality=' + mp4Quality.value;
-        var qLabel = mp4Quality.value === '2160' ? '4K' : mp4Quality.value + 'p';
-        startDownload(url, buildFilename('mp4', qLabel));
+        var ct = containerFormat.value || 'mp4';
+        var vc = videoCodec.value || 'auto';
+        var ql = videoQuality.value || '720';
+        var url = '/download/video/?video_url=' + encoded + '&quality=' + ql + '&container=' + ct + '&vcodec=' + vc;
+        var qLabel = ql === '2160' ? '4K' : ql + 'p';
+        var ext = ct;
+        var vcPart = vc !== 'auto' ? '_' + vc : '';
+        startDownload(url, buildFilename(ext, qLabel + vcPart));
     });
 
-    downloadMp3Btn.addEventListener('click', function(e) {
+    downloadAudioBtn.addEventListener('click', function(e) {
         e.preventDefault();
         if (!currentVideoUrl || isDownloading) return;
         var encoded = encodeURIComponent(currentVideoUrl);
-        var url = '/download/mp3/?video_url=' + encoded + '&quality=' + mp3Quality.value;
-        startDownload(url, buildFilename('mp3', mp3Quality.value + 'kbps'));
+        var fmt = audioFormat.value || 'mp3';
+        var ql = audioQuality.value || '192';
+        var url = '/download/audio/?video_url=' + encoded + '&quality=' + ql + '&format=' + fmt;
+        var ext = fmt;
+        var qPart = fmt === 'flac' ? 'lossless' : ql + 'kbps';
+        startDownload(url, buildFilename(ext, qPart));
     });
 
     function loadVideo() {
@@ -864,6 +1470,7 @@
         videoEl.classList.remove('active');
         embedEl.classList.remove('active');
         ytPlayerDiv.classList.remove('active');
+        hideLoader();
 
         if (ytPlayer) {
             ytPlayer.stopVideo();
@@ -871,8 +1478,9 @@
             ytPlayer = null;
         }
 
+        // Afficher le loader Devoxx
         if (ytId) {
-            // YouTube via IFrame API
+            showLoader('YouTube');
             ytPlayerDiv.classList.add('active');
             loadYtApi();
             if (ytApiReady) {
@@ -884,7 +1492,7 @@
             fallbackBtn.textContent = 'Ouvrir sur YouTube';
             fallbackText.textContent = 'Si la video YouTube ne se charge pas, ouvrez-la directement.';
         } else if (dmId) {
-            // Dailymotion via iframe
+            showLoader('Dailymotion');
             embedEl.src = 'https://www.dailymotion.com/embed/video/' + dmId + '?autoplay=1';
             embedEl.classList.add('active');
             fallbackBtn.href = 'https://www.dailymotion.com/video/' + dmId;
@@ -892,7 +1500,7 @@
             fallbackText.textContent = 'Si la video Dailymotion ne se charge pas, ouvrez-la directement.';
             fallbackDiv.classList.add('visible');
         } else if (vmId) {
-            // Vimeo via iframe
+            showLoader('Vimeo');
             embedEl.src = 'https://player.vimeo.com/video/' + vmId + '?autoplay=1&title=0&byline=0&portrait=0';
             embedEl.classList.add('active');
             fallbackBtn.href = 'https://vimeo.com/' + vmId;
@@ -900,7 +1508,7 @@
             fallbackText.textContent = 'Si la video Vimeo ne se charge pas, ouvrez-la directement.';
             fallbackDiv.classList.add('visible');
         } else {
-            // Video directe
+            showLoader('Video directe');
             while (videoEl.firstChild) {
                 videoEl.removeChild(videoEl.firstChild);
             }
@@ -916,8 +1524,21 @@
         history.replaceState(null, '', '?video_url=' + encodeURIComponent(url));
     }
 
+    // Cacher le loader quand la video directe commence
+    videoEl.addEventListener('canplay', function() {
+        if (videoEl.classList.contains('active')) {
+            hideLoader();
+        }
+    });
+
+    // Cacher le loader pour iframe (Dailymotion, Vimeo)
+    embedEl.addEventListener('load', function() {
+        hideLoader();
+    });
+
     videoEl.addEventListener('error', function() {
         if (!videoEl.classList.contains('active')) return;
+        hideLoader();
         var details = '';
         if (videoEl.error) {
             switch (videoEl.error.code) {
@@ -940,9 +1561,11 @@
     placeholder.style.display = 'none';
     updateDownloadButtons('{{ video_url|safe }}');
     {% if media_type == 'direct' %}
+    showLoader('Video directe');
     videoEl.classList.add('active');
     videoEl.play().catch(function() {});
     {% elif media_type == 'youtube' %}
+    showLoader('YouTube');
     ytPlayerDiv.classList.add('active');
     var initYtId = '{{ embed_url|safe }}'.match(/\/embed\/([^?]+)/);
     if (initYtId) {
@@ -957,6 +1580,7 @@
     fallbackBtn.textContent = 'Ouvrir sur YouTube';
     fallbackText.textContent = 'Si la video YouTube ne se charge pas, ouvrez-la directement.';
     {% elif media_type == 'dailymotion' %}
+    showLoader('Dailymotion');
     embedEl.src = '{{ embed_url|safe }}';
     embedEl.classList.add('active');
     fallbackBtn.href = '{{ video_url|safe }}';
@@ -964,6 +1588,7 @@
     fallbackText.textContent = 'Si la video Dailymotion ne se charge pas, ouvrez-la directement.';
     fallbackDiv.classList.add('visible');
     {% elif media_type == 'vimeo' %}
+    showLoader('Vimeo');
     embedEl.src = '{{ embed_url|safe }}';
     embedEl.classList.add('active');
     fallbackBtn.href = '{{ video_url|safe }}';
