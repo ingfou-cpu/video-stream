@@ -409,6 +409,17 @@ def download_info(request):
             info = ydl.extract_info(url, download=False)
             formats = info.get('formats', [])
             title = info.get('title', 'Video')
+            channel = info.get('channel') or info.get('uploader') or ''
+            thumbs = info.get('thumbnails') or []
+            thumbnail_url = ''
+            if thumbs:
+                sorted_t = sorted(
+                    (t for t in thumbs if t.get('url')),
+                    key=lambda t: (t.get('preference') or -1, t.get('width') or 0, t.get('height') or 0),
+                    reverse=True
+                )
+                if sorted_t:
+                    thumbnail_url = sorted_t[0].get('url', '')
 
         sizes = {}
         for quality_key, fmt_spec in VIDEO_QUALITY_FORMATS.items():
@@ -437,6 +448,8 @@ def download_info(request):
         return JsonResponse({
             'direct': False,
             'title': title,
+            'channel': channel,
+            'thumbnail_url': thumbnail_url,
             'duration': duration,
             'sizes': sizes,
         })

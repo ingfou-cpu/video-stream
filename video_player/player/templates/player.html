@@ -830,17 +830,54 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
+    @media (max-width: 1100px) {
+        .sidebar-right { display: none; }
+    }
+
+    @media (max-width: 900px) {
+        .app-layout { flex-direction: column; }
+        .sidebar {
+            width: 100%;
+            min-width: 100%;
+            height: auto;
+            position: static;
+            border-right: none;
+            border-bottom: 1px solid #E2E8F0;
+            padding: 16px;
+        }
+        .sidebar-results {
+            max-height: 300px;
+        }
+        .sidebar-right {
+            display: block;
+            width: 100%;
+            min-width: 100%;
+            height: auto;
+            position: static;
+            border-left: none;
+            border-top: 1px solid #E2E8F0;
+            padding: 16px;
+        }
+        .history-list {
+            max-height: 250px;
+        }
+    }
+
     @media (max-width: 600px) {
         .container { padding: 24px 16px; border-radius: var(--devoxx-radius); }
         h1 { font-size: 1.3rem; }
         .input-section { flex-direction: column; }
         #loadVideo { width: 100%; }
+        .sidebar { padding: 12px; }
+        .sidebar h2 { font-size: 0.75rem; }
+        .sidebar-search input { font-size: 0.8rem; }
+        .sidebar-right { padding: 12px; }
+        .sidebar-right h2 { font-size: 0.75rem; }
     }
     </style>
     {% endblock %}
 
 {% block content %}
-<div class="container">
     <h1>Video Stream Player</h1>
     <p class="subtitle">Entrez une URL video pour la lire en streaming</p>
 
@@ -991,7 +1028,6 @@
             <div class="progress-status" id="progressStatus">Preparation...</div>
         </div>
     </div>
-</div>
 
 <!-- Toast notification container -->
 <div class="toast-container" id="toastContainer"></div>
@@ -1521,6 +1557,7 @@
         }
 
         updateDownloadButtons(url);
+        addToHistory(url);
         history.replaceState(null, '', '?video_url=' + encodeURIComponent(url));
     }
 

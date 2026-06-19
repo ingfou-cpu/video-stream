@@ -66,47 +66,431 @@
         body {
             font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
-            background: #FFFFFF;
+            background: #0A0F0D;
             color: var(--devoxx-text);
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: stretch;
             padding: 0;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Subtle background pattern like freebuf.com */
-        body::before {
-            content: '';
+        /* Animated gradient background */
+        .bg-layer {
             position: fixed;
             inset: 0;
-            background:
-                linear-gradient(180deg,
-                    rgba(0, 181, 86, 0.03) 0%,
-                    rgba(0, 181, 86, 0.01) 50%,
-                    transparent 100%
-                ),
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 1px,
-                    rgba(0, 181, 86, 0.02) 1px,
-                    rgba(0, 181, 86, 0.02) 2px
-                );
-            background-size: 100% 100%, 40px 40px;
-            pointer-events: none;
             z-index: 0;
+            pointer-events: none;
         }
 
-        body::after,
-        #bushes {
-            display: none;
+        .bg-gradient {
+            background:
+                radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0, 181, 86, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(0, 181, 86, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 40% at 20% 70%, rgba(0, 181, 86, 0.06) 0%, transparent 50%),
+                linear-gradient(180deg, #0A0F0D 0%, #0D1A12 50%, #0A0F0D 100%);
+            animation: bgPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Grid overlay */
+        .bg-grid {
+            background-image:
+                linear-gradient(rgba(0, 181, 86, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 181, 86, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScroll 20s linear infinite;
+        }
+
+        @keyframes gridScroll {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Scanning line effect */
+        .bg-scanline {
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 181, 86, 0.015) 2px,
+                rgba(0, 181, 86, 0.015) 4px
+            );
+        }
+
+        /* Glow orbs */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        .bg-orb:nth-child(4) {
+            width: 500px;
+            height: 500px;
+            background: rgba(0, 181, 86, 0.06);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .bg-orb:nth-child(5) {
+            width: 400px;
+            height: 400px;
+            background: rgba(0, 181, 86, 0.04);
+            bottom: -80px;
+            left: -80px;
+            animation-delay: -4s;
+        }
+
+        .bg-orb:nth-child(6) {
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 209, 102, 0.03);
+            top: 40%;
+            left: 50%;
+            animation-delay: -8s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        /* Parallax mountain layers (from backgrounds/) */
+        #bgSky, #bgHills, #bgBushes {
+            position: fixed;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.07;
+            background-repeat: repeat-x;
+            background-position: bottom center;
+            background-size: auto 100%;
+        }
+
+        #bgSky {
+            bottom: 0;
+            height: 100%;
+            background-image: url('/static/player/backgrounds/sky-bg.webp');
+            background-size: cover;
+            opacity: 0.04;
+        }
+
+        #bgHills {
+            bottom: 0;
+            height: 45%;
+            background-image: url('/static/player/backgrounds/hills-bg.webp');
+            animation: parallaxHills 30s linear infinite;
+        }
+
+        #bgBushes {
+            bottom: 0;
+            height: 25%;
+            background-image: url('/static/player/backgrounds/bushes-fg.webp');
+            animation: parallaxBushes 40s linear infinite;
+        }
+
+        @keyframes parallaxHills {
+            0% { background-position: 0 bottom; }
+            100% { background-position: -1000px bottom; }
+        }
+
+        @keyframes parallaxBushes {
+            0% { background-position: 0 bottom; }
+            100% { background-position: -800px bottom; }
+        }
+
+        .app-layout {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sidebar {
+            width: 320px;
+            min-width: 320px;
+            background: #F8F9FA;
+            border-right: 1px solid #E2E8F0;
+            padding: 20px 16px;
+            overflow-y: auto;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .sidebar h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--fb-green);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            gap: 8px;
+        }
+
+        .sidebar-search input {
+            flex: 1;
+            padding: 10px 12px;
+            background: #FFFFFF;
+            border: 2px solid #E2E8F0;
+            border-radius: var(--devoxx-radius-xs);
+            color: var(--devoxx-text);
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-search input::placeholder { color: var(--devoxx-text-dim); }
+        .sidebar-search input:focus {
+            border-color: var(--fb-green);
+            box-shadow: 0 0 0 3px rgba(0, 181, 86, 0.1);
+        }
+
+        .sidebar-search button {
+            padding: 10px 16px;
+            background: var(--fb-green);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--devoxx-radius-xs);
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar-search button:hover {
+            background: var(--fb-green-dark);
+        }
+
+        .sidebar-results {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-result {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: var(--devoxx-radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-result:hover {
+            border-color: var(--fb-green-border);
+            box-shadow: var(--devoxx-shadow);
+            transform: translateX(2px);
+        }
+
+        .sidebar-result img {
+            width: 80px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
+            background: #EDF2F7;
+        }
+
+        .sidebar-result .result-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sidebar-result .result-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--devoxx-text);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .sidebar-result .result-channel {
+            font-size: 0.7rem;
+            color: var(--devoxx-text-muted);
+            margin-top: 4px;
+        }
+
+        .sidebar-result .result-meta {
+            font-size: 0.65rem;
+            color: var(--devoxx-text-dim);
+            margin-top: 2px;
+        }
+
+        .sidebar-status {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            color: var(--devoxx-text-muted);
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .sidebar-status.error {
+            color: var(--fb-red);
+        }
+
+        .sidebar-status.loading {
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        /* Right sidebar - history */
+        .sidebar-right {
+            width: 300px;
+            min-width: 300px;
+            background: #F8F9FA;
+            border-left: 1px solid #E2E8F0;
+            padding: 20px 16px;
+            overflow-y: auto;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sidebar-right .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .sidebar-right h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--fb-green);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
+
+        .btn-clear {
+            padding: 6px 12px;
+            background: transparent;
+            color: var(--devoxx-text-muted);
+            border: 1px solid #E2E8F0;
+            border-radius: var(--devoxx-radius-xs);
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-clear:hover {
+            background: #FFF5F5;
+            border-color: var(--fb-red);
+            color: var(--fb-red);
+        }
+
+        .history-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .history-item {
+            display: flex;
+            gap: 10px;
+            padding: 8px;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: var(--devoxx-radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .history-item:hover {
+            border-color: var(--fb-green-border);
+            box-shadow: var(--devoxx-shadow);
+            transform: translateX(-2px);
+        }
+
+        .history-item img {
+            width: 72px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
+            background: #EDF2F7;
+        }
+
+        .history-item .result-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .history-item .result-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--devoxx-text);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .history-item .result-meta {
+            font-size: 0.65rem;
+            color: var(--devoxx-text-dim);
+            margin-top: 2px;
+        }
+
+        .history-empty {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            color: var(--devoxx-text-muted);
+            text-align: center;
+            padding: 24px 0;
         }
 
         .container {
+            flex: 1;
             max-width: 1200px;
-            width: 100%;
             min-height: 100vh;
             background: #FFFFFF;
             border: none;
@@ -116,7 +500,6 @@
             box-shadow: none;
             transition: box-shadow 0.3s ease;
             position: relative;
-            z-index: 1;
             margin: 0 auto;
         }
 
@@ -177,7 +560,40 @@
     {% block extra_styles %}{% endblock %}
 </head>
 <body>
-    {% block content %}{% endblock %}
+    <div class="bg-layer bg-gradient" id="bgGradient"></div>
+    <div class="bg-layer bg-grid"></div>
+    <div class="bg-layer bg-scanline"></div>
+    <div class="bg-orb"></div>
+    <div class="bg-orb"></div>
+    <div class="bg-orb"></div>
+    <div id="bgSky"></div>
+    <div id="bgHills"></div>
+    <div id="bgBushes"></div>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <h2>&#9654; Recherche YouTube</h2>
+            <div class="sidebar-search">
+                <input type="text" id="ytSearchInput" placeholder="Rechercher..." 
+                       onkeypress="if(event.key==='Enter') ytSearch()">
+                <button onclick="ytSearch()">Chercher</button>
+            </div>
+            <div class="sidebar-results" id="ytResults">
+                <div class="sidebar-status">Entrez un terme de recherche</div>
+            </div>
+        </aside>
+        <div class="container" id="mainContent">
+            {% block content %}{% endblock %}
+        </div>
+        <aside class="sidebar-right" id="sidebarRight">
+            <div class="header">
+                <h2>&#9201; Historique</h2>
+                <button class="btn-clear" id="clearHistory" onclick="clearHistory()">Effacer</button>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="history-empty">Aucune video visionnee</div>
+            </div>
+        </aside>
+    </div>
 
     <!-- Decorative subtle top bar like freebuf.com -->
     <div style="
@@ -203,54 +619,108 @@
             });
     }
 
-    // Subtle animated particle effect
+    // Dynamic particle network background
     (function() {
         'use strict';
         var canvas = document.createElement('canvas');
         canvas.id = 'particlesCanvas';
-        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;opacity:0.35';
+        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:block;opacity:0.5';
         document.body.insertBefore(canvas, document.body.firstChild);
 
         var ctx = canvas.getContext('2d');
         var particles = [];
         var W, H;
+        var mouseX = -1000, mouseY = -1000;
+        var CONNECTION_DIST = 120;
+        var PARTICLE_COUNT = 80;
 
         function resize() {
             W = window.innerWidth;
             H = window.innerHeight;
             canvas.width = W;
             canvas.height = H;
+            PARTICLE_COUNT = Math.min(120, Math.max(50, Math.round((W * H) / 20000)));
         }
+
+        document.addEventListener('mousemove', function(e) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            setTimeout(function() { mouseX = -1000; mouseY = -1000; }, 100);
+        });
 
         function createParticles() {
             particles = [];
-            for (var i = 0; i < 30; i++) {
+            for (var i = 0; i < PARTICLE_COUNT; i++) {
                 particles.push({
                     x: Math.random() * W,
                     y: Math.random() * H,
-                    r: 1 + Math.random() * 2,
-                    alpha: 0.1 + Math.random() * 0.3,
-                    speedX: -0.1 + Math.random() * 0.2,
-                    speedY: -0.05 + Math.random() * 0.1,
+                    r: 0.5 + Math.random() * 2.5,
+                    alpha: 0.2 + Math.random() * 0.5,
+                    speedX: (-0.3 + Math.random() * 0.6) * 0.4,
+                    speedY: (-0.2 + Math.random() * 0.4) * 0.4,
+                    baseAlpha: 0.2 + Math.random() * 0.5,
                 });
             }
         }
 
         function draw() {
             ctx.clearRect(0, 0, W, H);
+
             for (var i = 0; i < particles.length; i++) {
                 var p = particles[i];
                 p.x += p.speedX;
                 p.y += p.speedY;
-                if (p.x < -10) p.x = W + 10;
-                if (p.x > W + 10) p.x = -10;
-                if (p.y < -10) p.y = H + 10;
-                if (p.y > H + 10) p.y = -10;
-                ctx.fillStyle = 'rgba(0, 181, 86, ' + p.alpha + ')';
+
+                if (p.x < -20) p.x = W + 20;
+                if (p.x > W + 20) p.x = -20;
+                if (p.y < -20) p.y = H + 20;
+                if (p.y > H + 20) p.y = -20;
+
+                // Mouse repulsion
+                var dx = p.x - mouseX;
+                var dy = p.y - mouseY;
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    var force = (150 - dist) / 150 * 0.5;
+                    p.x += (dx / dist) * force;
+                    p.y += (dy / dist) * force;
+                    p.alpha = p.baseAlpha * 1.5;
+                } else {
+                    p.alpha += (p.baseAlpha - p.alpha) * 0.05;
+                }
+
+                // Draw particle
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 181, 86, ' + p.alpha + ')';
                 ctx.fill();
+
+                // Glow
+                if (p.r > 1.5) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 181, 86, ' + (p.alpha * 0.12) + ')';
+                    ctx.fill();
+                }
+
+                // Connections
+                for (var j = i + 1; j < particles.length; j++) {
+                    var q = particles[j];
+                    var cdx = p.x - q.x;
+                    var cdy = p.y - q.y;
+                    var cd = Math.sqrt(cdx * cdx + cdy * cdy);
+                    if (cd < CONNECTION_DIST) {
+                        var lineAlpha = (1 - cd / CONNECTION_DIST) * 0.25;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(q.x, q.y);
+                        ctx.strokeStyle = 'rgba(0, 181, 86, ' + lineAlpha + ')';
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
             }
+
             requestAnimationFrame(draw);
         }
 
@@ -262,6 +732,242 @@
             createParticles();
         });
     })();
+
+    // Digital rain columns (subtle matrix effect)
+    (function() {
+        'use strict';
+        var canvas = document.createElement('canvas');
+        canvas.id = 'rainCanvas';
+        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;opacity:0.04';
+        document.body.insertBefore(canvas, document.body.firstChild);
+
+        var ctx = canvas.getContext('2d');
+        var W, H;
+        var columns = [];
+        var FONT_SIZE = 14;
+        var chars = '0123456789ABCDEF';
+
+        function resize() {
+            W = window.innerWidth;
+            H = window.innerHeight;
+            canvas.width = W;
+            canvas.height = H;
+            var colCount = Math.floor(W / FONT_SIZE);
+            columns = [];
+            for (var i = 0; i < colCount; i++) {
+                columns[i] = Math.floor(Math.random() * -H / FONT_SIZE);
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(10, 15, 13, 0.05)';
+            ctx.fillRect(0, 0, W, H);
+            ctx.font = FONT_SIZE + 'px monospace';
+
+            for (var i = 0; i < columns.length; i++) {
+                var text = chars[Math.floor(Math.random() * chars.length)];
+                var x = i * FONT_SIZE;
+                var y = columns[i] * FONT_SIZE;
+                ctx.fillStyle = '#00B556';
+                ctx.fillText(text, x, y);
+                if (y > H && Math.random() > 0.99) {
+                    columns[i] = 0;
+                }
+                columns[i]++;
+            }
+            requestAnimationFrame(draw);
+        }
+
+        resize();
+        draw();
+        window.addEventListener('resize', resize);
+    })();
+
+    // YouTube search functionality
+    function ytSearch() {
+        var input = document.getElementById('ytSearchInput');
+        var results = document.getElementById('ytResults');
+        var query = input.value.trim();
+        if (!query) return;
+        results.innerHTML = '<div class="sidebar-status loading">Recherche...</div>';
+        fetch('/yt-search/?q=' + encodeURIComponent(query) + '&maxResults=12')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    results.innerHTML = '<div class="sidebar-status error">' + data.error + '</div>';
+                    return;
+                }
+                if (!data.results || data.results.length === 0) {
+                    results.innerHTML = '<div class="sidebar-status">Aucun resultat</div>';
+                    return;
+                }
+                results.innerHTML = '';
+                data.results.forEach(function(video) {
+                    var div = document.createElement('div');
+                    div.className = 'sidebar-result';
+                    div.innerHTML =
+                        '<img src="' + video.thumbnail + '" alt="" loading="lazy" onerror="this.src=\'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 68%22><rect fill=%22%23edf2f7%22 width=%22120%22 height=%2268%22/></svg>\'">' +
+                        '<div class="result-info">' +
+                            '<div class="result-title">' + escapeHtml(video.title) + '</div>' +
+                            '<div class="result-channel">' + escapeHtml(video.channel || '') + '</div>' +
+                            '<div class="result-meta">' + formatDuration(video.duration) + '</div>' +
+                        '</div>';
+                    div.addEventListener('click', (function(url) {
+                        return function() { loadYtResult(url); };
+                    })(video.url));
+                    results.appendChild(div);
+                });
+            })
+            .catch(function(err) {
+                results.innerHTML = '<div class="sidebar-status error">Erreur: ' + err.message + '</div>';
+            });
+    }
+
+    function loadYtResult(url) {
+        var input = document.getElementById('videoUrl');
+        var btn = document.getElementById('loadVideo');
+        if (input && btn) {
+            input.value = url;
+            btn.click();
+        }
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        var d = document.createElement('div');
+        d.textContent = text;
+        return d.innerHTML;
+    }
+
+    function formatDuration(seconds) {
+        if (!seconds) return '';
+        var m = Math.floor(seconds / 60);
+        var s = seconds % 60;
+        if (m >= 60) {
+            var h = Math.floor(m / 60);
+            m = m % 60;
+            return h + 'h ' + (m < 10 ? '0' : '') + m + 'min';
+        }
+        return m + 'min ' + (s < 10 ? '0' : '') + s + 's';
+    }
+
+    // History functionality
+    function addToHistory(url) {
+        var history = getHistory();
+        history = history.filter(function(item) { return item.url !== url; });
+        var label = getUrlLabel(url);
+        var thumb = getThumbnailFromUrl(url);
+        history.unshift({
+            url: url,
+            title: label,
+            channel: '',
+            thumbnail: thumb,
+            timestamp: Date.now()
+        });
+        if (history.length > 50) history = history.slice(0, 50);
+        try {
+            localStorage.setItem('videoHistory', JSON.stringify(history));
+        } catch(e) {}
+        renderHistory();
+        // Fetch better metadata
+        fetch('/download/info/?video_url=' + encodeURIComponent(url))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (!data.error) {
+                    updateHistoryEntry(url, data.title || '', data.channel || '', data.thumbnail_url || '');
+                }
+            })
+            .catch(function() {});
+    }
+
+    function getUrlLabel(url) {
+        try {
+            var yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            if (yt) return 'YouTube - ' + yt[1];
+            return decodeURIComponent(url.split('/').pop()).replace(/[_-]/g, ' ').replace(/\.[^.]+$/, '');
+        } catch(e) { return url; }
+    }
+
+    function getThumbnailFromUrl(url) {
+        var yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+        if (yt) return 'https://i.ytimg.com/vi/' + yt[1] + '/hqdefault.jpg';
+        var dm = url.match(/(?:dailymotion\.com\/video\/|dai\.ly\/)([a-zA-Z0-9]+)/);
+        if (dm) return 'https://www.dailymotion.com/thumbnail/video/' + dm[1];
+        return '';
+    }
+
+    function updateHistoryEntry(url, title, channel, thumbnail) {
+        var history = getHistory();
+        for (var i = 0; i < history.length; i++) {
+            if (history[i].url === url) {
+                if (title) history[i].title = title;
+                if (channel) history[i].channel = channel;
+                if (thumbnail) history[i].thumbnail = thumbnail;
+                break;
+            }
+        }
+        try {
+            localStorage.setItem('videoHistory', JSON.stringify(history));
+        } catch(e) {}
+        renderHistory();
+    }
+
+    function getHistory() {
+        try {
+            var data = localStorage.getItem('videoHistory');
+            return data ? JSON.parse(data) : [];
+        } catch(e) {
+            return [];
+        }
+    }
+
+    function renderHistory() {
+        var list = document.getElementById('historyList');
+        var history = getHistory();
+        if (!list) return;
+        if (history.length === 0) {
+            list.innerHTML = '<div class="history-empty">Aucune video visionnee</div>';
+            return;
+        }
+        list.innerHTML = '';
+        history.forEach(function(item) {
+            var div = document.createElement('div');
+            div.className = 'history-item';
+            var thumb = item.thumbnail || '';
+            var img = thumb
+                ? '<img src="' + thumb + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
+                : '<img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 68%22><rect fill=%22%23edf2f7%22 width=%22120%22 height=%2268%22/></svg>" alt="">';
+            div.innerHTML = img +
+                '<div class="result-info">' +
+                    '<div class="result-title">' + escapeHtml(item.title) + '</div>' +
+                    '<div class="result-meta">' + escapeHtml(item.channel) + '</div>' +
+                '</div>';
+            div.addEventListener('click', (function(url) {
+                return function() { loadHistoryItem(url); };
+            })(item.url));
+            list.appendChild(div);
+        });
+    }
+
+    function loadHistoryItem(url) {
+        var input = document.getElementById('videoUrl');
+        var btn = document.getElementById('loadVideo');
+        if (input && btn) {
+            input.value = url;
+            btn.click();
+        }
+    }
+
+    function clearHistory() {
+        if (!confirm('Effacer tout l\'historique ?')) return;
+        try {
+            localStorage.removeItem('videoHistory');
+        } catch(e) {}
+        renderHistory();
+    }
+
+    // Render history on page load
+    renderHistory();
     </script>
 </body>
 </html>
