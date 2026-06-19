@@ -68,5 +68,20 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'video_player' / 'player' / 'static',
+]
+
+# Cache configuration (file-based, aucun service externe requis)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / 'cache',
+        'TIMEOUT': 3600,  # 1 heure par defaut
+        'OPTIONS': {
+            'MAX_ENTRIES': 500,
+        },
+    }
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -28,3 +28,9 @@ Thumbs.db
 ffmpeg.exe
 ffprobe.exe
 ffplay.exe
+
+# Cache
+cache/
+
+# Windows
+nul

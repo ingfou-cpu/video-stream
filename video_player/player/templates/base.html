@@ -4,37 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Video Stream Player{% endblock %}</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="Video Stream Player">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Video Player">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#00B556">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/static/player/icons/icon-192.svg">
+
     <!-- Google Fonts: Devoxx-style typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Devoxx France Brand Colors */
-            --devoxx-yellow: #E7B127;
-            --devoxx-orange: #EA7E14;
-            --devoxx-green: #609689;
-            --devoxx-alt-green: #9BC1B8;
-            --devoxx-dark-green: #304936;
-            --devoxx-pink: #FDC7CF;
-            --devoxx-cyan: #DAE3F3;
-            --devoxx-alt-yellow: #FFD966;
+            /* Freebuf.com inspired theme - Clean professional cybersecurity */
+            --fb-green: #00B556;
+            --fb-green-dark: #009345;
+            --fb-green-light: #00D166;
+            --fb-green-bg: rgba(0, 181, 86, 0.08);
+            --fb-green-border: rgba(0, 181, 86, 0.25);
+            --fb-orange: #FF6B35;
+            --fb-red: #E53E3E;
+            --fb-blue: #3182CE;
 
             /* Derived */
-            --devoxx-gradient: linear-gradient(135deg, #E7B127, #EA7E14);
-            --devoxx-gradient-subtle: linear-gradient(135deg, rgba(231, 177, 39, 0.15), rgba(234, 126, 20, 0.08));
-            --devoxx-bg-dark: #1a1f2e;
-            --devoxx-bg-card: rgba(255, 255, 255, 0.06);
-            --devoxx-bg-card-hover: rgba(255, 255, 255, 0.09);
-            --devoxx-border: rgba(255, 255, 255, 0.1);
-            --devoxx-border-accent: rgba(231, 177, 39, 0.3);
-            --devoxx-text: #FFFFFF;
-            --devoxx-text-muted: rgba(255, 255, 255, 0.55);
-            --devoxx-text-dim: rgba(255, 255, 255, 0.35);
-            --devoxx-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            --devoxx-radius: 16px;
-            --devoxx-radius-sm: 10px;
-            --devoxx-radius-xs: 6px;
+            --devoxx-yellow: #00B556;
+            --devoxx-orange: #009345;
+            --devoxx-green: #00B556;
+            --devoxx-alt-green: #00D166;
+            --devoxx-dark-green: #007A3B;
+            --devoxx-pink: #FC8181;
+            --devoxx-cyan: #63B3ED;
+            --devoxx-alt-yellow: #68D391;
+
+            --devoxx-gradient: linear-gradient(135deg, #00B556, #009345);
+            --devoxx-gradient-subtle: linear-gradient(135deg, rgba(0, 181, 86, 0.12), rgba(0, 147, 69, 0.06));
+            --devoxx-bg-dark: #F8F9FA;
+            --devoxx-bg-card: #FFFFFF;
+            --devoxx-bg-card-hover: #F0FDF4;
+            --devoxx-border: #E2E8F0;
+            --devoxx-border-accent: rgba(0, 181, 86, 0.3);
+            --devoxx-text: #1A202C;
+            --devoxx-text-muted: #718096;
+            --devoxx-text-dim: #A0AEC0;
+            --devoxx-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --devoxx-radius: 12px;
+            --devoxx-radius-sm: 8px;
+            --devoxx-radius-xs: 4px;
         }
 
         *, *::before, *::after {
@@ -46,82 +66,84 @@
         body {
             font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(160deg, #0d1117 0%, #1a1f2e 30%, #1f2838 60%, #304936 100%);
+            background: #FFFFFF;
             color: var(--devoxx-text);
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 40px 20px;
+            padding: 0;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Subtle Devoxx decorative elements */
+        /* Subtle background pattern like freebuf.com */
         body::before {
             content: '';
             position: fixed;
-            top: -200px;
-            right: -200px;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(231, 177, 39, 0.06) 0%, transparent 70%);
+            inset: 0;
+            background:
+                linear-gradient(180deg,
+                    rgba(0, 181, 86, 0.03) 0%,
+                    rgba(0, 181, 86, 0.01) 50%,
+                    transparent 100%
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(0, 181, 86, 0.02) 1px,
+                    rgba(0, 181, 86, 0.02) 2px
+                );
+            background-size: 100% 100%, 40px 40px;
             pointer-events: none;
             z-index: 0;
         }
 
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: -300px;
-            left: -200px;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(234, 126, 20, 0.04) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
+        body::after,
+        #bushes {
+            display: none;
         }
 
         .container {
-            max-width: 920px;
+            max-width: 1200px;
             width: 100%;
-            background: var(--devoxx-bg-card);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--devoxx-border);
-            border-top: 2px solid var(--devoxx-yellow);
-            border-radius: var(--devoxx-radius);
-            padding: 40px;
-            box-shadow: var(--devoxx-shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 100vh;
+            background: #FFFFFF;
+            border: none;
+            border-top: 3px solid var(--fb-green);
+            border-radius: 0;
+            padding: 24px 28px;
+            box-shadow: none;
+            transition: box-shadow 0.3s ease;
             position: relative;
             z-index: 1;
+            margin: 0 auto;
         }
 
         .container:hover {
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+            box-shadow: none;
         }
 
         h1 {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.7rem;
+            font-family: 'Rajdhani', 'Open Sans', sans-serif;
+            font-size: 1.5rem;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 6px;
-            background: var(--devoxx-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 1px;
+            margin-bottom: 2px;
+            color: var(--fb-green);
+            letter-spacing: 0.5px;
             text-transform: uppercase;
+            -webkit-text-fill-color: var(--fb-green);
+            background: none;
         }
 
         .subtitle {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 500;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
             text-align: center;
             color: var(--devoxx-text-muted);
-            font-size: 1.05rem;
-            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
             margin-bottom: 32px;
         }
 
@@ -130,25 +152,116 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--devoxx-bg-dark);
+            background: #F8F9FA;
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--devoxx-yellow);
+            background: var(--fb-green);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--devoxx-orange);
+            background: var(--fb-green-dark);
         }
 
         /* Selection styling */
         ::selection {
-            background: rgba(231, 177, 39, 0.3);
-            color: #fff;
+            background: rgba(0, 181, 86, 0.2);
+            color: #1A202C;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                background: #FFFFFF;
+            }
         }
     </style>
     {% block extra_styles %}{% endblock %}
 </head>
 <body>
     {% block content %}{% endblock %}
+
+    <!-- Decorative subtle top bar like freebuf.com -->
+    <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--fb-green), var(--fb-green-light), var(--fb-green));
+        z-index: 9999;
+        pointer-events: none;
+    "></div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(function(reg) {
+                console.log('PWA: Service Worker enregistre (scope: ' + reg.scope + ')');
+            })
+            .catch(function(err) {
+                console.warn('PWA: Echec enregistrement Service Worker', err);
+            });
+    }
+
+    // Subtle animated particle effect
+    (function() {
+        'use strict';
+        var canvas = document.createElement('canvas');
+        canvas.id = 'particlesCanvas';
+        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;opacity:0.35';
+        document.body.insertBefore(canvas, document.body.firstChild);
+
+        var ctx = canvas.getContext('2d');
+        var particles = [];
+        var W, H;
+
+        function resize() {
+            W = window.innerWidth;
+            H = window.innerHeight;
+            canvas.width = W;
+            canvas.height = H;
+        }
+
+        function createParticles() {
+            particles = [];
+            for (var i = 0; i < 30; i++) {
+                particles.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    r: 1 + Math.random() * 2,
+                    alpha: 0.1 + Math.random() * 0.3,
+                    speedX: -0.1 + Math.random() * 0.2,
+                    speedY: -0.05 + Math.random() * 0.1,
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < -10) p.x = W + 10;
+                if (p.x > W + 10) p.x = -10;
+                if (p.y < -10) p.y = H + 10;
+                if (p.y > H + 10) p.y = -10;
+                ctx.fillStyle = 'rgba(0, 181, 86, ' + p.alpha + ')';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            requestAnimationFrame(draw);
+        }
+
+        resize();
+        createParticles();
+        draw();
+        window.addEventListener('resize', function() {
+            resize();
+            createParticles();
+        });
+    })();
+    </script>
 </body>
 </html>

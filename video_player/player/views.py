@@ -12,7 +12,8 @@ from urllib.request import urlopen
 
 import requests
 import yt_dlp
-from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
+from django.conf import settings
+from django.http import FileResponse, HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET
 
@@ -40,7 +41,11 @@ def _stream_ytdlp(args, content_type, filename):
             for chunk in iter(lambda: proc.stdout.read(65536), b''):
                 yield chunk
         finally:
-            proc.wait()
+            try:
+                proc.wait(timeout=120)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait()
             if proc.returncode != 0:
                 stderr_output = proc.stderr.read().decode('utf-8', errors='replace')[:500]
                 logger.error('yt-dlp failed (code %s): %s', proc.returncode, stderr_output)
@@ -97,6 +102,10 @@ def _extract_metadata(video_url):
             'quiet': True,
             'no_warnings': True,
             'no_call_home': True,
+            'noplaylist': True,
+            'socket_timeout': 30,
+            'extractor_args': {'youtube': {'skip': ['dash', 'hls']}},
+            'ignoreerrors': True,
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_url, download=False)
@@ -393,6 +402,8 @@ def download_info(request):
             'format': 'bv*[vcodec^=avc1]+ba/best[ext=mp4]/best',
             'quiet': True,
             'no_warnings': True,
+            'noplaylist': True,
+            'socket_timeout': 30,
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
@@ -496,11 +507,13 @@ def download_video(request):
             '--no-part',
             '--quiet',
             '--no-warnings',
+            '--socket-timeout', '30',
+            '--no-playlist',
             '--ffmpeg-location', ffmpeg_path,
             url,
         ]
 
-        proc = subprocess.run(args, capture_output=True, text=True)
+        proc = subprocess.run(args, capture_output=True, text=True, timeout=1800)
         if proc.returncode != 0:
             stderr = proc.stderr[:500] if proc.stderr else 'Unknown error'
             raise RuntimeError(stderr)
@@ -522,6 +535,10 @@ def download_video(request):
             _apply_mp4_video_metadata(str(downloaded), meta)
 
         return _stream_and_cleanup(str(downloaded), container_info['mime'], filename)
+    except subprocess.TimeoutExpired:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+        logger.error('download_video timeout: video_url=%s quality=%s', url, quality)
+        return HttpResponse('Le telechargement a pris trop de temps. Essayez une qualite inferieure.', status=504)
     except Exception as e:
         shutil.rmtree(temp_dir, ignore_errors=True)
         logger.error('download_video error: %s', e)
@@ -585,6 +602,8 @@ def download_audio(request):
                 'ffmpeg_location': ffmpeg_path,
                 'quiet': True,
                 'no_warnings': True,
+                'noplaylist': True,
+                'socket_timeout': 30,
             }
 
             if audio_format == 'mp3':
@@ -622,6 +641,8 @@ def download_audio(request):
         '--no-part',
         '--quiet',
         '--no-warnings',
+        '--socket-timeout', '30',
+        '--no-playlist',
         '--ffmpeg-location', ffmpeg_path,
         url,
     ]
@@ -671,6 +692,44 @@ def detect_platform(url):
         'type': 'direct',
         'embed_url': url
     }
+
+
+def manifest_view(request):
+    path = settings.STATICFILES_DIRS[0] / 'player' / 'manifest.json'
+    return FileResponse(open(path, 'rb'), content_type='application/json')
+
+
+def service_worker_view(request):
+    path = settings.STATICFILES_DIRS[0] / 'player' / 'sw.js'
+    return FileResponse(open(path, 'rb'), content_type='application/javascript')
+
+
+def yt_search(request):
+    query = request.GET.get('q', '')
+    max_results = int(request.GET.get('maxResults', 10))
+    if not query:
+        return JsonResponse({'error': 'Missing query parameter "q"'}, status=400)
+    from yt_dlp import YoutubeDL
+    ydl_opts = {
+        'quiet': True,
+        'extract_flat': True,
+        'force_json': True,
+    }
+    with YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(f'ytsearch{max_results}:{query}', download=False)
+    entries = info.get('entries', [])
+    results = []
+    for entry in entries:
+        results.append({
+            'id': entry.get('id'),
+            'title': entry.get('title'),
+            'url': entry.get('url') or f'https://www.youtube.com/watch?v={entry["id"]}',
+            'thumbnail': entry.get('thumbnail') or f'https://i.ytimg.com/vi/{entry["id"]}/hqdefault.jpg',
+            'duration': entry.get('duration'),
+            'channel': entry.get('channel') or entry.get('uploader'),
+            'views': entry.get('view_count'),
+        })
+    return JsonResponse({'results': results})
 
 
 def video_player(request):
