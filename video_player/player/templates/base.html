@@ -244,8 +244,8 @@
         }
 
         .sidebar {
-            width: 320px;
-            min-width: 320px;
+            width: 380px;
+            min-width: 380px;
             background: rgba(26, 26, 26, 0.5);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -275,9 +275,15 @@
             gap: 8px;
         }
 
-        .sidebar-search input {
+        .search-input-wrap {
             flex: 1;
-            padding: 10px 12px;
+            position: relative;
+            display: flex;
+        }
+
+        .search-input-wrap input {
+            width: 100%;
+            padding: 10px 36px 10px 12px;
             background: rgba(13, 13, 13, 0.5);
             border: 2px solid var(--dvx-border);
             border-radius: var(--devoxx-radius-xs);
@@ -288,8 +294,8 @@
             transition: all 0.3s ease;
         }
 
-        .sidebar-search input::placeholder { color: var(--dvx-text-dim); }
-        .sidebar-search input:focus {
+        .search-input-wrap input::placeholder { color: var(--dvx-text-dim); }
+        .search-input-wrap input:focus {
             border-color: var(--dvx-primary);
             box-shadow: 0 0 0 3px rgba(234, 126, 20, 0.15);
         }
@@ -312,6 +318,104 @@
 
         .sidebar-search button:hover {
             background: var(--dvx-primary-dark);
+        }
+
+        /* Filter button inside input */
+        .sidebar-search .btn-filter {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 4px 8px;
+            background: none !important;
+            border: none;
+            border-radius: var(--devoxx-radius-xs);
+            color: var(--dvx-text-light);
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-search .btn-filter:hover {
+            background: none !important;
+            color: var(--dvx-primary);
+        }
+
+        .sidebar-search .btn-filter.active {
+            background: none !important;
+            color: var(--dvx-primary);
+        }
+
+        /* Filter flyout */
+        .filter-flyout {
+            position: relative;
+        }
+
+        .filter-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--dvx-border-light);
+            border-radius: var(--devoxx-radius-sm);
+            padding: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.15s ease;
+        }
+
+        .filter-dropdown.visible {
+            display: block;
+        }
+
+        .filter-dropdown select {
+            width: 100%;
+            padding: 8px 10px;
+            background: rgba(13, 13, 13, 0.5);
+            border: 1px solid var(--dvx-border);
+            border-radius: var(--devoxx-radius-xs);
+            color: #FFFFFF;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+            appearance: auto;
+            margin-bottom: 8px;
+        }
+
+        .filter-dropdown select:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-dropdown select:hover {
+            border-color: var(--dvx-border-light);
+        }
+
+        .filter-dropdown select:focus {
+            border-color: var(--dvx-primary);
+            box-shadow: 0 0 0 2px rgba(234, 126, 20, 0.15);
+        }
+
+        .filter-dropdown select option {
+            background: rgba(26, 26, 26, 0.95);
+            color: #FFFFFF;
+        }
+
+        .filter-dropdown .filter-label {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--dvx-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            display: block;
         }
 
         .sidebar-results {
@@ -396,8 +500,8 @@
 
         /* Right sidebar - history */
         .sidebar-right {
-            width: 300px;
-            min-width: 300px;
+            width: 340px;
+            min-width: 340px;
             background: rgba(26, 26, 26, 0.5);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -608,9 +712,38 @@
         <aside class="sidebar" id="sidebar">
             <h2>&#9654; Recherche YouTube</h2>
             <div class="sidebar-search">
-                <input type="text" id="ytSearchInput" placeholder="Rechercher..." 
-                       onkeypress="if(event.key==='Enter') ytSearch()">
+                <div class="search-input-wrap">
+                    <input type="text" id="ytSearchInput" placeholder="Rechercher..." 
+                           onkeypress="if(event.key==='Enter') ytSearch()">
+                    <button class="btn-filter" id="btnFilter" onclick="toggleFilters()" title="Filtres">&#9776;</button>
+                </div>
                 <button onclick="ytSearch()">Chercher</button>
+            </div>
+            <div class="filter-flyout">
+                <div class="filter-dropdown" id="filterDropdown">
+                    <span class="filter-label">Trier par</span>
+                    <select id="filterSort" onchange="ytSearch()">
+                        <option value="relevance">Pertinence</option>
+                        <option value="date">Date</option>
+                        <option value="views">Vues</option>
+                        <option value="rating">Note</option>
+                    </select>
+                    <span class="filter-label">Duree</span>
+                    <select id="filterDuration" onchange="ytSearch()">
+                        <option value="all">Toute duree</option>
+                        <option value="short">Courte (&lt;4min)</option>
+                        <option value="medium">Moyenne (4-20min)</option>
+                        <option value="long">Longue (&gt;20min)</option>
+                    </select>
+                    <span class="filter-label">Date</span>
+                    <select id="filterDate" onchange="ytSearch()">
+                        <option value="all">Toute date</option>
+                        <option value="today">Aujourd'hui</option>
+                        <option value="week">Cette semaine</option>
+                        <option value="month">Ce mois</option>
+                        <option value="year">Cette année</option>
+                    </select>
+                </div>
             </div>
             <div class="sidebar-results" id="ytResults">
                 <div class="sidebar-status">Entrez un terme de recherche</div>
@@ -818,14 +951,39 @@
         window.addEventListener('resize', resize);
     })();
 
+    // Filter dropdown toggle
+    function toggleFilters() {
+        var dd = document.getElementById('filterDropdown');
+        var btn = document.getElementById('btnFilter');
+        dd.classList.toggle('visible');
+        btn.classList.toggle('active');
+    }
+
+    // Close filter dropdown on click outside
+    document.addEventListener('click', function(e) {
+        var dd = document.getElementById('filterDropdown');
+        var btn = document.getElementById('btnFilter');
+        if (dd && btn && !dd.contains(e.target) && !btn.contains(e.target)) {
+            dd.classList.remove('visible');
+            btn.classList.remove('active');
+        }
+    });
+
     // YouTube search functionality
     function ytSearch() {
         var input = document.getElementById('ytSearchInput');
         var results = document.getElementById('ytResults');
         var query = input.value.trim();
         if (!query) return;
+        var sortVal = document.getElementById('filterSort').value;
+        var durVal = document.getElementById('filterDuration').value;
+        var dateVal = document.getElementById('filterDate').value;
         results.innerHTML = '<div class="sidebar-status loading">Recherche...</div>';
-        fetch('/yt-search/?q=' + encodeURIComponent(query) + '&maxResults=12')
+        fetch('/yt-search/?q=' + encodeURIComponent(query)
+            + '&maxResults=12'
+            + '&sort=' + sortVal
+            + '&duration=' + durVal
+            + '&date=' + dateVal)
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (data.error) {

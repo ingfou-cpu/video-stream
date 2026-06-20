@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 import os
@@ -719,9 +720,32 @@ def service_worker_view(request):
 
 def yt_search(request):
     query = request.GET.get('q', '')
-    max_results = int(request.GET.get('maxResults', 10))
+    max_results = int(request.GET.get('maxResults', 12))
+    duration_filter = request.GET.get('duration', 'all')
+    date_filter = request.GET.get('date', 'all')
+    sort_by = request.GET.get('sort', 'relevance')
+
     if not query:
         return JsonResponse({'error': 'Missing query parameter "q"'}, status=400)
+
+    # Map sort options to YouTube sp parameter
+    sort_sp = {
+        'relevance': '',
+        'date': 'CAISAhAB',
+        'views': 'CAMSAhAB',
+        'rating': 'CAESAhAB',
+    }
+
+    # Fetch extra results to allow client-side filtering
+    fetch_count = min(max_results * 3, 50)
+    search_q = query.replace(' ', '+')
+
+    sp = sort_sp.get(sort_by, '')
+    if sp:
+        search_url = f'https://www.youtube.com/results?search_query={search_q}&sp={sp}'
+    else:
+        search_url = f'ytsearch{fetch_count}:{query}'
+
     from yt_dlp import YoutubeDL
     ydl_opts = {
         'quiet': True,
@@ -729,19 +753,51 @@ def yt_search(request):
         'force_json': True,
     }
     with YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(f'ytsearch{max_results}:{query}', download=False)
+        info = ydl.extract_info(search_url, download=False)
+
     entries = info.get('entries', [])
+    today = datetime.date.today()
     results = []
+
     for entry in entries:
+        # Duration filter
+        dur = entry.get('duration') or 0
+        if duration_filter == 'short' and (dur >= 240 or dur == 0):
+            continue
+        if duration_filter == 'medium' and (dur < 240 or dur > 1200):
+            continue
+        if duration_filter == 'long' and dur <= 1200:
+            continue
+
+        # Date filter
+        upload_date = entry.get('upload_date', '')
+        if date_filter != 'all' and upload_date and len(upload_date) == 8:
+            try:
+                d = datetime.date(int(upload_date[:4]), int(upload_date[4:6]), int(upload_date[6:8]))
+                if date_filter == 'today' and d != today:
+                    continue
+                elif date_filter == 'week' and (today - d).days > 7:
+                    continue
+                elif date_filter == 'month' and (today - d).days > 30:
+                    continue
+                elif date_filter == 'year' and (today - d).days > 365:
+                    continue
+            except ValueError:
+                pass
+
         results.append({
             'id': entry.get('id'),
             'title': entry.get('title'),
             'url': entry.get('url') or f'https://www.youtube.com/watch?v={entry["id"]}',
             'thumbnail': entry.get('thumbnail') or f'https://i.ytimg.com/vi/{entry["id"]}/hqdefault.jpg',
-            'duration': entry.get('duration'),
+            'duration': dur,
             'channel': entry.get('channel') or entry.get('uploader'),
             'views': entry.get('view_count'),
+            'upload_date': upload_date,
         })
+        if len(results) >= max_results:
+            break
+
     return JsonResponse({'results': results})
 
 
