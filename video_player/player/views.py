@@ -31,7 +31,6 @@ def _get_ffmpeg_path():
 
 
 def _stream_ytdlp(args, content_type, filename):
-    """Lance yt-dlp en sous-processus et streame la sortie vers le client."""
     def generate():
         proc = subprocess.Popen(
             args,
@@ -57,7 +56,6 @@ def _stream_ytdlp(args, content_type, filename):
 
 
 def _stream_and_cleanup(filepath, content_type, filename):
-    """Lit un fichier, le streame au client, puis le supprime."""
     def generate():
         try:
             with open(filepath, 'rb') as f:
@@ -84,18 +82,12 @@ def _stream_and_cleanup(filepath, content_type, filename):
 
 
 def _sanitize_filename(name, max_length=200):
-    """Nettoie une chaine pour usage comme nom de fichier."""
     name = re.sub(r'[\\/*?:"<>|]', '_', name)
     name = re.sub(r'\s+', ' ', name).strip()
     return name[:max_length]
 
 
-# ---------------------------------------------------------------------------
-# Metadonnees enrichies
-# ---------------------------------------------------------------------------
-
 def _extract_metadata(video_url):
-    """Extrait les metadonnees enrichies d'une video via yt-dlp (sans telechargement)."""
     if video_url.lower().endswith(('.mp4', '.webm', '.mkv', '.avi', '.mov', '.mp3', '.m4a', '.flac', '.wav')):
         return {}
     try:
@@ -116,8 +108,17 @@ def _extract_metadata(video_url):
         return {}
 
 
+def _pick_best_thumbnail(thumbs):
+    if not thumbs:
+        return ''
+    valid = [t for t in thumbs if t.get('url')]
+    if not valid:
+        return ''
+    best = max(valid, key=lambda t: (t.get('preference') or -1, t.get('width') or 0, t.get('height') or 0))
+    return best.get('url', '')
+
+
 def _build_metadata_dict(info):
-    """Construit un dictionnaire de metadonnees enrichi a partir des infos yt-dlp."""
     if not info:
         return {}
 
@@ -125,49 +126,31 @@ def _build_metadata_dict(info):
     uploader = info.get('uploader', '') or ''
     channel = info.get('channel', '') or uploader
     upload_date = info.get('upload_date', '')
-    description = (info.get('description') or '')[:500]
     tags = info.get('tags') or []
     categories = info.get('categories') or []
-    track = info.get('track') or title
-    artist = info.get('artist') or uploader
-    album = info.get('album') or channel
-    release_year = info.get('release_year')
-    playlist_index = info.get('playlist_index')
-    webpage_url = info.get('webpage_url', '')
 
     year = ''
+    release_year = info.get('release_year')
     if release_year:
         year = str(release_year)
     elif upload_date and len(upload_date) >= 4:
         year = upload_date[:4]
 
     genre = ', '.join(tags[:3]) if tags else (categories[0] if categories else 'Web')
-
-    thumbs = info.get('thumbnails') or []
-    thumbnail_url = ''
-    if thumbs:
-        sorted_t = sorted(
-            (t for t in thumbs if t.get('url')),
-            key=lambda t: (t.get('preference') or -1, t.get('width') or 0, t.get('height') or 0),
-            reverse=True
-        )
-        if sorted_t:
-            thumbnail_url = sorted_t[0].get('url', '')
-
-    track_number = playlist_index if (playlist_index and info.get('playlist_count', 1) > 1) else None
+    track_number = info.get('playlist_index') if (info.get('playlist_index') and info.get('playlist_count', 1) > 1) else None
 
     return {
         'title': title,
-        'artist': artist,
+        'artist': info.get('artist') or uploader,
         'channel': channel,
-        'album': album,
+        'album': info.get('album') or channel,
         'year': year,
         'genre': genre,
-        'description': description,
-        'track': track,
+        'description': (info.get('description') or '')[:500],
+        'track': info.get('track') or title,
         'track_number': track_number,
-        'thumbnail_url': thumbnail_url,
-        'webpage_url': webpage_url,
+        'thumbnail_url': _pick_best_thumbnail(info.get('thumbnails')),
+        'webpage_url': info.get('webpage_url', ''),
         'upload_date': upload_date,
     }
 
@@ -194,10 +177,6 @@ def _fetch_cover_data(thumbnail_url, max_size=1200):
         logger.warning('Telechargement couverture echoue: %s', e)
         return None, None
 
-
-# ---------------------------------------------------------------------------
-# Tags ID3 (MP3) via mutagen
-# ---------------------------------------------------------------------------
 
 def _apply_mp3_metadata(filepath, meta):
     """Applique des tags ID3v2.4 enrichis a un fichier MP3."""
@@ -319,7 +298,6 @@ def _apply_mp4_video_metadata(filepath, meta):
 
 
 def _apply_audio_metadata(filepath, meta, audio_format):
-    """Applique les metadonnees enrichies selon le format audio."""
     if not meta:
         return
     try:
@@ -330,10 +308,6 @@ def _apply_audio_metadata(filepath, meta, audio_format):
     except Exception as e:
         logger.warning('Metadonnees audio non appliquees: %s', e)
 
-
-# ---------------------------------------------------------------------------
-# Formats et options de telechargement
-# ---------------------------------------------------------------------------
 
 VIDEO_QUALITY_FORMATS = {
     '360':  'bv*[height<=360][vcodec^=avc1]+ba/b[height<=360][ext=mp4]/b[height<=360]/best',
@@ -384,10 +358,6 @@ def build_video_format(quality, video_codec, container):
     return fmt
 
 
-# ---------------------------------------------------------------------------
-# Endpoints
-# ---------------------------------------------------------------------------
-
 @require_GET
 def download_info(request):
     """Retourne les tailles estimees pour chaque qualite via yt-dlp (sans telecharger)."""
@@ -411,19 +381,11 @@ def download_info(request):
             formats = info.get('formats', [])
             title = info.get('title', 'Video')
             channel = info.get('channel') or info.get('uploader') or ''
-            thumbs = info.get('thumbnails') or []
-            thumbnail_url = ''
-            if thumbs:
-                sorted_t = sorted(
-                    (t for t in thumbs if t.get('url')),
-                    key=lambda t: (t.get('preference') or -1, t.get('width') or 0, t.get('height') or 0),
-                    reverse=True
-                )
-                if sorted_t:
-                    thumbnail_url = sorted_t[0].get('url', '')
+            thumbnail_url = _pick_best_thumbnail(info.get('thumbnails'))
 
+        duration = info.get('duration') or 0
         sizes = {}
-        for quality_key, fmt_spec in VIDEO_QUALITY_FORMATS.items():
+        for quality_key in VIDEO_QUALITY_FORMATS:
             height = int(quality_key)
             best_size = None
             for f in formats:
@@ -432,19 +394,14 @@ def download_info(request):
                 if f_height <= height and f_size > 0:
                     if best_size is None or f_size > best_size:
                         best_size = f_size
-            audio_size = 0
-            duration = info.get('duration') or 0
-            if duration > 0:
-                audio_size = int(duration * 128 * 1000 / 8)
+            audio_size = int(duration * 128 * 1000 / 8) if duration > 0 else 0
             if best_size:
                 sizes[quality_key] = best_size + audio_size
 
-        if not sizes:
-            duration = info.get('duration') or 0
-            if duration > 0:
-                rates = {'360': 2000, '480': 4000, '720': 8000, '1080': 15000, '2160': 50000}
-                for q, rate in rates.items():
-                    sizes[q] = int(duration * rate * 1000 / 8)
+        if not sizes and duration > 0:
+            rates = {'360': 2000, '480': 4000, '720': 8000, '1080': 15000, '2160': 50000}
+            for q, rate in rates.items():
+                sizes[q] = int(duration * rate * 1000 / 8)
 
         return JsonResponse({
             'direct': False,
@@ -664,48 +621,22 @@ def download_audio(request):
     return _stream_ytdlp(args, audio_info['mime'], filename)
 
 
+PLATFORM_PATTERNS = [
+    ('youtube', r'(?:youtube\.com/(?:watch\?(?:.*&)?v=|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})',
+     lambda id: f'https://www.youtube.com/embed/{id}?autoplay=1&rel=0'),
+    ('dailymotion', r'(?:dailymotion\.com/video/|dai\.ly/)([a-zA-Z0-9]+)',
+     lambda id: f'https://www.dailymotion.com/embed/video/{id}?autoplay=1'),
+    ('vimeo', r'vimeo\.com/(\d+)',
+     lambda id: f'https://player.vimeo.com/video/{id}?autoplay=1&title=0&byline=0&portrait=0'),
+]
+
+
 def detect_platform(url):
-    """Detecte la plateforme video et retourne le type et l'URL embed."""
-    youtube_match = re.search(
-        r'(?:youtube\.com/(?:watch\?(?:.*&)?v=|embed/)|youtu\.be/)([a-zA-Z0-9_-]{11})',
-        url,
-        re.IGNORECASE
-    )
-    if youtube_match:
-        video_id = youtube_match.group(1)
-        return {
-            'type': 'youtube',
-            'embed_url': f'https://www.youtube.com/embed/{video_id}?autoplay=1&rel=0'
-        }
-
-    dailymotion_match = re.search(
-        r'(?:dailymotion\.com/video/|dai\.ly/)([a-zA-Z0-9]+)',
-        url,
-        re.IGNORECASE
-    )
-    if dailymotion_match:
-        video_id = dailymotion_match.group(1)
-        return {
-            'type': 'dailymotion',
-            'embed_url': f'https://www.dailymotion.com/embed/video/{video_id}?autoplay=1'
-        }
-
-    vimeo_match = re.search(
-        r'vimeo\.com/(\d+)',
-        url,
-        re.IGNORECASE
-    )
-    if vimeo_match:
-        video_id = vimeo_match.group(1)
-        return {
-            'type': 'vimeo',
-            'embed_url': f'https://player.vimeo.com/video/{video_id}?autoplay=1&title=0&byline=0&portrait=0'
-        }
-
-    return {
-        'type': 'direct',
-        'embed_url': url
-    }
+    for platform_type, pattern, embed_builder in PLATFORM_PATTERNS:
+        match = re.search(pattern, url, re.IGNORECASE)
+        if match:
+            return {'type': platform_type, 'embed_url': embed_builder(match.group(1))}
+    return {'type': 'direct', 'embed_url': url}
 
 
 def manifest_view(request):
