@@ -15,19 +15,18 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/static/player/icons/icon-192.svg">
 
-    <!-- Google Fonts: Devoxx-style typography -->
+    <!-- Google Fonts: Devoxx France official typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Devoxx France 2026 Official Theme */
+            /* Devoxx France 2026 Official Theme Colors */
             --dvx-primary: #EA7E14;
             --dvx-primary-dark: #D06A00;
             --dvx-primary-light: #FF9A3D;
-            --dvx-secondary: #FFB062;
-            --dvx-accent: #FFC154;
-            --dvx-accent-green: #A3FA10;
+            --dvx-secondary: #609689;
+            --dvx-accent: #9DC7BB;
             --dvx-text: #304936;
             --dvx-text-dark: #1A2E24;
             --dvx-text-light: #609689;
@@ -36,13 +35,13 @@
             --dvx-bg-card-hover: #242424;
             --dvx-bg-mint: #C9E6DE;
             --dvx-bg-teal: #609689;
-            --dvx-bg-muted: #9BC1B8;
+            --dvx-bg-muted: #9DC7BB;
             --dvx-border: #333333;
             --dvx-border-light: #483535;
             --dvx-red: #E53E3E;
             --dvx-blue: #3182CE;
-            --dvx-link: #A3FA10;
-            --dvx-link-hover: #8cd411;
+            --dvx-link: #EA7E14;
+            --dvx-link-hover: #FF9A3D;
 
             /* Legacy aliases */
             --fb-green: #EA7E14;
@@ -57,7 +56,7 @@
             --devoxx-yellow: #EA7E14;
             --devoxx-orange: #FFB062;
             --devoxx-green: #609689;
-            --devoxx-alt-green: #9BC1B8;
+            --devoxx-alt-green: #9DC7BB;
             --devoxx-dark-green: #304936;
             --devoxx-pink: #FC8181;
             --devoxx-cyan: #63B3ED;
@@ -71,7 +70,7 @@
             --devoxx-border-accent: rgba(234, 126, 20, 0.3);
             --devoxx-text: #304936;
             --devoxx-text-muted: #609689;
-            --devoxx-text-dim: #9BC1B8;
+            --devoxx-text-dim: #9DC7BB;
             --devoxx-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
             --devoxx-radius: 12px;
             --devoxx-radius-sm: 8px;
@@ -99,7 +98,7 @@
         }
 
         a { color: var(--dvx-link); transition: color 0.2s ease; }
-        a:hover { color: var(--dvx-link-hover); }
+        a:hover { color: var(--dvx-link-hover); text-decoration: underline; }
 
         /* Animated gradient background */
         .bg-layer {
@@ -152,7 +151,7 @@
         .bg-orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(80px);
+            filter: blur(40px);
             pointer-events: none;
             z-index: 0;
             animation: orbFloat 12s ease-in-out infinite alternate;
@@ -197,7 +196,7 @@
             right: 0;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.07;
+            opacity: 0.15;
             background-repeat: repeat-x;
             background-position: bottom center;
             background-size: auto 100%;
@@ -208,7 +207,7 @@
             height: 100%;
             background-image: url('/static/player/backgrounds/sky-bg.webp');
             background-size: cover;
-            opacity: 0.04;
+            opacity: 0.12;
         }
 
         #bgHills {
@@ -262,7 +261,7 @@
         }
 
         .sidebar h2 {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.85rem;
             font-weight: 700;
             color: var(--dvx-primary);
@@ -302,7 +301,7 @@
             border: none;
             border-radius: var(--devoxx-radius-xs);
             cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -356,7 +355,7 @@
         }
 
         .sidebar-result .result-title {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.8rem;
             font-weight: 600;
             color: #FFFFFF;
@@ -380,7 +379,7 @@
         }
 
         .sidebar-status {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.8rem;
             color: var(--dvx-text-light);
             text-align: center;
@@ -421,7 +420,7 @@
         }
 
         .sidebar-right h2 {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.85rem;
             font-weight: 700;
             color: var(--dvx-primary);
@@ -437,7 +436,7 @@
             border: 1px solid var(--dvx-border);
             border-radius: var(--devoxx-radius-xs);
             cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -493,7 +492,7 @@
         }
 
         .history-item .result-title {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.75rem;
             font-weight: 600;
             color: #FFFFFF;
@@ -511,7 +510,7 @@
         }
 
         .history-empty {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.8rem;
             color: var(--dvx-text-light);
             text-align: center;
@@ -544,7 +543,7 @@
         }
 
         h1 {
-            font-family: 'Rajdhani', 'Open Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
             text-align: center;
@@ -631,14 +630,14 @@
         </aside>
     </div>
 
-    <!-- Decorative subtle top bar like freebuf.com -->
+    <!-- Decorative top bar - Devoxx France style -->
     <div style="
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--fb-green), var(--fb-green-light), var(--fb-green));
+        background: linear-gradient(90deg, #EA7E14, #FF9A3D, #609689);
         z-index: 9999;
         pointer-events: none;
     "></div>
@@ -728,14 +727,14 @@
                 // Draw particle
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(234, 126, 20, ' + p.alpha + ')';
+                ctx.fillStyle = 'rgba(96, 150, 137, ' + p.alpha + ')';
                 ctx.fill();
 
                 // Glow
                 if (p.r > 1.5) {
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(234, 126, 20, ' + (p.alpha * 0.12) + ')';
+                    ctx.fillStyle = 'rgba(96, 150, 137, ' + (p.alpha * 0.12) + ')';
                     ctx.fill();
                 }
 
@@ -750,7 +749,7 @@
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(q.x, q.y);
-                        ctx.strokeStyle = 'rgba(234, 126, 20, ' + lineAlpha + ')';
+                        ctx.strokeStyle = 'rgba(96, 150, 137, ' + lineAlpha + ')';
                         ctx.lineWidth = 0.6;
                         ctx.stroke();
                     }
@@ -774,7 +773,7 @@
         'use strict';
         var canvas = document.createElement('canvas');
         canvas.id = 'rainCanvas';
-        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;opacity:0.04';
+        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;opacity:0.06';
         document.body.insertBefore(canvas, document.body.firstChild);
 
         var ctx = canvas.getContext('2d');
