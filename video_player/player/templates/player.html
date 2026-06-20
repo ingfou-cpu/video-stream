@@ -23,8 +23,8 @@
     #videoUrl {
         flex: 1;
         padding: 14px 18px;
-        background: rgba(13, 13, 13, 0.5);
-        border: 2px solid var(--dvx-border);
+        background: rgba(13, 13, 13, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.08);
         border-radius: var(--devoxx-radius-sm);
         color: #FFFFFF;
         font-family: 'Open Sans', sans-serif;
@@ -38,7 +38,7 @@
     #videoUrl::placeholder { color: var(--dvx-text-dim); }
     #videoUrl:focus {
         border-color: var(--dvx-primary);
-        background: rgba(13, 13, 13, 0.7);
+        background: rgba(13, 13, 13, 0.3);
         box-shadow: 0 0 0 4px rgba(234, 126, 20, 0.15);
     }
 
@@ -73,9 +73,11 @@
         position: relative;
         border-radius: var(--devoxx-radius);
         overflow: hidden;
-        background: rgba(0, 0, 0, 0.4);
-        border: 1px solid var(--dvx-border);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        background: rgba(0, 0, 0, 0.08);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         aspect-ratio: 16 / 9;
         display: flex;
         align-items: center;
@@ -95,7 +97,7 @@
         justify-content: center;
         flex-direction: column;
         gap: 24px;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.4);
         z-index: 10;
         backdrop-filter: blur(4px);
     }
@@ -263,10 +265,10 @@
     .embed-fallback {
         margin-top: 12px;
         padding: 16px 20px;
-        background: rgba(26, 26, 26, 0.5);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid var(--dvx-border-light);
+        background: rgba(26, 26, 26, 0.06);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.04);
         border-radius: var(--devoxx-radius-sm);
         color: var(--dvx-primary-light);
         font-size: 0.95rem;
@@ -307,10 +309,10 @@
     .download-section {
         margin-top: 20px;
         padding: 20px 24px;
-        background: rgba(26, 26, 26, 0.5);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid var(--dvx-border);
+        background: rgba(26, 26, 26, 0.04);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.03);
         border-left: 3px solid var(--dvx-primary);
         border-radius: var(--devoxx-radius-sm);
         display: none;
@@ -419,8 +421,8 @@
 
     .quality-select {
         padding: 0 10px;
-        background: rgba(13, 13, 13, 0.5);
-        border: 1px solid var(--dvx-border);
+        background: rgba(13, 13, 13, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-left: none;
         border-radius: 0 var(--devoxx-radius-sm) var(--devoxx-radius-sm) 0;
         color: #FFFFFF;
@@ -437,7 +439,7 @@
     }
 
     .quality-select:hover {
-        background: rgba(36, 36, 36, 0.7);
+        background: rgba(26, 26, 26, 0.35);
     }
 
     .quality-select:focus {
@@ -445,7 +447,7 @@
     }
 
     .quality-select option {
-        background: rgba(26, 26, 26, 0.95);
+        background: rgba(13, 13, 13, 0.85);
         color: #FFFFFF;
     }
 
@@ -453,8 +455,8 @@
     .advanced-toggle {
         margin-top: 14px;
         padding: 10px 14px;
-        background: rgba(36, 36, 36, 0.4);
-        border: 1px solid var(--dvx-border);
+        background: rgba(26, 26, 26, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: var(--devoxx-radius-xs);
         cursor: pointer;
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -473,8 +475,8 @@
     }
 
     .advanced-toggle:hover {
-        background: rgba(26, 26, 26, 0.6);
-        border-color: var(--dvx-border-light);
+        background: rgba(26, 26, 26, 0.25);
+        border-color: rgba(255, 255, 255, 0.1);
         color: var(--dvx-primary);
     }
 
@@ -492,10 +494,10 @@
     .advanced-options {
         margin-top: 10px;
         padding: 16px 18px;
-        background: rgba(36, 36, 36, 0.4);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid var(--dvx-border);
+        background: rgba(26, 26, 26, 0.15);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: var(--devoxx-radius-sm);
         display: none;
         animation: fadeIn 0.25s ease;
@@ -528,8 +530,8 @@
     .advanced-field select {
         width: 100%;
         padding: 9px 12px;
-        background: rgba(13, 13, 13, 0.5);
-        border: 1px solid var(--dvx-border);
+        background: rgba(13, 13, 13, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: var(--devoxx-radius-xs);
         color: #FFFFFF;
         font-family: 'Open Sans', sans-serif;
@@ -552,7 +554,7 @@
     }
 
     .advanced-field select option {
-        background: rgba(26, 26, 26, 0.95);
+        background: rgba(13, 13, 13, 0.85);
         color: #FFFFFF;
     }
 
@@ -611,12 +613,12 @@
     .progress-section.visible { display: block; }
 
     .progress-bar-container {
-        background: rgba(13, 13, 13, 0.5);
+        background: rgba(13, 13, 13, 0.2);
         border-radius: 8px;
         height: 10px;
         overflow: hidden;
         position: relative;
-        border: 1px solid var(--dvx-border);
+        border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .progress-bar-fill {
@@ -701,10 +703,10 @@
         align-items: center;
         gap: 14px;
         padding: 14px 18px;
-        background: rgba(26, 26, 26, 0.6);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--dvx-border);
+        background: rgba(13, 13, 13, 0.3);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-left: 3px solid var(--dvx-primary);
         border-radius: var(--devoxx-radius-sm);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(234, 126, 20, 0.1);
@@ -781,10 +783,10 @@
 
     .toast-close {
         flex-shrink: 0;
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         border: none;
-        background: rgba(36, 36, 36, 0.6);
+        background: rgba(26, 26, 26, 0.3);
         border-radius: 50%;
         color: var(--dvx-text-dim);
         cursor: pointer;
