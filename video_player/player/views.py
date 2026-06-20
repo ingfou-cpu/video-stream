@@ -641,12 +641,14 @@ def detect_platform(url):
 
 def manifest_view(request):
     path = settings.STATICFILES_DIRS[0] / 'player' / 'manifest.json'
-    return FileResponse(open(path, 'rb'), content_type='application/json')
+    f = open(path, 'rb')
+    return FileResponse(f, content_type='application/json')
 
 
 def service_worker_view(request):
     path = settings.STATICFILES_DIRS[0] / 'player' / 'sw.js'
-    return FileResponse(open(path, 'rb'), content_type='application/javascript')
+    f = open(path, 'rb')
+    return FileResponse(f, content_type='application/javascript')
 
 
 def yt_search(request):
@@ -677,13 +679,12 @@ def yt_search(request):
     else:
         search_url = f'ytsearch{fetch_count}:{query}'
 
-    from yt_dlp import YoutubeDL
     ydl_opts = {
         'quiet': True,
         'extract_flat': True,
         'force_json': True,
     }
-    with YoutubeDL(ydl_opts) as ydl:
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(search_url, download=False)
 
     entries = info.get('entries', [])
