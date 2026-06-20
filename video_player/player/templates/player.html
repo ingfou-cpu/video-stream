@@ -139,7 +139,7 @@
     }
 
     .loader-spinner .ring:nth-child(3) {
-        border-bottom-color: var(--devoxx-alt-yellow);
+        border-bottom-color: var(--devoxx-orange);
         animation: spin 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         width: 60%;
         height: 60%;
@@ -1541,8 +1541,6 @@
         var ytId = getYtId(url);
         var dmId = getDmId(url);
         var vmId = getVmId(url);
-        var isEmbed = ytId || dmId || vmId;
-
         errMsg.classList.remove('visible');
         errMsg.textContent = '';
         placeholder.style.display = 'none';
