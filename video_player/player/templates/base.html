@@ -114,9 +114,7 @@
         .sidebar {
             width: 380px;
             min-width: 380px;
-            background: rgba(26, 26, 26, 0.02);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(26, 26, 26, 0.7);
             border-right: 1px solid rgba(255, 255, 255, 0.06);
             padding: 20px 16px;
             overflow-y: auto;
@@ -242,9 +240,7 @@
             left: 0;
             right: 0;
             z-index: 100;
-            background: rgba(26, 26, 26, 0.3);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(26, 26, 26, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--devoxx-radius-sm);
             padding: 12px;
@@ -395,9 +391,7 @@
         .sidebar-right {
             width: 340px;
             min-width: 340px;
-            background: rgba(26, 26, 26, 0.02);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(26, 26, 26, 0.7);
             border-left: 1px solid rgba(255, 255, 255, 0.06);
             padding: 20px 16px;
             overflow-y: auto;
@@ -532,9 +526,7 @@
             flex: 1;
             max-width: 1200px;
             min-height: 100vh;
-            background: transparent;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            background: rgba(13, 13, 13, 0.55);
             border: none;
             border-top: 3px solid var(--dvx-primary);
             border-radius: 0;
@@ -620,16 +612,11 @@
     {% block extra_styles %}{% endblock %}
 </head>
 <body>
-    <!-- Background Video: Lightning Storm -->
-    <video id="bgVideo" autoplay muted loop playsinline
-        style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;">
-        <source src="/static/player/backgrounds/storm-bg.mp4" type="video/mp4">
-    </video>
-    <script>
-        document.getElementById('bgVideo').play().catch(function() {});
-    </script>
+    <!-- Background Image -->
+    <div id="bgImage"
+        style="position:fixed;inset:0;width:100%;height:100%;background:url('/static/player/backgrounds/snowy-mountains-dolomiten-reflected-lake.jpg') center/cover no-repeat;z-index:0;pointer-events:none;"></div>
     <!-- Subtle dark overlay to help text readability -->
-    <div style="position:fixed;inset:0;z-index:1;pointer-events:none;background:rgba(0,0,0,0.08);"></div>
+    <div style="position:fixed;inset:0;z-index:1;pointer-events:none;background:rgba(0,0,0,0.25);"></div>
     <div class="app-layout">
         <aside class="sidebar" id="sidebar">
             <h2>&#9654; Recherche YouTube</h2>
