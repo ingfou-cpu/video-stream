@@ -31,6 +31,7 @@ ffplay.exe
 
 # Cache
 cache/
+staticfiles/
 
 # Windows
 nul

@@ -18,7 +18,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = os.environ.get(
     'DJANGO_ALLOWED_HOSTS',
-    '127.0.0.1,localhost'
+    '127.0.0.1,localhost,.railway.app'
 ).split(',')
 
 INSTALLED_APPS = [
