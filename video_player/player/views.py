@@ -30,7 +30,14 @@ def _get_ffmpeg_path():
     return 'ffmpeg'
 
 
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
+_COOKIES_PATH_CACHE = None
+
+
 def _get_cookies_path():
+    global _COOKIES_PATH_CACHE
+    if _COOKIES_PATH_CACHE is not None:
+        return _COOKIES_PATH_CACHE
     cookies_b64 = os.environ.get('YT_COOKIES')
     if cookies_b64:
         import base64
@@ -39,11 +46,33 @@ def _get_cookies_path():
             decoded = base64.b64decode(cookies_b64).decode('utf-8')
             with open(path, 'w', encoding='utf-8') as f:
                 f.write(decoded)
+            _COOKIES_PATH_CACHE = path
+            logger.info('Cookies charges depuis YT_COOKIES')
             return path
         except Exception as e:
-            logger.warning('Impossible de decoder YT_COOKIES: %s', e)
+            logger.warning('Echec decodage YT_COOKIES: %s', e)
     path = os.path.join(os.getcwd(), 'cookies.txt')
-    return path if os.path.exists(path) else None
+    if os.path.exists(path):
+        _COOKIES_PATH_CACHE = path
+        return path
+    _COOKIES_PATH_CACHE = ''
+    return None
+
+
+def _build_base_ydl_opts(**extra):
+    opts = {
+        'quiet': True,
+        'no_warnings': True,
+        'noplaylist': True,
+        'socket_timeout': 30,
+        'extractor_args': {'youtube': {'skip': ['dash', 'hls'], 'player_client': ['web', 'default']}},
+        'user_agent': USER_AGENT,
+    }
+    cookies_path = _get_cookies_path()
+    if cookies_path:
+        opts['cookiefile'] = cookies_path
+    opts.update(extra)
+    return opts
 
 
 def _stream_ytdlp(args, content_type, filename):
@@ -107,18 +136,7 @@ def _extract_metadata(video_url):
     if video_url.lower().endswith(('.mp4', '.webm', '.mkv', '.avi', '.mov', '.mp3', '.m4a', '.flac', '.wav')):
         return {}
     try:
-        ydl_opts = {
-            'quiet': True,
-            'no_warnings': True,
-            'no_call_home': True,
-            'noplaylist': True,
-            'socket_timeout': 30,
-            'extractor_args': {'youtube': {'skip': ['dash', 'hls'], 'player_client': ['web']}},
-            'ignoreerrors': True,
-        }
-        cookies_path = _get_cookies_path()
-        if cookies_path:
-            ydl_opts['cookiefile'] = cookies_path
+        ydl_opts = _build_base_ydl_opts(no_call_home=True, ignoreerrors=True)
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_url, download=False)
             return _build_metadata_dict(info)
@@ -388,16 +406,7 @@ def download_info(request):
         return JsonResponse({'direct': True, 'sizes': {}})
 
     try:
-        ydl_opts = {
-            'format': 'bv*[vcodec^=avc1]+ba/best[ext=mp4]/best',
-            'quiet': True,
-            'no_warnings': True,
-            'noplaylist': True,
-            'socket_timeout': 30,
-        }
-        cookies_path = _get_cookies_path()
-        if cookies_path:
-            ydl_opts['cookiefile'] = cookies_path
+        ydl_opts = _build_base_ydl_opts(format='bv*[vcodec^=avc1]+ba/best[ext=mp4]/best')
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             formats = info.get('formats', [])
@@ -502,6 +511,8 @@ def download_video(request):
             '--no-warnings',
             '--socket-timeout', '30',
             '--no-playlist',
+            '--user-agent', USER_AGENT,
+            '--extractor-args', 'youtube:skip=dash,hls;player_client=web,default',
             '--ffmpeg-location', ffmpeg_path,
         ]
         cookies_path = _get_cookies_path()
@@ -586,24 +597,17 @@ def download_audio(request):
 
             audio_quality_val = AUDIO_VBR_QUALITY.get(quality, '3') if audio_format == 'mp3' else '0'
 
-            ydl_opts = {
-                'format': 'ba/b',
-                'outtmpl': output_template,
-                'postprocessors': [{
+            ydl_opts = _build_base_ydl_opts(
+                format='ba/b',
+                outtmpl=output_template,
+                postprocessors=[{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': audio_codec,
                     'preferredquality': audio_quality_val,
                 }],
-                'embedmetadata': True,
-                'ffmpeg_location': ffmpeg_path,
-                'quiet': True,
-                'no_warnings': True,
-                'noplaylist': True,
-                'socket_timeout': 30,
-            }
-            cookies_path = _get_cookies_path()
-            if cookies_path:
-                ydl_opts['cookiefile'] = cookies_path
+                embedmetadata=True,
+                ffmpeg_location=ffmpeg_path,
+            )
 
             if audio_format == 'mp3':
                 ydl_opts['postprocessor_args'] = {'ffmpeg': ['-compression_level', '0']}
@@ -642,6 +646,8 @@ def download_audio(request):
         '--no-warnings',
         '--socket-timeout', '30',
         '--no-playlist',
+        '--user-agent', USER_AGENT,
+        '--extractor-args', 'youtube:skip=dash,hls;player_client=web,default',
         '--ffmpeg-location', ffmpeg_path,
     ]
     cookies_path = _get_cookies_path()
@@ -710,14 +716,7 @@ def yt_search(request):
     else:
         search_url = f'ytsearch{fetch_count}:{query}'
 
-    ydl_opts = {
-        'quiet': True,
-        'extract_flat': True,
-        'force_json': True,
-    }
-    cookies_path = _get_cookies_path()
-    if cookies_path:
-        ydl_opts['cookiefile'] = cookies_path
+    ydl_opts = _build_base_ydl_opts(extract_flat=True, force_json=True)
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(search_url, download=False)
 

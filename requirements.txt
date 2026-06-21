@@ -1,5 +1,5 @@
 Django>=6.0,<7.0
-yt-dlp>=2026.0
+yt-dlp>=2026.6
 mutagen>=1.47
 Pillow>=10.0
 requests>=2.31
