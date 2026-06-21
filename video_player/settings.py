@@ -9,17 +9,11 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get(
-    'DJANGO_SECRET_KEY',
-    'django-insecure-replace-with-your-secret-key'
-)
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or 'django-insecure-replace-with-your-secret-key'
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = os.environ.get(
-    'DJANGO_ALLOWED_HOSTS',
-    '127.0.0.1,localhost,.railway.app'
-).split(',')
+ALLOWED_HOSTS = (os.environ.get('DJANGO_ALLOWED_HOSTS') or '127.0.0.1,localhost,.railway.app').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
