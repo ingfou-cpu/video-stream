@@ -9,8 +9,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN python manage.py collectstatic --noinput
+RUN chmod +x start.sh && python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD gunicorn video_player.wsgi --bind 0.0.0.0:$PORT
+ENTRYPOINT ["/app/start.sh"]
