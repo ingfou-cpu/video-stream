@@ -27,6 +27,10 @@ def _get_ffmpeg_path():
     path = os.path.join(os.getcwd(), 'ffmpeg.exe')
     if os.path.exists(path):
         return path
+    import shutil
+    which = shutil.which('ffmpeg')
+    if which:
+        return which
     return 'ffmpeg'
 
 

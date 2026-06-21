@@ -100,3 +100,12 @@ CSRF_TRUSTED_ORIGINS = os.environ.get(
 ).split(',') if os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS') else []
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import logging
+import shutil
+logging.basicConfig(level=logging.INFO)
+ffmpeg_path = shutil.which('ffmpeg')
+if ffmpeg_path:
+    logging.getLogger(__name__).info('ffmpeg trouve: %s', ffmpeg_path)
+else:
+    logging.getLogger(__name__).warning('ffmpeg NON trouve dans le PATH')
