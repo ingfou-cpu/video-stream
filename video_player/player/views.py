@@ -359,10 +359,10 @@ VIDEO_QUALITY_FORMATS = {
 }
 
 AUDIO_VBR_QUALITY = {
-    '128': '6',
-    '192': '3',
-    '256': '1',
-    '320': '0',
+    '128': '5',  # V5 (~130kbps) - meilleur rapport qualite/taille pour le niveau 128k
+    '192': '2',  # V2 (~190kbps) - standard "transparent", debit reel proche de 192k
+    '256': '0',  # V0 (~245kbps) - meilleur VBR, ideal pour 256k+
+    '320': '0',  # V0 (~245kbps) - VBR transparent, qualite optimale
 }
 
 VIDEO_CODEC_FILTERS = {
@@ -519,6 +519,9 @@ def download_video(request):
             '--extractor-args', 'youtube:skip=dash,hls;player_client=web,default',
             '--ffmpeg-location', ffmpeg_path,
         ]
+        if container == 'mp4':
+            args.extend(['--postprocessor-args', 'ffmpeg:-movflags +faststart'])
+
         cookies_path = _get_cookies_path()
         if cookies_path:
             args.extend(['--cookies', cookies_path])
@@ -614,7 +617,9 @@ def download_audio(request):
             )
 
             if audio_format == 'mp3':
-                ydl_opts['postprocessor_args'] = {'ffmpeg': ['-compression_level', '0']}
+                ydl_opts['postprocessor_args'] = {
+                    'ffmpeg': ['-compression_level', '0', '-q:a', '0']
+                }
 
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
