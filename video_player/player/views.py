@@ -14,6 +14,7 @@ from urllib.request import urlopen
 import requests
 import yt_dlp
 from django.conf import settings
+from django.core.cache import cache
 from django.http import FileResponse, HttpResponse, JsonResponse, StreamingHttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET
@@ -21,6 +22,45 @@ from django.views.decorators.http import require_GET
 logger = logging.getLogger(__name__)
 
 METADATA_COMMENT = "Telecharge avec Video Player"
+
+# Duree du cache pour les infos extraites par yt-dlp (secondes)
+# Les URLs CDN YouTube sont valides ~6h, on met 4h pour etre sur
+CACHE_YT_INFO_TIMEOUT = 60 * 60 * 4  # 4 heures
+
+
+def _cache_key_video_info(url, ydl_opts_extra=None):
+    """Cree une cle de cache unique pour une URL video.
+    Inclut les options de format pour eviter les conflits entre vues.
+    """
+    key = f'yt_info_{url.strip().lower()}'
+    if ydl_opts_extra:
+        fmt = ydl_opts_extra.get('format', '')
+        if fmt:
+            key += f'_fmt_{hash(fmt)}'
+    return key
+
+
+def _cached_extract_info(url, ydl_opts_extra=None, timeout=CACHE_YT_INFO_TIMEOUT):
+    """Extrait les infos d'une video via yt-dlp avec mise en cache.
+    Retourne le dict info complet ou None en cas d'erreur.
+    """
+    cache_key = _cache_key_video_info(url, ydl_opts_extra)
+    cached = cache.get(cache_key)
+    if cached is not None:
+        logger.debug('Cache hit pour: %s', url[:60])
+        return cached
+
+    logger.debug('Cache miss pour: %s - extraction via yt-dlp', url[:60])
+    try:
+        ydl_opts = _build_base_ydl_opts(**(ydl_opts_extra or {}))
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            if info:
+                cache.set(cache_key, info, timeout)
+            return info
+    except Exception as e:
+        logger.warning('_cached_extract_info error pour %s: %s', url[:60], e)
+        return None
 
 
 def _get_ffmpeg_path():
@@ -139,14 +179,10 @@ def _sanitize_filename(name, max_length=200):
 def _extract_metadata(video_url):
     if video_url.lower().endswith(('.mp4', '.webm', '.mkv', '.avi', '.mov', '.mp3', '.m4a', '.flac', '.wav')):
         return {}
-    try:
-        ydl_opts = _build_base_ydl_opts(no_call_home=True, ignoreerrors=True)
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(video_url, download=False)
-            return _build_metadata_dict(info)
-    except Exception as e:
-        logger.warning('Extraction metadonnees echouee: %s', e)
-        return {}
+    info = _cached_extract_info(video_url, {'no_call_home': True, 'ignoreerrors': True}, timeout=3600)
+    if info:
+        return _build_metadata_dict(info)
+    return {}
 
 
 def _pick_best_thumbnail(thumbs):
@@ -400,6 +436,85 @@ def build_video_format(quality, video_codec, container):
 
 
 @require_GET
+def stream_video(request):
+    """Proxy YouTube video stream via yt-dlp.
+    Recupere l'URL directe du CDN YouTube et sert le flux en proxy
+    (streaming depuis le serveur) pour eviter les restrictions du CDN
+    qui empechent la lecture directe dans l'element <video>.
+    Gere les requetes Range pour le seeking.
+    """
+    url = request.GET.get('video_url', '').strip()
+    if not url or not url.startswith(('http://', 'https://')):
+        return HttpResponse('URL manquante ou invalide.', status=400)
+
+    # Pour les URLs deja en format direct, rediriger simplement
+    if url.lower().endswith(('.mp4', '.webm', '.mkv', '.avi', '.mov')):
+        return redirect(url)
+
+    # Extraire l'URL du flux via yt-dlp (avec cache 4h)
+    stream_url = None
+    try:
+        info = _cached_extract_info(url, {
+            'format': 'best[ext=mp4]/best',
+            'no_call_home': True,
+        })
+        if not info:
+            return HttpResponse('Impossible de recuperer le flux video.', status=500)
+
+        entries = info.get('entries')
+        if entries:
+            info = entries[0]
+            if not info:
+                return HttpResponse('Aucune video trouvee.', status=500)
+
+        stream_url = info.get('url')
+        if not stream_url:
+            formats = info.get('formats', [])
+            if formats:
+                stream_url = formats[0].get('url')
+
+    except Exception as e:
+        logger.error('stream_video extract error: %s', e)
+        return HttpResponse(f'Erreur extraction flux: {str(e)[:200]}', status=500)
+
+    if not stream_url:
+        return HttpResponse('Aucune URL de flux disponible.', status=500)
+
+    # Proxy le flux depuis le CDN avec support Range
+    try:
+        upstream_headers = {
+            'User-Agent': USER_AGENT,
+            'Referer': 'https://www.youtube.com/',
+        }
+        range_header = request.META.get('HTTP_RANGE')
+        if range_header:
+            upstream_headers['Range'] = range_header
+
+        resp = requests.get(stream_url, headers=upstream_headers, stream=True, timeout=30)
+        resp.raise_for_status()
+
+        content_type = resp.headers.get('Content-Type', 'video/mp4')
+        response = StreamingHttpResponse(
+            resp.iter_content(chunk_size=65536),
+            content_type=content_type,
+            status=resp.status_code,
+        )
+        response['Accept-Ranges'] = 'bytes'
+        response['Cache-Control'] = 'no-cache'
+
+        if 'Content-Length' in resp.headers:
+            response['Content-Length'] = resp.headers['Content-Length']
+        if 'Content-Range' in resp.headers:
+            response['Content-Range'] = resp.headers['Content-Range']
+
+        return response
+
+    except requests.RequestException as e:
+        logger.error('stream_video proxy error: %s', e)
+        return HttpResponse(f'Erreur proxy: {str(e)[:200]}', status=502)
+
+
+@require_GET
 def download_info(request):
     """Retourne les tailles estimees pour chaque qualite via yt-dlp (sans telecharger)."""
     url = request.GET.get('video_url', '').strip()
@@ -410,15 +525,18 @@ def download_info(request):
         return JsonResponse({'direct': True, 'sizes': {}})
 
     try:
-        ydl_opts = _build_base_ydl_opts(format='bv*[vcodec^=avc1]+ba/best[ext=mp4]/best')
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=False)
-            formats = info.get('formats', [])
-            title = info.get('title', 'Video')
-            channel = info.get('channel') or info.get('uploader') or ''
-            thumbnail_url = _pick_best_thumbnail(info.get('thumbnails'))
+        info = _cached_extract_info(url, {
+            'format': 'bv*[vcodec^=avc1]+ba/best[ext=mp4]/best',
+        })
+        if not info:
+            return JsonResponse({'error': 'Impossible de recuperer les infos'}, status=500)
 
+        formats = info.get('formats', [])
+        title = info.get('title', 'Video')
+        channel = info.get('channel') or info.get('uploader') or ''
+        thumbnail_url = _pick_best_thumbnail(info.get('thumbnails'))
         duration = info.get('duration') or 0
+
         sizes = {}
         for quality_key in VIDEO_QUALITY_FORMATS:
             height = int(quality_key)

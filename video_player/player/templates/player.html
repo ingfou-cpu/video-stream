@@ -234,6 +234,56 @@
         left: 0;
     }
 
+    /* Proxy badge - visible quand le fallback proxy YouTube est actif */
+    .proxy-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 20;
+        display: none;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: rgba(13, 13, 13, 0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(234, 126, 20, 0.35);
+        border-radius: 6px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--devoxx-yellow);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        animation: badgeIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .proxy-badge.visible {
+        display: flex;
+    }
+
+    .proxy-badge .badge-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--devoxx-yellow);
+        animation: badgePulse 2s ease-in-out infinite;
+        flex-shrink: 0;
+    }
+
+    @keyframes badgeIn {
+        from { opacity: 0; transform: translateY(-8px) scale(0.9); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes badgePulse {
+        0%, 100% { opacity: 0.6; transform: scale(0.85); }
+        50% { opacity: 1; transform: scale(1.15); }
+    }
+
     .video-placeholder {
         color: var(--devoxx-text-dim);
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -966,6 +1016,11 @@
 
         <div id="ytPlayer" class="yt-player"></div>
 
+        <div class="proxy-badge" id="proxyBadge">
+            <span class="badge-dot"></span>
+            YouTube (proxy)
+        </div>
+
         <div class="video-placeholder" id="placeholder"
              {% if video_url %}style="display:none"{% endif %}>
             <div class="icon">&#9654;&#65039;</div>
@@ -1115,8 +1170,11 @@
 
     var videoLoader = document.getElementById('videoLoader');
     var loaderPlatform = document.getElementById('loaderPlatform');
+    var proxyBadge = document.getElementById('proxyBadge');
 
     var currentVideoUrl = '';
+    var currentYtUrl = '';
+    var currentYtId = null;
     var formatSizes = {};
     var videoTitle = '';
     var isDownloading = false;
@@ -1238,13 +1296,11 @@
             playerVars: { autoplay: 1, rel: 0, playsinline: 1 },
             events: {                    onError: function(e) {
                     hideLoader();
-                    var msg = 'Erreur de lecture.';
-                    if (e.data === 101 || e.data === 150) {
-                        msg = 'Cette video YouTube n autorise pas la lecture integree.';
-                        fallbackDiv.classList.add('visible');
-                    } else {
-                        showError('Erreur YouTube: ' + msg);
-                    }
+                    ytPlayerDiv.classList.remove('active');
+                    // Tenter le proxy pour TOUS les types d erreur YouTube
+                    // (embed bloque, video indisponible, erreur HTML5, etc.)
+                    // yt-dlp peut souvent recuperer le flux meme si l iframe API echoue
+                    fallbackToProxyStream(currentYtUrl);
                 },
                 onReady: function() {
                     fallbackDiv.classList.remove('visible');
@@ -1252,6 +1308,42 @@
                 }
             }
         });
+    }
+
+    function stopVideo() {
+        if (!videoEl.paused) {
+            videoEl.pause();
+        }
+        videoEl.removeAttribute('data-youtube-stream');
+        proxyBadge.classList.remove('visible');
+        videoEl.removeAttribute('src');
+        while (videoEl.firstChild) {
+            videoEl.removeChild(videoEl.firstChild);
+        }
+    }
+
+    function fallbackToProxyStream(url) {
+        if (!url) return;
+        ytPlayerDiv.classList.remove('active');
+        if (ytPlayer) {
+            ytPlayer.stopVideo();
+            ytPlayer.destroy();
+            ytPlayer = null;
+        }
+        pendingYtId = null;
+        hideLoader();
+        showLoader('YouTube (proxy)');
+        // Nettoyer le player video sans appeler load() pour eviter les etats incoherents
+        if (!videoEl.paused) videoEl.pause();
+        videoEl.removeAttribute('src');
+        videoEl.removeAttribute('data-youtube-stream');
+        while (videoEl.firstChild) videoEl.removeChild(videoEl.firstChild);
+        // Definir la source directement via l attribut src (plus fiable que <source>)
+        videoEl.src = '/stream/?video_url=' + encodeURIComponent(url);
+        videoEl.classList.add('active');
+        videoEl.setAttribute('data-youtube-stream', 'true');
+        proxyBadge.classList.add('visible');
+        videoEl.play().catch(function() {});
     }
 
     function showError(msg) {
@@ -1557,9 +1649,12 @@
             ytPlayer = null;
         }
 
-        // Afficher le loader Devoxx
+        stopVideo();
+
         if (ytId) {
-            showLoader('YouTube');
+            currentYtId = ytId;
+            currentYtUrl = url;
+            showLoader('YouTube (embed)');
             ytPlayerDiv.classList.add('active');
             loadYtApi();
             if (ytApiReady) {
@@ -1591,11 +1686,9 @@
             while (videoEl.firstChild) {
                 videoEl.removeChild(videoEl.firstChild);
             }
-            var src = document.createElement('source');
-            src.src = url;
-            videoEl.appendChild(src);
+            videoEl.removeAttribute('src');
+            videoEl.src = url;
             videoEl.classList.add('active');
-            videoEl.load();
             videoEl.play().catch(function() {});
         }
 
@@ -1629,6 +1722,10 @@
                 default: details = 'Erreur inconnue lors du chargement de la video.';
             }
         }
+        if (videoEl.getAttribute('data-youtube-stream') === 'true') {
+            details = 'Le proxy video a echoue. ' + details + ' Ouvrez la video directement.';
+            fallbackDiv.classList.add('visible');
+        }
         showError('Erreur: ' + details);
     });
 
@@ -1645,7 +1742,7 @@
     videoEl.classList.add('active');
     videoEl.play().catch(function() {});
     {% elif media_type == 'youtube' %}
-    showLoader('YouTube');
+    showLoader('YouTube (embed)');
     ytPlayerDiv.classList.add('active');
     var initYtId = '{{ embed_url|safe }}'.match(/\/embed\/([^?]+)/);
     if (initYtId) {
