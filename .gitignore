@@ -36,5 +36,11 @@ staticfiles/
 # yt-dlp cookies
 cookies.txt
 
+# Node
+node_modules/
+
+# Generated CSS
+video_player/player/static/player/css/style.css
+
 # Windows
 nul

@@ -1,0 +1,350 @@
+- generic [ref=e2]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - button "Guide" [ref=e9] [cursor=pointer]:
+          - generic [ref=e12]:
+            - img
+        - generic [ref=e13]:
+          - link "Accueil YouTube" [ref=e14] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e19]:
+              - img
+          - generic [ref=e20]: DZ
+        - button "Ignorer les liens de navigation" [ref=e24] [cursor=pointer]:
+          - generic [ref=e25]: Ignorer les liens de navigation
+      - generic [ref=e29]:
+        - search [ref=e30]:
+          - generic [ref=e31]:
+            - combobox "Rechercher" [expanded] [ref=e34]
+            - button "Search" [ref=e35] [cursor=pointer]:
+              - generic [ref=e38]:
+                - img
+        - generic [ref=e40]:
+          - button "Effectuer une recherche vocale" [ref=e42] [cursor=pointer]
+          - tooltip "tooltip"
+  - main [ref=e54]:
+    - generic [ref=e55]:
+      - generic [ref=e57]:
+        - complementary [ref=e64]:
+          - generic "Lecteur vidéo YouTube" [active] [ref=e67]:
+            - button "Lire" [ref=e71] [cursor=pointer]:
+              - img
+            - generic [ref=e72]:
+              - generic [ref=e73] [cursor=pointer]:
+                - generic:
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                  - generic:
+                    - img
+                - slider "Barre de lecture" [ref=e74]
+                - generic:
+                  - generic:
+                    - generic:
+                      - slider "Cliquez sur le panneau ou faites-le défiler pour une recherche précise."
+              - generic [ref=e131]:
+                - generic [ref=e132]:
+                  - button "Pause (k)" [ref=e133] [cursor=pointer]:
+                    - img
+                  - generic [ref=e134]:
+                    - button "Désactiver le son (m)" [ref=e136] [cursor=pointer]:
+                      - img
+                    - slider "Volume"
+                  - button "0 minute(s) 0 seconde(s) sur 38 minute(s) 48 seconde(s)" [ref=e140] [cursor=pointer]: 0:00 / 38:48
+                  - button "Max" [ref=e142] [cursor=pointer]:
+                    - generic "Max" [ref=e143]
+                    - generic [ref=e144]:
+                      - img
+                - generic [ref=e145]:
+                  - generic [ref=e146]:
+                    - button "Lecture automatique activée" [ref=e147] [cursor=pointer]
+                    - button "Sous-titres non disponibles" [ref=e150] [cursor=pointer]:
+                      - generic [ref=e151]:
+                        - img
+                    - button "Paramètres" [ref=e152] [cursor=pointer]:
+                      - img
+                  - generic [ref=e153]:
+                    - button "Mode cinéma (t)" [ref=e154] [cursor=pointer]:
+                      - img
+                    - button "Plein écran (f)" [ref=e155] [cursor=pointer]:
+                      - img
+        - generic [ref=e157]:
+          - generic [ref=e159]:
+            - heading "Tiktok mashup 2025 📀 Best tiktok songs 2025 ~ Tiktok viral songs" [level=1] [ref=e161]
+            - generic [ref=e162]:
+              - generic [ref=e163]:
+                - generic [ref=e164]:
+                  - link "Love Life Lyrics" [ref=e165] [cursor=pointer]:
+                    - /url: /@LoveLifeLyrics
+                    - img "Love Life Lyrics" [ref=e167]
+                  - generic [ref=e168]:
+                    - generic [ref=e169]:
+                      - generic "Love Life Lyrics" [ref=e172]:
+                        - link "Love Life Lyrics" [ref=e173] [cursor=pointer]:
+                          - /url: /@LoveLifeLyrics
+                      - img "Validé" [ref=e178]
+                    - generic "2,7 millions d’abonnés" [ref=e180]: 2,7 M d’abonnés
+                - generic [ref=e184]:
+                  - button "S'abonner à Love Life Lyrics." [ref=e186] [cursor=pointer]:
+                    - generic [ref=e187]: S’abonner
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                    - generic:
+                      - img
+              - generic [ref=e194]:
+                - generic [ref=e195]:
+                  - generic [ref=e199]:
+                    - button "J'aime cette vidéo, comme 1 504 autres personnes avant moi" [ref=e203] [cursor=pointer]:
+                      - generic [ref=e206]: 1,5 k
+                    - button "Je n'aime pas cette vidéo" [ref=e213] [cursor=pointer]
+                  - button "Partager" [ref=e221] [cursor=pointer]:
+                    - generic [ref=e224]: Partager
+                - generic [ref=e228]:
+                  - button "Enregistrer dans une playlist" [ref=e231] [cursor=pointer]:
+                    - generic [ref=e234]: Enregistrer
+                  - generic [ref=e239]:
+                    - button "Télécharger" [disabled] [ref=e241]:
+                      - generic [ref=e244]: Télécharger
+                    - tooltip "tooltip"
+                - button "Autres actions" [ref=e246] [cursor=pointer]
+            - generic [ref=e254] [cursor=pointer]:
+              - generic [ref=e255]:
+                - generic [ref=e257]:
+                  - text: 238 k vues il y a 10 mois
+                  - link "#trendingsongs2025" [ref=e258]:
+                    - /url: /hashtag/trendingsongs2025
+                  - link "#toptrending" [ref=e259]:
+                    - /url: /hashtag/toptrending
+                  - link "#tiktoksongs" [ref=e260]:
+                    - /url: /hashtag/tiktoksongs
+                - tooltip "tooltip"
+              - generic [ref=e261]:
+                - generic [ref=e262]:
+                  - generic [ref=e265]:
+                    - text: Tiktok mashup 2025 📀 Best tiktok songs 2025 ~ Tiktok viral songs
+                    - link "#tiktoksongs" [ref=e267]:
+                      - /url: /hashtag/tiktoksongs
+                    - link "#tiktoksongs2025" [ref=e269]:
+                      - /url: /hashtag/tiktoksongs2025
+                    - link "#trendingsongs2025" [ref=e271]:
+                      - /url: /hashtag/trendingsongs2025
+                    - link "#viralsongs2025" [ref=e273]:
+                      - /url: /hashtag/viralsongs2025
+                    - link "#tiktoksongs" [ref=e275]:
+                      - /url: /hashtag/tiktoksongs
+                    - link "#toptrending" [ref=e277]:
+                      - /url: /hashtag/toptrending
+                  - generic: …
+                - button "...afficher plus" [ref=e278]
+          - text: •
+      - generic [ref=e285]:
+        - generic [ref=e287] [cursor=pointer]:
+          - link [ref=e288]:
+            - /url: /watch?v=Jma4nCMpaQM&list=RDJma4nCMpaQM&start_radio=1&pp=oAcB
+            - generic [ref=e296]: 25:01
+          - generic [ref=e298]:
+            - generic [ref=e299]:
+              - heading "~a spanish brazil playlist song~ | 🎧🎵" [level=3] [ref=e300]:
+                - link "~a spanish brazil playlist song~ | 🎧🎵 25 minutes" [ref=e301]:
+                  - /url: /watch?v=Jma4nCMpaQM&list=RDJma4nCMpaQM&start_radio=1&pp=oAcB
+                  - text: ~a spanish brazil playlist song~ | 🎧🎵
+              - generic [ref=e303]:
+                - group [ref=e304]:
+                  - generic [ref=e305]: deyy🪷
+                - group [ref=e306]:
+                  - generic [ref=e307]: 10 M de vues
+                  - generic [ref=e308]: •
+                  - generic "il y a 1 an" [ref=e309]
+            - button "Autres actions" [ref=e312]
+        - generic [ref=e319] [cursor=pointer]:
+          - link [ref=e320]:
+            - /url: /watch?v=4d1v1dAlVxI
+            - generic [ref=e327]: 7:26
+          - generic [ref=e329]:
+            - generic [ref=e330]:
+              - heading "Tiktok Mashup 2026 - If you know These Songs your a genius! 🧠❤️" [level=3] [ref=e331]:
+                - link "Tiktok Mashup 2026 - If you know These Songs your a genius! 🧠❤️ 7 minutes et 26 secondes" [ref=e332]:
+                  - /url: /watch?v=4d1v1dAlVxI
+                  - text: Tiktok Mashup 2026 - If you know These Songs your a genius! 🧠❤️
+              - generic [ref=e334]:
+                - group [ref=e335]:
+                  - generic [ref=e336]: One TikTok Mashup
+                - group [ref=e337]:
+                  - generic [ref=e338]: 1,9 M de vues
+                  - generic [ref=e339]: •
+                  - generic "il y a 13 jours" [ref=e340]
+            - button "Autres actions" [ref=e343]
+        - generic [ref=e350] [cursor=pointer]:
+          - link [ref=e351]:
+            - /url: /watch?v=m6H0C4lX9Oc&list=RDm6H0C4lX9Oc&start_radio=1&pp=oAcB
+            - generic [ref=e359]: 10:52
+          - generic [ref=e361]:
+            - generic [ref=e362]:
+              - heading "SOUNDYXI – Big Club | Club Banger MIX (Visualizer)" [level=3] [ref=e363]:
+                - link "SOUNDYXI – Big Club | Club Banger MIX (Visualizer) 10 minutes et 52 secondes" [ref=e364]:
+                  - /url: /watch?v=m6H0C4lX9Oc&list=RDm6H0C4lX9Oc&start_radio=1&pp=oAcB
+                  - text: SOUNDYXI – Big Club | Club Banger MIX (Visualizer)
+              - generic [ref=e366]:
+                - group [ref=e367]:
+                  - generic [ref=e368]:
+                    - text: SOUNDYXI
+                    - img [ref=e371]
+                - group [ref=e372]:
+                  - generic [ref=e373]: 4,6 M de vues
+                  - generic [ref=e374]: •
+                  - generic "il y a 4 mois" [ref=e375]
+            - button "Autres actions" [ref=e378]
+        - generic [ref=e385] [cursor=pointer]:
+          - link [ref=e386]:
+            - /url: /watch?v=ElspqCcCpvY&list=PLn8MzPcslTX32nJi8bCiq4wHTmJuKohqQ&pp=8AUB
+            - generic [ref=e398]: 46 vidéos
+          - generic [ref=e401]:
+            - heading "Baileys playlist" [level=3] [ref=e402]:
+              - link "Baileys playlist" [ref=e403]:
+                - /url: /watch?v=ElspqCcCpvY&list=PLn8MzPcslTX32nJi8bCiq4wHTmJuKohqQ&pp=8AUB
+            - generic [ref=e405]:
+              - group [ref=e406]:
+                - link "Kaylad92" [ref=e409]:
+                  - /url: /@Kaylad92
+                - generic [ref=e410]: •
+                - link "Playlist" [ref=e413]:
+                  - /url: /@Kaylad92
+              - group [ref=e414]:
+                - link "Afficher la playlist complète" [ref=e417]:
+                  - /url: /playlist?list=PLn8MzPcslTX32nJi8bCiq4wHTmJuKohqQ
+        - generic [ref=e419] [cursor=pointer]:
+          - link [ref=e420]:
+            - /url: /watch?v=vKlU3AYwn_s&list=RDvKlU3AYwn_s&start_radio=1&pp=oAcB
+            - generic [ref=e428]: 7:00
+          - generic [ref=e430]:
+            - generic [ref=e431]:
+              - heading "New TikTok Mashup 2026, Philippine Party Music Viral Dance Trends March, TR14.mp3 (AI COVER)" [level=3] [ref=e432]:
+                - link "New TikTok Mashup 2026, Philippine Party Music Viral Dance Trends March, TR14.mp3 (AI COVER) 7 minutes" [ref=e433]:
+                  - /url: /watch?v=vKlU3AYwn_s&list=RDvKlU3AYwn_s&start_radio=1&pp=oAcB
+                  - text: New TikTok Mashup 2026, Philippine Party Music Viral Dance Trends March, TR14.mp3 (AI COVER)
+              - generic [ref=e435]:
+                - group [ref=e436]:
+                  - generic [ref=e437]: Timeless Recordz 14
+                - group [ref=e438]:
+                  - generic [ref=e439]: 114 vues
+                  - generic [ref=e440]: •
+                  - generic "il y a 2 mois" [ref=e441]
+            - button "Autres actions" [ref=e444]
+        - generic [ref=e451] [cursor=pointer]:
+          - link [ref=e452]:
+            - /url: /watch?v=UIzQAbsrlRk&list=RDUIzQAbsrlRk&start_radio=1&pp=oAcB
+            - generic [ref=e460]: 1:39:23
+          - generic [ref=e462]:
+            - generic [ref=e463]:
+              - 'heading "Afro House Mix 2026 🔥 Tribal Afro House Energy | Emotional Melodic Beats #VOL 35" [level=3] [ref=e464]':
+                - 'link "Afro House Mix 2026 🔥 Tribal Afro House Energy | Emotional Melodic Beats #VOL 35 1 heure et 39 minutes" [ref=e465]':
+                  - /url: /watch?v=UIzQAbsrlRk&list=RDUIzQAbsrlRk&start_radio=1&pp=oAcB
+                  - text: "Afro House Mix 2026 🔥 Tribal Afro House Energy | Emotional Melodic Beats #VOL 35"
+              - generic [ref=e467]:
+                - group [ref=e468]:
+                  - generic [ref=e469]: Jungle Pulse House
+                - group [ref=e470]:
+                  - generic [ref=e471]: 653 k vues
+                  - generic [ref=e472]: •
+                  - generic "il y a 1 mois" [ref=e473]
+            - button "Autres actions" [ref=e476]
+        - generic [ref=e483] [cursor=pointer]:
+          - link [ref=e484]:
+            - /url: /watch?v=ArnWfU8Ge0A&list=RDArnWfU8Ge0A&start_radio=1&pp=oAcB
+            - generic [ref=e492]: 12:22
+          - generic [ref=e494]:
+            - generic [ref=e495]:
+              - heading "SONG VIRAL TIKTOK 🎧✮" [level=3] [ref=e496]:
+                - link "SONG VIRAL TIKTOK 🎧✮ 12 minutes et 22 secondes" [ref=e497]:
+                  - /url: /watch?v=ArnWfU8Ge0A&list=RDArnWfU8Ge0A&start_radio=1&pp=oAcB
+                  - text: SONG VIRAL TIKTOK 🎧✮
+              - generic [ref=e499]:
+                - group [ref=e500]:
+                  - generic [ref=e501]: F A F A
+                - group [ref=e502]:
+                  - generic [ref=e503]: 810 k vues
+                  - generic [ref=e504]: •
+                  - generic "il y a 11 mois" [ref=e505]
+            - button "Autres actions" [ref=e508]
+        - generic [ref=e515] [cursor=pointer]:
+          - link [ref=e516]:
+            - /url: /watch?v=eO9Z9p7ssas&list=RDeO9Z9p7ssas&start_radio=1&pp=oAcB
+            - generic [ref=e524]: 10:24
+          - generic [ref=e526]:
+            - generic [ref=e527]:
+              - heading "HITS OF 2017 | Year - End Mashup [+150 Songs] (T10MO)" [level=3] [ref=e528]:
+                - link "HITS OF 2017 | Year - End Mashup [+150 Songs] (T10MO) 10 minutes et 24 secondes" [ref=e529]:
+                  - /url: /watch?v=eO9Z9p7ssas&list=RDeO9Z9p7ssas&start_radio=1&pp=oAcB
+                  - text: HITS OF 2017 | Year - End Mashup [+150 Songs] (T10MO)
+              - generic [ref=e531]:
+                - group [ref=e532]:
+                  - generic [ref=e533]:
+                    - text: T10MO
+                    - img [ref=e536]
+                - group [ref=e537]:
+                  - generic [ref=e538]: 18 M de vues
+                  - generic [ref=e539]: •
+                  - generic "il y a 8 ans" [ref=e540]
+            - button "Autres actions" [ref=e543]
+        - generic [ref=e550] [cursor=pointer]:
+          - link [ref=e551]:
+            - /url: /watch?v=AnFj9deWYPo&list=RDAnFj9deWYPo&start_radio=1&pp=oAcB
+            - generic [ref=e559]: 15:35
+          - generic [ref=e561]:
+            - generic [ref=e562]:
+              - heading "VIRAL PHONK/FUNK SONGS 2025 🎵 PLAYLIST" [level=3] [ref=e563]:
+                - link "VIRAL PHONK/FUNK SONGS 2025 🎵 PLAYLIST 15 minutes" [ref=e564]:
+                  - /url: /watch?v=AnFj9deWYPo&list=RDAnFj9deWYPo&start_radio=1&pp=oAcB
+                  - text: VIRAL PHONK/FUNK SONGS 2025 🎵 PLAYLIST
+              - generic [ref=e566]:
+                - group [ref=e567]:
+                  - generic [ref=e568]: Legendary Phonk Kingdom
+                - group [ref=e569]:
+                  - generic [ref=e570]: 41 M de vues
+                  - generic [ref=e571]: •
+                  - generic "il y a 6 mois" [ref=e572]
+            - button "Autres actions" [ref=e575]
+        - generic [ref=e582] [cursor=pointer]:
+          - link [ref=e583]:
+            - /url: /watch?v=O4Vw5VCEh00&list=RDO4Vw5VCEh00&start_radio=1&pp=oAcB
+            - generic [ref=e591]: 2:59:54
+          - generic [ref=e593]:
+            - generic [ref=e594]:
+              - heading "Summer Mix 2025 🍓 Best Popular Songs 2025 🍓Faded, Supergirl, A Sky Full Of Star, Perfect Cover" [level=3] [ref=e595]:
+                - link "Summer Mix 2025 🍓 Best Popular Songs 2025 🍓Faded, Supergirl, A Sky Full Of Star, Perfect Cover 2 heures et 59 minutes" [ref=e596]:
+                  - /url: /watch?v=O4Vw5VCEh00&list=RDO4Vw5VCEh00&start_radio=1&pp=oAcB
+                  - text: Summer Mix 2025 🍓 Best Popular Songs 2025 🍓Faded, Supergirl, A Sky Full Of Star, Perfect Cover
+              - generic [ref=e598]:
+                - group [ref=e599]:
+                  - generic [ref=e600]: DeepNova
+                - group [ref=e601]:
+                  - generic [ref=e602]: 5,8 k vues
+                  - generic [ref=e603]: •
+                  - generic "Diffusé il y a 6 jours" [ref=e604]
+                - group [ref=e605]:
+                  - generic [ref=e609]: Nouveau
+            - button "Autres actions" [ref=e612]
