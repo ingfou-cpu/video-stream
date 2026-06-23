@@ -624,7 +624,7 @@
             <div class="sidebar-search">
                 <div class="search-input-wrap">
                     <input type="text" id="ytSearchInput" placeholder="Rechercher..." 
-                           onkeypress="if(event.key==='Enter') ytSearch()">
+                           onkeydown="if(event.key==='Enter') ytSearch()">
                     <button class="btn-filter" id="btnFilter" onclick="toggleFilters()" title="Filtres">&#9776;</button>
                 </div>
                 <button onclick="ytSearch()">Chercher</button>

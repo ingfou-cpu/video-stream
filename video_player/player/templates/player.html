@@ -1004,7 +1004,7 @@
         <video id="videoPlayer" controls autoplay muted playsinline preload="auto"
                class="{% if media_type == 'direct' %}active{% endif %}">
             {% if video_url and media_type == 'direct' %}
-            <source src="{{ video_url }}">
+            <source src="{{ video_url }}" type="video/mp4">
             {% endif %}
         </video>
 
@@ -1171,6 +1171,7 @@
     var videoLoader = document.getElementById('videoLoader');
     var loaderPlatform = document.getElementById('loaderPlatform');
     var proxyBadge = document.getElementById('proxyBadge');
+    var loaderTimeout = null;
 
     var currentVideoUrl = '';
     var currentYtUrl = '';
@@ -1190,11 +1191,17 @@
         } else {
             loaderPlatform.classList.remove('visible');
         }
+        clearTimeout(loaderTimeout);
+        loaderTimeout = setTimeout(function() {
+            hideLoader();
+        }, 15000);
     }
 
     function hideLoader() {
         videoLoader.classList.remove('visible');
         loaderPlatform.classList.remove('visible');
+        clearTimeout(loaderTimeout);
+        loaderTimeout = null;
     }
 
     function showToast(type, title, message, duration) {
@@ -1235,19 +1242,22 @@
             toast.classList.add('visible');
         });
 
-        // Auto-dismiss
-        var timeout = setTimeout(function() {
-            dismissToast(toast);
-        }, duration);
+        var timeout;
 
-        // Pause timeout on hover
+        function startDismissTimer() {
+            clearTimeout(timeout);
+            timeout = setTimeout(function() {
+                dismissToast(toast);
+            }, duration);
+        }
+
+        startDismissTimer();
+
         toast.addEventListener('mouseenter', function() {
             clearTimeout(timeout);
         });
         toast.addEventListener('mouseleave', function() {
-            timeout = setTimeout(function() {
-                dismissToast(toast);
-            }, duration);
+            startDismissTimer();
         });
     }
 
@@ -1730,13 +1740,13 @@
     });
 
     loadBtn.addEventListener('click', loadVideo);
-    videoUrlInput.addEventListener('keypress', function(e) {
+    videoUrlInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') loadVideo();
     });
 
     {% if video_url %}
     placeholder.style.display = 'none';
-    updateDownloadButtons('{{ video_url|safe }}');
+    updateDownloadButtons('{{ video_url|escapejs }}');
     {% if media_type == 'direct' %}
     showLoader('Video directe');
     videoEl.classList.add('active');
@@ -1744,7 +1754,7 @@
     {% elif media_type == 'youtube' %}
     showLoader('YouTube (embed)');
     ytPlayerDiv.classList.add('active');
-    var initYtId = '{{ embed_url|safe }}'.match(/\/embed\/([^?]+)/);
+    var initYtId = '{{ embed_url|escapejs }}'.match(/\/embed\/([^?]+)/);
     if (initYtId) {
         loadYtApi();
         if (ytApiReady) {
@@ -1753,22 +1763,22 @@
             pendingYtId = initYtId[1];
         }
     }
-    fallbackBtn.href = '{{ video_url|safe }}';
+    fallbackBtn.href = '{{ video_url|escapejs }}';
     fallbackBtn.textContent = 'Ouvrir sur YouTube';
     fallbackText.textContent = 'Si la video YouTube ne se charge pas, ouvrez-la directement.';
     {% elif media_type == 'dailymotion' %}
     showLoader('Dailymotion');
-    embedEl.src = '{{ embed_url|safe }}';
+    embedEl.src = '{{ embed_url|escapejs }}';
     embedEl.classList.add('active');
-    fallbackBtn.href = '{{ video_url|safe }}';
+    fallbackBtn.href = '{{ video_url|escapejs }}';
     fallbackBtn.textContent = 'Ouvrir sur Dailymotion';
     fallbackText.textContent = 'Si la video Dailymotion ne se charge pas, ouvrez-la directement.';
     fallbackDiv.classList.add('visible');
     {% elif media_type == 'vimeo' %}
     showLoader('Vimeo');
-    embedEl.src = '{{ embed_url|safe }}';
+    embedEl.src = '{{ embed_url|escapejs }}';
     embedEl.classList.add('active');
-    fallbackBtn.href = '{{ video_url|safe }}';
+    fallbackBtn.href = '{{ video_url|escapejs }}';
     fallbackBtn.textContent = 'Ouvrir sur Vimeo';
     fallbackText.textContent = 'Si la video Vimeo ne se charge pas, ouvrez-la directement.';
     fallbackDiv.classList.add('visible');
