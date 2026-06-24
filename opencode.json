@@ -30,10 +30,18 @@
     },
     "github": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/github"],
-      "enabled": false,
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "enabled": true,
       "environment": {
-        "GITHUB_TOKEN": "{env:GITHUB_TOKEN}"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_TOKEN}"
+      }
+    },
+    "21st-dev": {
+      "type": "local",
+      "command": ["npx", "-y", "@21st-dev/magic@latest"],
+      "enabled": true,
+      "environment": {
+        "API_KEY": "d037351268d485d0af4ad26e5bd7f608fb638f1b7272ca953f5acae369785259"
       }
     }
   }
