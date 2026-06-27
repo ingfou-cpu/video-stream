@@ -16,14 +16,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-import sentry_sdk
-
-sentry_sdk.init(
-    dsn=os.getenv('SENTRY_DSN', 'https://8e8af4907c9b843232872c4e67bcd125@o4511617260519424.ingest.de.sentry.io/4511622708002896'),
-    send_default_pii=True,
-    traces_sample_rate=0.5,
-    profiles_sample_rate=0.5,
-)
+SENTRY_DSN = os.getenv('SENTRY_DSN', '')
+if SENTRY_DSN and 'REPLACE_ME' not in SENTRY_DSN:
+    import sentry_sdk
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        send_default_pii=True,
+        traces_sample_rate=0.5,
+        profiles_sample_rate=0.5,
+    )
 
 # Configuration Stripe
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
