@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section style="min-height: 100vh; padding: 8rem 0 5rem; background: var(--eb-gradient-dark); display: flex; align-items: center;">
+    <div class="container px-4 px-lg-5 text-center">
+        <div style="font-size: 6rem; font-weight: 900; background: linear-gradient(135deg, var(--eb-secondary-light), var(--eb-primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;">404</div>
+        <h2 style="color: #fff; font-weight: 800; font-size: 2rem; margin-top: 0.5rem;">Page introuvable</h2>
+        <p style="color: rgba(255,248,240,0.5); max-width: 400px; margin: 0.5rem auto 2rem;">La page que vous cherchez n'existe pas ou a été déplacée.</p>
+        <a href="{% url 'home' %}" class="btn" style="background: var(--eb-gradient-primary); color: #fff; border: none; border-radius: 60px; padding: 14px 36px; font-weight: 700;">
+            <i class="fas fa-home me-2"></i>Retour à l'accueil
+        </a>
+    </div>
+</section>
+{% endblock %}

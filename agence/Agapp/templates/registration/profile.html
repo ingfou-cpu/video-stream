@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section style="padding: 8rem 0 5rem; background: var(--eb-gradient-dark); min-height: 100vh;">
+    <div class="container px-4 px-lg-5">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div style="background: rgba(255,248,240,0.05); backdrop-filter: blur(16px); border: 1px solid rgba(255,248,240,0.1); border-radius: 24px; padding: 2rem; text-align: center;">
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--eb-gradient-primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <i class="fas fa-user" style="font-size: 2rem; color: #fff;"></i>
+                    </div>
+                    <h4 style="color: #fff; font-weight: 700;">{{ user.username }}</h4>
+                    <p style="color: rgba(255,248,240,0.4);">{{ user.email }}</p>
+                    <hr style="border-color: rgba(255,248,240,0.08); margin: 1.5rem 0;">
+                    <a href="{% url 'logout' %}" class="btn" style="background: rgba(231,76,60,0.15); color: #e74c3c; border: 1px solid rgba(231,76,60,0.2); border-radius: 60px; padding: 10px 24px; font-weight: 600; width: 100%;">
+                        <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <h3 style="color: #fff; font-weight: 800; margin-bottom: 1.5rem;">Mes réservations</h3>
+                {% if bookings %}
+                {% for booking in bookings %}
+                <div style="background: rgba(255,248,240,0.05); backdrop-filter: blur(16px); border: 1px solid rgba(255,248,240,0.1); border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <h5 style="color: #fff; font-weight: 700; margin: 0;">{{ booking.destination.name }}</h5>
+                            <small style="color: rgba(255,248,240,0.4);">{{ booking.check_in_date|date:"d/m/Y" }}</small>
+                        </div>
+                        <span style="padding: 4px 14px; border-radius: 60px; font-size: 0.8rem; font-weight: 600; background: rgba(232, 201, 146, 0.15); color: var(--eb-secondary-light); border: 1px solid rgba(232, 201, 146, 0.2);">Confirmé</span>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div style="background: rgba(255,248,240,0.03); border: 1px dashed rgba(255,248,240,0.1); border-radius: 16px; padding: 3rem; text-align: center;">
+                    <i class="fas fa-suitcase" style="font-size: 2.5rem; color: rgba(255,248,240,0.2); margin-bottom: 1rem;"></i>
+                    <p style="color: rgba(255,248,240,0.4);">Aucune réservation pour le moment.</p>
+                    <a href="{% url 'home' %}" class="btn" style="background: var(--eb-gradient-primary); color: #fff; border: none; border-radius: 60px; padding: 10px 24px; font-weight: 600;">Découvrir nos destinations</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

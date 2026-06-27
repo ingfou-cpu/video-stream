@@ -33,6 +33,9 @@ ffplay.exe
 cache/
 staticfiles/
 
+# Environment
+.env
+
 # yt-dlp cookies
 cookies.txt
 

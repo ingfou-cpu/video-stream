@@ -1,0 +1,638 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/convertisseur.css' %}">
+
+<div class="converter-page-wrapper">
+    <div class="converter-container">
+        <!-- Header -->
+        <div class="converter-header">
+            <div class="header-icon">
+                <i class="fas fa-exchange-alt"></i>
+            </div>
+            <h1>Convertisseur de Devises</h1>
+            <p class="header-subtitle">Taux de change en temps réel — <span id="update-info">Chargement...</span></p>
+        </div>
+
+        {% if erreur %}
+        <div class="error-container">
+            <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h2>Erreur de connexion</h2>
+            <p>{{ erreur }}</p>
+            <button class="btn-retry" onclick="location.reload()"><i class="fas fa-redo me-1"></i>Réessayer</button>
+        </div>
+        {% else %}
+
+        <!-- Currency Search -->
+        <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="currency-search" placeholder="Rechercher une devise..." oninput="filterCurrencies()">
+        </div>
+
+        <!-- Base Currency Selector -->
+        <div class="base-currency-selector">
+            <label for="base-currency"><i class="fas fa-flag me-1"></i> Devise de base :</label>
+            <div class="select-wrapper">
+                <select id="base-currency" onchange="changeBaseCurrency(this.value)">
+                    {% for devise, valeur in taux.items %}
+                    <option value="{{ devise }}" {% if devise == 'EUR' %}selected{% endif %}>
+                        {{ devise }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
+        </div>
+
+        <!-- Rates Grid -->
+        <div class="rates-grid" id="rates-grid">
+            {% for devise, valeur in taux.items %}
+            <div class="rate-card {% if devise == 'EUR' %}base-currency{% endif %}" 
+                 id="card-{{ devise }}" 
+                 onclick="selectTargetCurrency('{{ devise }}')"
+                 onkeydown="if(event.key==='Enter'||event.key===' ')selectTargetCurrency('{{ devise }}')"
+                 data-currency="{{ devise }}"
+                 tabindex="0"
+                 role="button">
+                {% if devise == 'EUR' %}
+                <span class="badge badge-base">Base</span>
+                {% endif %}
+                <div class="card-flag">{{ devise|slice:":1" }}</div>
+                <div class="card-body">
+                    <div class="currency-code">{{ devise }}</div>
+                    <div class="currency-name" id="name-{{ devise }}">
+                        {% if devise == 'USD' %}Dollar Américain
+                        {% elif devise == 'EUR' %}Euro
+                        {% elif devise == 'JPY' %}Yen Japonais
+                        {% elif devise == 'GBP' %}Livre Sterling
+                        {% elif devise == 'AUD' %}Dollar Australien
+                        {% elif devise == 'CAD' %}Dollar Canadien
+                        {% elif devise == 'CHF' %}Franc Suisse
+                        {% elif devise == 'CNY' %}Yuan Chinois
+                        {% elif devise == 'DZD' %}Dinar Algérien
+                        {% elif devise == 'MAD' %}Dirham Marocain
+                        {% elif devise == 'TND' %}Dinar Tunisien
+                        {% else %}Devise{% endif %}
+                    </div>
+                    <div class="rate-value" id="rate-{{ devise }}">{{ valeur }}</div>
+                </div>
+                <div class="card-hover-effect"></div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Conversion Window -->
+        <div class="conversion-window">
+            <div class="conversion-header">
+                <i class="fas fa-calculator"></i>
+                <h3>Convertir un montant</h3>
+            </div>
+
+            <div class="conversion-form">
+                <div class="conversion-group">
+                    <label for="amount">Montant</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="amount" placeholder="100" value="100" min="0" step="0.01" oninput="convertCurrency()">
+                    </div>
+                </div>
+
+                <div class="conversion-group">
+                    <label for="from-currency">De</label>
+                    <div class="select-wrapper">
+                        <select id="from-currency" onchange="convertCurrency()">
+                            {% for devise, valeur in taux.items %}
+                            <option value="{{ devise }}" {% if devise == 'EUR' %}selected{% endif %}>{{ devise }}</option>
+                            {% endfor %}
+                        </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
+                    </div>
+                </div>
+
+                <button class="swap-btn" onclick="swapCurrencies()" title="Inverser les devises" aria-label="Inverser les devises">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+
+                <div class="conversion-group">
+                    <label for="to-currency">Vers</label>
+                    <div class="select-wrapper">
+                        <select id="to-currency" onchange="convertCurrency()">
+                            {% for devise, valeur in taux.items %}
+                            <option value="{{ devise }}" {% if devise == 'USD' %}selected{% endif %}>{{ devise }}</option>
+                            {% endfor %}
+                        </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <div class="conversion-result" id="conversion-result">
+                <div class="result-row">
+                    <span class="result-label">Résultat</span>
+                    <span class="result-amount" id="result-amount">--</span>
+                </div>
+                <div class="result-divider"></div>
+                <div class="result-detail" id="result-detail">--</div>
+                <div class="result-rate" id="result-rate">
+                    <i class="fas fa-info-circle me-1"></i>
+                    <span>--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-section" id="chart-section">
+            <div class="chart-header">
+                <i class="fas fa-chart-line"></i>
+                <h3>Évolution sur 7 jours</h3>
+                <button class="chart-toggle-btn" id="chart-toggle-btn" onclick="toggleChart()">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="chart-body" id="chart-body">
+                <div class="chart-pair-info">
+                    <span class="chart-pair" id="chart-pair"><span id="chart-from">EUR</span> → <span id="chart-to">USD</span></span>
+                    <span class="chart-trend" id="chart-trend"><i class="fas fa-minus"></i> Stable</span>
+                </div>
+                <div class="chart-loading" id="chart-loading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                    <span>Chargement des données historiques...</span>
+                </div>
+                <div class="chart-error-msg" id="chart-error-msg">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="chart-error-text">Erreur de chargement</span>
+                </div>
+                <div class="chart-canvas-wrapper" id="chart-canvas-wrapper">
+                    <canvas id="rate-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer info -->
+        <div class="converter-footer">
+            <div class="footer-info">
+                <i class="fas fa-database me-1"></i>
+                <span>Taux actuels via Fixer.io — Historique via Frankfurter API</span>
+            </div>
+            <div class="footer-info">
+                <i class="fas fa-clock me-1"></i>
+                <span>Dernière mise à jour : <span id="last-updated">--</span></span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+    'use strict';
+
+    // Parse rates from DOM
+    var rates = {};
+    var rateElements = document.querySelectorAll('.rate-value');
+    rateElements.forEach(function(el) {
+        var currency = el.id.replace('rate-', '');
+        rates[currency] = parseFloat(el.textContent.trim());
+    });
+
+    // Guard: no rates found
+    if (Object.keys(rates).length === 0) {
+        var container = document.querySelector('.converter-card-inner') || document.querySelector('.converter-container');
+        if (container) {
+            container.innerHTML = '<div class="error-container"><div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div><h2>Aucune donnée disponible</h2><p>Impossible de charger les taux de change. Veuillez réessayer plus tard.</p><button class="btn-retry" onclick="location.reload()"><i class="fas fa-redo me-1"></i>Réessayer</button></div>';
+        }
+    }
+
+    // Update info
+    var now = new Date();
+    document.getElementById('update-info').textContent = 'Taux mis à jour';
+    document.getElementById('last-updated').textContent = now.toLocaleString('fr-FR');
+
+    // --- Core Functions ---
+    window.changeBaseCurrency = function(selectedBase) {
+        var baseRate = rates[selectedBase];
+        if (!baseRate) return;
+
+        var currencies = Object.keys(rates);
+        currencies.forEach(function(currency) {
+            var newRate = rates[currency] / baseRate;
+            var formattedRate = newRate < 1 ? newRate.toFixed(6) : newRate.toFixed(4);
+
+            var rateEl = document.getElementById('rate-' + currency);
+            if (rateEl) {
+                rateEl.textContent = formattedRate;
+                rateEl.classList.remove('rate-flash');
+                requestAnimationFrame(function() {
+                    rateEl.classList.add('rate-flash');
+                });
+            }
+
+            var card = document.getElementById('card-' + currency);
+            if (card) {
+                card.classList.remove('base-currency');
+                var badge = card.querySelector('.badge');
+                if (badge) badge.remove();
+
+                if (currency === selectedBase) {
+                    card.classList.add('base-currency');
+                    var newBadge = document.createElement('span');
+                    newBadge.className = 'badge badge-base';
+                    newBadge.textContent = 'Base';
+                    card.appendChild(newBadge);
+                }
+            }
+        });
+
+        window.convertCurrency();
+    };
+
+    window.selectTargetCurrency = function(currency) {
+        var toSelect = document.getElementById('to-currency');
+        if (toSelect) {
+            toSelect.value = currency;
+        }
+
+        var cards = document.querySelectorAll('.rate-card');
+        cards.forEach(function(c) { c.classList.remove('active'); });
+
+        var card = document.getElementById('card-' + currency);
+        if (card && !card.classList.contains('base-currency')) {
+            card.classList.add('active');
+        }
+
+        window.convertCurrency();
+    };
+
+    window.swapCurrencies = function() {
+        var fromSelect = document.getElementById('from-currency');
+        var toSelect = document.getElementById('to-currency');
+        if (!fromSelect || !toSelect) return;
+
+        var temp = fromSelect.value;
+        fromSelect.value = toSelect.value;
+        toSelect.value = temp;
+
+        var btn = document.querySelector('.swap-btn');
+        if (btn) {
+            btn.classList.add('swapped');
+            setTimeout(function() { btn.classList.remove('swapped'); }, 600);
+        }
+
+        window.convertCurrency();
+    };
+
+    window.convertCurrency = function() {
+        var amountEl = document.getElementById('amount');
+        var fromSelect = document.getElementById('from-currency');
+        var toSelect = document.getElementById('to-currency');
+        var resultEl = document.getElementById('conversion-result');
+        var resultAmount = document.getElementById('result-amount');
+        var resultDetail = document.getElementById('result-detail');
+        var resultRate = document.getElementById('result-rate');
+
+        if (!amountEl || !fromSelect || !toSelect || !resultEl) return;
+
+        var amount = parseFloat(amountEl.value);
+        var fromCurrency = fromSelect.value;
+        var toCurrency = toSelect.value;
+
+        if (isNaN(amount) || amount < 0) {
+            resultEl.classList.remove('visible');
+            return;
+        }
+
+        var fromRate = rates[fromCurrency];
+        var toRate = rates[toCurrency];
+
+        if (!fromRate || !toRate) return;
+
+        if (fromCurrency === toCurrency) {
+            var formatted = window.formatNumber(amount);
+            resultAmount.textContent = formatted + ' ' + toCurrency;
+            resultDetail.textContent = 'Même devise — aucune conversion nécessaire';
+            resultRate.innerHTML = '<i class="fas fa-info-circle me-1"></i><span>1 ' + fromCurrency + ' = 1 ' + toCurrency + '</span>';
+            resultEl.classList.add('visible');
+            return;
+        }
+
+        var convertedAmount = amount * (toRate / fromRate);
+        var exchangeRate = toRate / fromRate;
+
+        var formattedResult = window.formatNumber(convertedAmount);
+        var formattedRate = exchangeRate < 1 ? exchangeRate.toFixed(6) : exchangeRate.toFixed(4);
+
+        resultAmount.textContent = formattedResult + ' ' + toCurrency;
+        resultDetail.textContent = window.formatNumber(amount) + ' ' + fromCurrency + ' = ' + formattedResult + ' ' + toCurrency;
+        resultRate.innerHTML = '<i class="fas fa-info-circle me-1"></i><span>1 ' + fromCurrency + ' = ' + formattedRate + ' ' + toCurrency + '</span>';
+
+        resultEl.classList.add('visible');
+    };
+
+    window.formatNumber = function(num) {
+        if (num >= 1000) {
+            return num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        return num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+    };
+
+    window.filterCurrencies = function() {
+        var query = document.getElementById('currency-search').value.trim().toLowerCase();
+        var cards = document.querySelectorAll('.rate-card');
+
+        cards.forEach(function(card) {
+            var code = card.getAttribute('data-currency').toLowerCase();
+            var name = (card.querySelector('.currency-name') || {}).textContent || '';
+            var match = code.includes(query) || name.toLowerCase().includes(query);
+            card.style.display = match ? '' : 'none';
+        });
+    };
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Escape clears search
+        if (e.key === 'Escape') {
+            var searchEl = document.getElementById('currency-search');
+            if (document.activeElement === searchEl) {
+                searchEl.value = '';
+                window.filterCurrencies();
+                searchEl.blur();
+            }
+        }
+        // Enter in amount triggers conversion
+        if (e.key === 'Enter') {
+            var amountEl = document.getElementById('amount');
+            if (document.activeElement === amountEl) {
+                window.convertCurrency();
+            }
+        }
+    });
+
+    // --- Chart.js Setup ---
+    var rateChart = null;
+    var chartInitialized = false;
+
+    window.loadHistoricalChart = function(fromCurrency, toCurrency) {
+        if (!fromCurrency || !toCurrency || fromCurrency === toCurrency) {
+            var wrapper = document.getElementById('chart-canvas-wrapper');
+            var loading = document.getElementById('chart-loading');
+            var errorMsg = document.getElementById('chart-error-msg');
+            if (wrapper) wrapper.style.display = 'none';
+            if (loading) loading.style.display = 'none';
+            if (errorMsg) errorMsg.style.display = 'block';
+            document.getElementById('chart-error-text').textContent = 'Sélectionnez deux devises différentes pour voir l\'historique';
+            return;
+        }
+
+        document.getElementById('chart-from').textContent = fromCurrency;
+        document.getElementById('chart-to').textContent = toCurrency;
+
+        var wrapper = document.getElementById('chart-canvas-wrapper');
+        var loading = document.getElementById('chart-loading');
+        var errorMsg = document.getElementById('chart-error-msg');
+
+        if (wrapper) wrapper.style.display = 'none';
+        if (errorMsg) errorMsg.style.display = 'none';
+        if (loading) loading.style.display = 'flex';
+
+        var url = '/api/historical-rates/?from=' + encodeURIComponent(fromCurrency) + '&to=' + encodeURIComponent(toCurrency);
+
+        fetch(url)
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (loading) loading.style.display = 'none';
+
+                if (data.success && data.data && data.data.length > 0) {
+                    if (wrapper) wrapper.style.display = 'block';
+                    if (errorMsg) errorMsg.style.display = 'none';
+
+                    var labels = data.data.map(function(d) {
+                        var parts = d.date.split('-');
+                        return parts[2] + '/' + parts[1];
+                    });
+                    var values = data.data.map(function(d) { return d.rate; });
+
+                    // Calculate trend
+                    var firstVal = values[0];
+                    var lastVal = values[values.length - 1];
+                    var diff = lastVal - firstVal;
+                    var pctChange = ((diff / firstVal) * 100);
+
+                    var trendEl = document.getElementById('chart-trend');
+                    if (trendEl) {
+                        if (Math.abs(pctChange) < 0.1) {
+                            trendEl.innerHTML = '<i class="fas fa-minus"></i> Stable';
+                            trendEl.className = 'chart-trend stable';
+                        } else if (pctChange > 0) {
+                            trendEl.innerHTML = '<i class="fas fa-arrow-up"></i> +' + pctChange.toFixed(2) + '%';
+                            trendEl.className = 'chart-trend up';
+                        } else {
+                            trendEl.innerHTML = '<i class="fas fa-arrow-down"></i> ' + pctChange.toFixed(2) + '%';
+                            trendEl.className = 'chart-trend down';
+                        }
+                    }
+
+                    // Destroy existing chart
+                    if (rateChart) {
+                        rateChart.destroy();
+                        rateChart = null;
+                    }
+
+                    var ctx = document.getElementById('rate-chart').getContext('2d');
+
+                    var gradient = ctx.createLinearGradient(0, 0, 0, 250);
+                    gradient.addColorStop(0, 'rgba(102, 126, 234, 0.25)');
+                    gradient.addColorStop(1, 'rgba(102, 126, 234, 0.01)');
+
+                    var lineColor = diff > 0 ? '#10b981' : (diff < 0 ? '#ef4444' : '#667eea');
+                    var gradientFill = diff > 0 
+                        ? ctx.createLinearGradient(0, 0, 0, 250) 
+                        : ctx.createLinearGradient(0, 0, 0, 250);
+                    if (diff > 0) {
+                        gradientFill.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
+                        gradientFill.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
+                    } else if (diff < 0) {
+                        gradientFill.addColorStop(0, 'rgba(239, 68, 68, 0.2)');
+                        gradientFill.addColorStop(1, 'rgba(239, 68, 68, 0.01)');
+                    } else {
+                        gradientFill.addColorStop(0, 'rgba(102, 126, 234, 0.2)');
+                        gradientFill.addColorStop(1, 'rgba(102, 126, 234, 0.01)');
+                    }
+
+                    rateChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: fromCurrency + ' → ' + toCurrency,
+                                data: values,
+                                borderColor: lineColor,
+                                backgroundColor: gradientFill,
+                                borderWidth: 2.5,
+                                pointRadius: 4,
+                                pointHoverRadius: 7,
+                                pointBackgroundColor: '#fff',
+                                pointBorderColor: lineColor,
+                                pointBorderWidth: 2.5,
+                                pointHoverBackgroundColor: lineColor,
+                                pointHoverBorderColor: '#fff',
+                                tension: 0.35,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            aspectRatio: 2.5,
+                            animation: {
+                                duration: 800,
+                                easing: 'easeInOutQuart'
+                            },
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 16,
+                                        font: { family: 'Nunito, sans-serif', size: 12 },
+                                        color: '#6b7280'
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: '#1f2937',
+                                    titleFont: { family: 'Nunito, sans-serif', size: 13 },
+                                    bodyFont: { family: 'Nunito, sans-serif', size: 14, weight: 'bold' },
+                                    padding: 12,
+                                    cornerRadius: 10,
+                                    displayColors: false,
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.parsed.y.toFixed(6) + ' ' + toCurrency;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        font: { family: 'Nunito, sans-serif', size: 11 },
+                                        color: '#9ca3af',
+                                        maxRotation: 45
+                                    }
+                                },
+                                y: {
+                                    grid: {
+                                        color: 'rgba(0,0,0,0.04)',
+                                        drawBorder: false
+                                    },
+                                    ticks: {
+                                        font: { family: 'Nunito, sans-serif', size: 11 },
+                                        color: '#9ca3af',
+                                        padding: 8,
+                                        callback: function(value) {
+                                            return value.toFixed(4);
+                                        }
+                                    }
+                                }
+                            },
+                            interaction: {
+                                intersect: false,
+                                mode: 'index'
+                            }
+                        }
+                    });
+
+                    chartInitialized = true;
+                } else {
+                    if (wrapper) wrapper.style.display = 'none';
+                    if (errorMsg) {
+                        errorMsg.style.display = 'flex';
+                        document.getElementById('chart-error-text').textContent = data.error || 'Données non disponibles';
+                    }
+                }
+            })
+            .catch(function(err) {
+                var loading = document.getElementById('chart-loading');
+                var wrapper = document.getElementById('chart-canvas-wrapper');
+                var errorMsg = document.getElementById('chart-error-msg');
+                if (loading) loading.style.display = 'none';
+                if (wrapper) wrapper.style.display = 'none';
+                if (errorMsg) {
+                    errorMsg.style.display = 'flex';
+                    document.getElementById('chart-error-text').textContent = 'Erreur réseau : ' + err.message;
+                }
+            });
+    };
+
+    window.toggleChart = function() {
+        var body = document.getElementById('chart-body');
+        var btn = document.getElementById('chart-toggle-btn');
+        if (body && btn) {
+            var isHidden = body.style.display === 'none';
+            body.style.display = isHidden ? '' : 'none';
+            btn.innerHTML = isHidden 
+                ? '<i class="fas fa-chevron-up"></i>' 
+                : '<i class="fas fa-chevron-down"></i>';
+        }
+    };
+
+    // Override existing functions to also update chart
+    var _origConvert = window.convertCurrency;
+    window.convertCurrency = function() {
+        _origConvert();
+        var from = document.getElementById('from-currency');
+        var to = document.getElementById('to-currency');
+        if (from && to && from.value !== to.value) {
+            window.loadHistoricalChart(from.value, to.value);
+        }
+    };
+
+    var _origSwap = window.swapCurrencies;
+    window.swapCurrencies = function() {
+        _origSwap();
+        var from = document.getElementById('from-currency');
+        var to = document.getElementById('to-currency');
+        if (from && to) {
+            window.loadHistoricalChart(from.value, to.value);
+        }
+    };
+
+    var _origSelect = window.selectTargetCurrency;
+    window.selectTargetCurrency = function(currency) {
+        _origSelect(currency);
+        var from = document.getElementById('from-currency');
+        var to = document.getElementById('to-currency');
+        if (from && to && from.value !== to.value) {
+            window.loadHistoricalChart(from.value, to.value);
+        }
+    };
+
+    // Initial conversion & chart
+    window.convertCurrency();
+})();
+</script>
+
+<style>
+/* Rate flash animation */
+.rate-flash {
+    animation: flashPulse 0.4s ease;
+}
+@keyframes flashPulse {
+    0% { color: inherit; }
+    50% { color: #667eea; transform: scale(1.08); }
+    100% { color: inherit; }
+}
+
+/* Swap animation */
+.swap-btn.swapped {
+    transform: rotate(180deg);
+}
+</style>
+{% endblock %}

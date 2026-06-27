@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+{% load static %}
+{% load treeview_extras %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بسم الله الرحمن الرحيم — Gestion ingfou</title>
+    <link rel="stylesheet" href="{% static 'treeviewDJ/css/style.css' %}">
+</head>
+<body>
+
+<div class="toast-container">
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="toast {{ msg.tags }}">{{ msg }}</div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<div class="container">
+    <div class="app-header">
+        <h1>بسم الله الرحمن الرحيم</h1>
+        <div class="header-actions">
+            <span id="count-display" class="count-badge">Total : {{ total }}</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <button class="btn btn-success" onclick="openAddModal()">+ Ajouter</button>
+            <button class="btn btn-danger" id="deleteSelectedBtn" onclick="deleteSelected()" disabled>Supprimer sélection</button>
+            <button class="btn btn-danger" onclick="deleteAll()">Tout supprimer</button>
+            <button class="btn btn-info" onclick="openSearchModal()">🔍 Recherche</button>
+            <button class="btn btn-warning" onclick="exportExcel()">📥 Export Excel</button>
+            <button class="btn btn-secondary" onclick="openImportModal()">📂 Import Excel</button>
+            <button class="btn btn-ghost btn-count" onclick="getCount()">Compter</button>
+        </div>
+        <div class="card-body">
+            <div class="search-row" style="margin-bottom:12px;">
+                <input type="text" name="q" placeholder="Recherche rapide (libellé, commune, secteur)..." value="{{ q }}" id="quick-search-input">
+                <button class="btn btn-primary" onclick="quickSearch()">Chercher</button>
+                {% if q or filters %}
+                <button class="btn btn-ghost" onclick="resetFilters()">✕ Réinitialiser</button>
+                {% endif %}
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:36px"><input type="checkbox" onchange="toggleAll(this)"></th>
+                            <th style="width:44px">
+                                <a href="javascript:void(0)" class="sort-link" onclick="sortTable('id')">
+                                    #
+                                    <span class="sort-arrow {% if sort == 'id' %}{{ direction }}{% endif %} {% if sort == 'id' %}active{% endif %}"></span>
+                                </a>
+                            </th>
+                            {% for col in columns %}
+                            <th>
+                                <a href="javascript:void(0)" class="sort-link" onclick="sortTable('{{ col.field }}')">
+                                    {{ col.label }}
+                                    <span class="sort-arrow {% if sort == col.field %}{{ direction }}{% endif %} {% if sort == col.field %}active{% endif %}"></span>
+                                </a>
+                            </th>
+                            {% endfor %}
+                            <th style="width:60px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in page_obj %}
+                        <tr id="row-{{ record.id }}" class="{% cycle 'even' 'odd' %}" onclick="toggleRow({{ record.id }})">
+                            <td><input type="checkbox" class="record-cb" id="cb-{{ record.id }}" onclick="event.stopPropagation()"></td>
+                            <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+                            <td>{{ record.sous_secteur|default:'' }}</td>
+                            <td>{{ record.n_operati|default:'' }}</td>
+                            <td>{{ record.chapitre|default:'' }}</td>
+                            <td style="text-align:left;max-width:300px;overflow:hidden;text-overflow:ellipsis;">{{ record.libelle_op|default:'' }}</td>
+                            <td>{{ record.ap_initial|default:'' }}</td>
+                            <td>{{ record.commune|default:'' }}</td>
+                            <td>{{ record.gest|default:'' }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openEditModal({{ record.id }})">✏️</button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="10"><div class="empty-state">Aucun enregistrement trouvé.</div></td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination-bar">
+                <div>
+                    {% if total > 0 %}
+                    {{ page_obj.start_index }}–{{ page_obj.end_index }} sur {{ total }} enregistrement{% if total > 1 %}s{% endif %}
+                    {% endif %}
+                </div>
+                <div style="display:flex;gap:12px;align-items:center;">
+                    <label style="font-size:13px;color:var(--gray-500);">
+                        Par page :
+                        <select class="per-page-select" onchange="changePerPage(this.value)">
+                            <option value="10" {% if per_page == 10 %}selected{% endif %}>10</option>
+                            <option value="25" {% if per_page == 25 %}selected{% endif %}>25</option>
+                            <option value="50" {% if per_page == 50 %}selected{% endif %}>50</option>
+                            <option value="100" {% if per_page == 100 %}selected{% endif %}>100</option>
+                            <option value="200" {% if per_page == 200 %}selected{% endif %}>200</option>
+                        </select>
+                    </label>
+                    <div class="pagination-links">
+                        {% if page_obj.has_previous %}
+                        <a href="?{% url_replace page=1 %}">&laquo;&laquo;</a>
+                        <a href="?{% url_replace page=page_obj.previous_page_number %}">&laquo;</a>
+                        {% endif %}
+
+                        {% for p in page_obj.paginator.page_range %}
+                            {% if p == page_obj.number %}
+                            <span class="current">{{ p }}</span>
+                            {% elif p > page_obj.number|add:'-3' and p < page_obj.number|add:'3' %}
+                            <a href="?{% url_replace page=p %}">{{ p }}</a>
+                            {% elif p == page_obj.number|add:'-4' or p == page_obj.number|add:'4' %}
+                            <span class="dots">...</span>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <a href="?{% url_replace page=page_obj.next_page_number %}">&raquo;</a>
+                        <a href="?{% url_replace page=page_obj.paginator.num_pages %}">&raquo;&raquo;</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="delete-form" method="POST" action="{% url 'delete_records' %}">
+    {% csrf_token %}
+    <input type="hidden" name="ids" id="delete-ids">
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+</form>
+<form id="delete-all-form" method="POST" action="{% url 'delete_all' %}">
+    {% csrf_token %}
+</form>
+
+<div class="modal-overlay" id="add-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Ajouter un enregistrement</h2>
+            <button class="modal-close" onclick="closeModal('add-modal')">✕</button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="{% url 'add_record' %}" id="add-form">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>SOUS_SECTEUR</label>
+                        <input type="text" name="sous_secteur" placeholder="Sous-secteur">
+                    </div>
+                    <div class="form-group">
+                        <label>N_OPERATI</label>
+                        <input type="number" name="n_operati" placeholder="N° opération">
+                    </div>
+                    <div class="form-group">
+                        <label>CHAPITRE_</label>
+                        <input type="number" name="chapitre" placeholder="Chapitre">
+                    </div>
+                    <div class="form-group">
+                        <label>LIBELLE_OP</label>
+                        <input type="text" name="libelle_op" placeholder="Libellé opération">
+                    </div>
+                    <div class="form-group">
+                        <label>AP_INITIAL</label>
+                        <input type="number" step="0.01" name="ap_initial" placeholder="Montant">
+                    </div>
+                    <div class="form-group">
+                        <label>COMMUNE</label>
+                        <input type="text" name="commune" placeholder="Commune">
+                    </div>
+                    <div class="form-group">
+                        <label>GEST_</label>
+                        <input type="text" name="gest" placeholder="Gestion">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('add-modal')">Annuler</button>
+                    <button type="submit" class="btn btn-success">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="edit-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Modifier l'enregistrement</h2>
+            <button class="modal-close" onclick="closeModal('edit-modal')">✕</button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="edit-form">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>SOUS_SECTEUR</label>
+                        <input type="text" name="sous_secteur" id="edit-sous_secteur">
+                    </div>
+                    <div class="form-group">
+                        <label>N_OPERATI</label>
+                        <input type="number" name="n_operati" id="edit-n_operati">
+                    </div>
+                    <div class="form-group">
+                        <label>CHAPITRE_</label>
+                        <input type="number" name="chapitre" id="edit-chapitre">
+                    </div>
+                    <div class="form-group">
+                        <label>LIBELLE_OP</label>
+                        <input type="text" name="libelle_op" id="edit-libelle_op">
+                    </div>
+                    <div class="form-group">
+                        <label>AP_INITIAL</label>
+                        <input type="number" step="0.01" name="ap_initial" id="edit-ap_initial">
+                    </div>
+                    <div class="form-group">
+                        <label>COMMUNE</label>
+                        <input type="text" name="commune" id="edit-commune">
+                    </div>
+                    <div class="form-group">
+                        <label>GEST_</label>
+                        <input type="text" name="gest" id="edit-gest">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('edit-modal')">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="search-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Recherche avancée</h2>
+            <button class="modal-close" onclick="closeModal('search-modal')">✕</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">
+            Opérateurs : <code>=valeur</code> (égal), <code>!=valeur</code> (différent), <code>&gt;nombre</code>, <code>&lt;nombre</code>, <code>&gt;=nombre</code>, <code>&lt;=nombre</code>, ou texte libre (contient).
+            </p>
+            <form id="search-form" onsubmit="event.preventDefault(); performSearch();">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>SOUS_SECTEUR</label>
+                        <input type="text" name="sous_secteur" value="{{ filters.sous_secteur|default:'' }}" placeholder="=VAL ou !=VAL ou texte">
+                    </div>
+                    <div class="form-group">
+                        <label>N_OPERATI</label>
+                        <input type="text" name="n_operati" value="{{ filters.n_operati|default:'' }}" placeholder=">100 ou =50">
+                    </div>
+                    <div class="form-group">
+                        <label>CHAPITRE_</label>
+                        <input type="text" name="chapitre" value="{{ filters.chapitre|default:'' }}" placeholder=">=800">
+                    </div>
+                    <div class="form-group">
+                        <label>LIBELLE_OP</label>
+                        <input type="text" name="libelle_op" value="{{ filters.libelle_op|default:'' }}" placeholder="Contient...">
+                    </div>
+                    <div class="form-group">
+                        <label>AP_INITIAL</label>
+                        <input type="text" name="ap_initial" value="{{ filters.ap_initial|default:'' }}" placeholder=">1000">
+                    </div>
+                    <div class="form-group">
+                        <label>COMMUNE</label>
+                        <input type="text" name="commune" value="{{ filters.commune|default:'' }}" placeholder="=Alger">
+                    </div>
+                    <div class="form-group">
+                        <label>GEST_</label>
+                        <input type="text" name="gest" value="{{ filters.gest|default:'' }}" placeholder="!=CLÔTURÉ">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('search-modal')">Annuler</button>
+                    <button type="reset" class="btn btn-ghost">Effacer</button>
+                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="import-modal">
+    <div class="modal" style="max-width:450px;">
+        <div class="modal-header">
+            <h2>Import Excel</h2>
+            <button class="modal-close" onclick="closeModal('import-modal')">✕</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">
+            Les en-têtes doivent correspondre aux colonnes (SOUS_SECTEUR, N_OPERATI, CHAPITRE_, LIBELLE_OP, AP_INITIAL, COMMUNE, GEST_).
+            </p>
+            <form method="POST" action="{% url 'import_excel' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Fichier Excel (.xlsx)</label>
+                    <input type="file" name="file" accept=".xlsx" required style="padding:6px;">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('import-modal')">Annuler</button>
+                    <button type="submit" class="btn btn-success">Importer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'treeviewDJ/js/app.js' %}"></script>
+<script>
+function quickSearch() {
+    const val = document.getElementById('quick-search-input').value;
+    const params = new URLSearchParams(window.location.search);
+    if (val) params.set('q', val);
+    else params.delete('q');
+    params.set('page', '1');
+    window.location.href = '/?' + params.toString();
+}
+document.getElementById('quick-search-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') quickSearch();
+});
+</script>
+</body>
+</html>

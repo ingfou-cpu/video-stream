@@ -1,0 +1,74 @@
+<script>
+let selectedIds = new Set();
+function toggleRow(id) {
+  const cb = document.getElementById('cb-'+id);
+  cb.checked = !cb.checked;
+  const tr = document.getElementById('row-'+id);
+  cb.checked ? (selectedIds.add(id), tr.classList.add('selected')) : (selectedIds.delete(id), tr.classList.remove('selected'));
+  const btn = document.getElementById('deleteSelectedBtn');
+  const n = selectedIds.size;
+  if(btn) { btn.textContent = n ? 'Supprimer ('+n+')' : 'Supprimer sélection'; btn.disabled = !n; }
+}
+function toggleAll(s) {
+  document.querySelectorAll('.record-cb').forEach(cb => {
+    cb.checked = s.checked;
+    const id=Number(cb.id.replace('cb-',''));
+    const tr=document.getElementById('row-'+id);
+    s.checked ? (selectedIds.add(id), tr.classList.add('selected')) : (selectedIds.delete(id), tr.classList.remove('selected'));
+  });
+  const btn=document.getElementById('deleteSelectedBtn');
+  const n=selectedIds.size;
+  if(btn) { btn.textContent=n?'Supprimer ('+n+')':'Supprimer sélection'; btn.disabled=!n; }
+}
+function deleteSelected() {
+  const ids=Array.from(selectedIds); if(!ids.length) return;
+  if(!confirm('Supprimer '+ids.length+' enregistrement(s) ?')) return;
+  document.getElementById('delete-ids').value=ids.join(','); document.getElementById('delete-form').submit();
+}
+function deleteAll() {
+  if(!confirm('Supprimer TOUS les enregistrements ?')) return;
+  document.getElementById('delete-all-form').submit();
+}
+function openModal(id) {
+  document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden';
+  const fi=document.querySelector('#'+id+' input:not([type="hidden"])'); if(fi) setTimeout(()=>fi.focus(),100);
+}
+function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow=''; }
+function closeAllModals() { document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('active')); document.body.style.overflow=''; }
+function openAddModal() { document.getElementById('add-form').reset(); openModal('add-modal'); }
+function openEditModal(id) {
+  fetch('/detail/'+id+'/').then(r=>r.json()).then(d=>{
+    {% for col in columns %}
+    document.getElementById('edit-{{ col.field }}').value = d['{{ col.field }}']||'';
+    {% endfor %}
+    document.getElementById('edit-form').action='/edit/'+d.id+'/'; openModal('edit-modal');
+  });
+}
+function openSearchModal() { openModal('search-modal'); }
+function openImportModal() { openModal('import-modal'); }
+function performSearch() {
+  const f=document.getElementById('search-form'), p=new URLSearchParams(window.location.search);
+  f.querySelectorAll('input,select').forEach(el=>{ el.value?p.set(el.name,el.value):p.delete(el.name); });
+  p.set('page','1'); window.location.href='?'+p.toString();
+}
+function resetFilters() { window.location.href='/'; }
+function exportExcel() { window.location.href='/export/excel/'+window.location.search; }
+function getCount() {
+  const btn=document.querySelector('.btn-count'); btn.disabled=true; btn.textContent='...';
+  fetch('/count/'+window.location.search).then(r=>r.json()).then(d=>{
+    const el=document.getElementById('count-display')||document.querySelector('.count')||document.querySelector('.badge')||document.querySelector('.badge-arabe')||document.querySelector('.count-badge');
+    if(el) el.textContent='Total: '+d.total; btn.disabled=false; btn.textContent='Compter';
+  }).catch(()=>{ btn.disabled=false; btn.textContent='Compter'; });
+}
+function changePerPage(v) { const p=new URLSearchParams(window.location.search); p.set('per_page',v); p.set('page','1'); window.location.href='?'+p.toString(); }
+function sortTable(f) {
+  const p=new URLSearchParams(window.location.search);
+  p.get('sort')===f ? p.set('dir',p.get('dir')==='desc'?'asc':'desc') : (p.set('sort',f), p.set('dir','asc'));
+  p.set('page','1'); window.location.href='?'+p.toString();
+}
+document.addEventListener('click',e=>{const o=e.target.closest('.modal-overlay'); if(o&&e.target===o) closeAllModals();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAllModals();if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){const m=document.querySelector('.modal-overlay.active'); if(m){const s=m.querySelector('button[type="submit"]');if(s)s.click();}}});
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.toast').forEach(t=>{setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(-10px)';t.style.transition='all .3s ease';setTimeout(()=>t.remove(),300);},4000);});
+});
+</script>

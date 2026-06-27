@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Réservation - Calcul du Coût</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+        .form-group { margin-bottom: 15px; }
+        label {
+            display: block; margin-bottom: 5px;
+            font-weight: bold; color: #34495e;
+        }
+        input, select {
+            width: 100%; padding: 10px; border: 1px solid #ddd;
+            border-radius: 5px; box-sizing: border-box; font-size: 14px;
+        }
+        input:focus, select:focus { outline: none; border-color: #3498db; }
+        .resultat-section {
+            margin-top: 25px; padding: 20px;
+            background-color: #ecf0f1; border-radius: 8px;
+        }
+        .resultat-section h3 {
+            margin-top: 0; color: #2c3e50;
+            border-bottom: 2px solid #3498db; padding-bottom: 10px;
+        }
+        .ligne-resultat {
+            display: flex; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px dashed #bdc3c7;
+        }
+        .ligne-resultat.total {
+            font-weight: bold; font-size: 1.2em; color: #27ae60;
+            border-top: 2px solid #27ae60; border-bottom: none;
+            margin-top: 10px; padding-top: 15px;
+        }
+        .ligne-resultat.tva { color: #e74c3c; }
+        .btn-calculer {
+            width: 100%; padding: 12px; background-color: #3498db;
+            color: white; border: none; border-radius: 5px;
+            font-size: 16px; cursor: pointer; margin-top: 15px;
+        }
+        .btn-calculer:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>📋 Formulaire de Réservation</h2>
+
+        <form id="reservationForm" method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="customer_name">Nom du client :</label>
+                <input type="text" id="customer_name" name="customer_name" value="{{ customer_name }}" placeholder="Entrez votre nom" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customer_email">Email :</label>
+                <input type="email" id="customer_email" name="customer_email" placeholder="votre@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customer_phone">Numéro de téléphone :</label>
+                <input type="tel" id="customer_phone" name="customer_phone" placeholder="Ex: 0555 123 456" required>
+            </div>
+
+            <div class="form-group">
+                <label for="destination">Destination :</label>
+                <select id="destination" name="destination" required>
+                    <option value="">-- Sélectionnez une destination --</option>
+                    {% for dest in Destinations %}
+                        <option value="{{ dest.id }}">{{ dest.city_name }} - {{ dest.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="hotel">Hôtel :</label>
+                <select id="hotel" name="hotel" required>
+                    <option value="">-- Sélectionnez un hôtel --</option>
+                    {% for h in Hotels %}
+                        <option value="{{ h.id }}">{{ h.hotel_name }} - {{ h.price }} DA/nuit</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="nombre_nuits">Nombre de nuits :</label>
+                <input type="number" id="nombre_nuits" name="nombre_nuits" min="1" value="1" placeholder="Ex: 3">
+            </div>
+
+            <div class="form-group">
+                <label for="transport">Moyen de transport :</label>
+                <select id="transport" name="transport" required>
+                    <option value="">-- Sélectionnez le transport --</option>
+                    <option value="50000">Avion - 50 000 DA</option>
+                    <option value="15000">Train - 15 000 DA</option>
+                    <option value="8000">Bus - 8 000 DA</option>
+                    <option value="25000">Voiture de location - 25 000 DA</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="nombre_adultes">Nombre d'adultes :</label>
+                <input type="number" id="nombre_adultes" name="nombre_adultes" min="1" value="1" placeholder="Ex: 2">
+            </div>
+
+            <div class="form-group">
+                <label for="nombre_enfants">Nombre d'enfants :</label>
+                <input type="number" id="nombre_enfants" name="nombre_enfants" min="0" value="0" placeholder="Ex: 0">
+            </div>
+
+            <div class="form-group">
+                <label for="check_in">Date d'arrivée :</label>
+                <input type="date" id="check_in" name="check_in" required>
+            </div>
+
+            <div class="form-group">
+                <label for="check_out">Date de départ :</label>
+                <input type="date" id="check_out" name="check_out" required>
+            </div>
+
+            <button type="button" class="btn-calculer" onclick="calculerTotal()">🧮 Calculer le Total</button>
+        </form>
+
+        <div class="resultat-section" id="resultatSection" style="display: none;">
+            <h3>📊 Détail des Coûts</h3>
+            <div class="ligne-resultat">
+                <span>Coût Hôtel :</span>
+                <span id="coutHotel">0 DA</span>
+            </div>
+            <div class="ligne-resultat">
+                <span>Coût Transport :</span>
+                <span id="coutTransport">0 DA</span>
+            </div>
+            <div class="ligne-resultat">
+                <span>Nombre d'enfants :</span>
+                <span id="nbEnfants">0</span>
+            </div>
+            <div class="ligne-resultat">
+                <span>Supplément enfants (50% par enfant) :</span>
+                <span id="supplementEnfants">0 DA</span>
+            </div>
+            <div class="ligne-resultat">
+                <span>Sous-total HT :</span>
+                <span id="sousTotal">0 DA</span>
+            </div>
+            <div class="ligne-resultat tva">
+                <span>TVA (19%) :</span>
+                <span id="montantTVA">0 DA</span>
+            </div>
+            <div class="ligne-resultat total">
+                <span>TOTAL TTC :</span>
+                <span id="totalTTC">0 DA</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculerTotal() {
+            var prixHotel = parseFloat(document.getElementById('hotel').value) || 0;
+            var nombreNuits = parseInt(document.getElementById('nombre_nuits').value) || 1;
+            var prixTransport = parseFloat(document.getElementById('transport').value) || 0;
+            var nombreAdultes = parseInt(document.getElementById('nombre_adultes').value) || 1;
+            var nombreEnfants = parseInt(document.getElementById('nombre_enfants').value) || 0;
+
+            var coutHotel = prixHotel * nombreNuits * nombreAdultes;
+            var coutTransport = prixTransport * (nombreAdultes + nombreEnfants);
+            var supplementEnfants = (prixHotel * nombreNuits * 0.5) * nombreEnfants;
+            var sousTotal = coutHotel + coutTransport + supplementEnfants;
+            var tauxTVA = 0.19;
+            var montantTVA = sousTotal * tauxTVA;
+            var totalTTC = sousTotal + montantTVA;
+
+            document.getElementById('coutHotel').textContent = coutHotel.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('coutTransport').textContent = coutTransport.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('nbEnfants').textContent = nombreEnfants;
+            document.getElementById('supplementEnfants').textContent = supplementEnfants.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('sousTotal').textContent = sousTotal.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('montantTVA').textContent = montantTVA.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('totalTTC').textContent = totalTTC.toLocaleString('fr-FR') + ' DA';
+
+            document.getElementById('resultatSection').style.display = 'block';
+        }
+
+    </script>
+
+</body>
+</html>

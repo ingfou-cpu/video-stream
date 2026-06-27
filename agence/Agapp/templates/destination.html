@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Facture d'hôtel</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .logo { max-width: 150px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .total { font-weight: bold; text-align: right; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>:inlineEntity{type="inline_entity" conversation="090f4e90bfe12bd7b1e66efb5ff730713a3c" name="Hôtel&#32;Le&#32;Soleil"}</h1>
+    <p>123 Avenue des Palmiers, 75000 Paris<br>
+    Téléphone : 01 23 45 67 89 | Email : contact@hotelsonleil.fr</p>
+  </div>
+
+  <h2>Facture</h2>
+  <p><strong>Numéro de facture :</strong> FACT-2026-001<br>
+  <strong>Date :</strong> 08 mai 2026</p>
+
+  <h3>Client</h3>
+  <p><strong>Nom :</strong> Jean Dupont<br>
+  <strong>Adresse :</strong> 45 Rue des Fleurs, 69000 Lyon</p>
+
+  <h3>Détails du séjour</h3>
+  <p><strong>Chambre :</strong> 205<br>
+  <strong>Arrivée :</strong> 01 mai 2026 | <strong>Départ :</strong> 05 mai 2026<br>
+  <strong>Nuitées :</strong> 4</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Quantité</th>
+        <th>Prix unitaire (€)</th>
+        <th>Total (€)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Chambre double - Nuit</td>
+        <td>4</td>
+        <td>120,00</td>
+        <td>480,00</td>
+      </tr>
+      <tr>
+        <td>Petit-déjeuner buffet</td>
+        <td>4</td>
+        <td>18,00</td>
+        <td>72,00</td>
+      </tr>
+      <tr>
+        <td>Accès spa</td>
+        <td>1</td>
+        <td>35,00</td>
+        <td>35,00</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="total">
+    <p>Total TTC : 587,00 €</p>
+    <p>Mode de paiement : Carte bancaire</p>
+  </div>
+</body>
+</html>   

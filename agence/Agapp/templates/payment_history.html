@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<br><br><br><br><br><br><br><br><br><br>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold" style="color: #667eea;">
+            <i class="bi bi-clock-history"></i> Historique des paiements
+        </h1>
+        <p class="text-muted">Consultez l'ensemble des transactions effectuées</p>
+    </div>
+
+    {% if payments %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle" style="border-radius: 12px; overflow: hidden;">
+            <thead style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <tr>
+                    <th>#</th>
+                    <th>Client</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>Référence</th>
+                    <th>Montant</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td>{{ payment.customer_name|default:"-" }}</td>
+                    <td>{{ payment.customer_email|default:"-" }}</td>
+                    <td>
+                        {% if payment.destination %}
+                            <span class="badge bg-primary">Destination</span>
+                        {% elif payment.pack %}
+                            <span class="badge bg-success">Pack</span>
+                        {% else %}
+                            <span class="badge bg-secondary">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if payment.destination %}
+                            {{ payment.destination.name }}
+                        {% elif payment.pack %}
+                            {{ payment.pack.pack_name }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td class="fw-bold">{{ payment.amount|floatformat:2 }} €</td>
+                    <td>
+                        {% if payment.status == 'completed' %}
+                            <span class="badge bg-success">✅ Complété</span>
+                        {% elif payment.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">⏳ En attente</span>
+                        {% elif payment.status == 'failed' %}
+                            <span class="badge bg-danger">❌ Échoué</span>
+                        {% elif payment.status == 'refunded' %}
+                            <span class="badge bg-info">↩️ Remboursé</span>
+                        {% elif payment.status == 'expired' %}
+                            <span class="badge bg-secondary">⌛ Expiré</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ payment.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ payment.created_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+        <h3 class="text-muted mt-3">Aucun paiement enregistré</h3>
+        <p class="text-muted">Les paiements apparaîtront ici une fois effectués.</p>
+        <a href="{% url 'payment_home' %}" class="btn btn-primary mt-3"
+           style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+            <i class="bi bi-credit-card"></i> Effectuer un paiement
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour à l'accueil
+        </a>
+    </div>
+</div>
+{% endblock %}

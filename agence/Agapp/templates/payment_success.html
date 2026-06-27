@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-lg border-0 text-center"
+                 style="border-radius: 20px; animation: slideUp 0.6s ease-out;">
+
+                <div class="card-body p-5">
+                    <!-- Icône de succès animée -->
+                    <div class="mb-4">
+                        <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    margin: 0 auto; animation: scaleIn 0.5s ease-out 0.3s both;">
+                            <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; stroke: white; stroke-width: 3; fill: none;">
+                                <polyline points="20 6 9 17 4 12"
+                                          style="stroke-dasharray: 100; stroke-dashoffset: 100; animation: drawCheck 0.5s ease-out 0.6s forwards;">
+                                </polyline>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h1 class="display-5 fw-bold mb-3" style="color: #333;">Paiement Réussi ! ✅</h1>
+                    <p class="lead text-muted mb-4">
+                        Merci pour votre réservation. Votre paiement a été traité avec succès.
+                    </p>
+
+                    {% if payment_record %}
+                    <div class="card bg-light border-0 mb-4" style="border-radius: 12px;">
+                        <div class="card-body text-start">
+                            <h5 class="fw-bold mb-3"><i class="bi bi-receipt"></i> Détails du paiement</h5>
+                            {% if payment_record.destination %}
+                            <p class="mb-1"><strong>Destination :</strong> {{ payment_record.destination.name }}</p>
+                            {% endif %}
+                            {% if payment_record.pack %}
+                            <p class="mb-1"><strong>Pack :</strong> {{ payment_record.pack.pack_name }}</p>
+                            {% endif %}
+                            <p class="mb-1"><strong>Client :</strong> {{ payment_record.customer_name }}</p>
+                            <p class="mb-1"><strong>Email :</strong> {{ payment_record.customer_email }}</p>
+                            <p class="mb-1"><strong>Date :</strong> {{ payment_record.updated_at|date:"d/m/Y H:i" }}</p>
+                            <hr>
+                            <p class="mb-0 h4" style="color: #11998e;">
+                                Montant : {{ payment_record.amount|floatformat:2 }} €
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="alert alert-info" role="alert">
+                        <i class="bi bi-envelope"></i> Vous recevrez un email de confirmation sous peu.
+                    </div>
+
+                    <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+                        <a href="{% url 'home' %}" class="btn btn-primary px-4 py-2"
+                           style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 8px;">
+                            <i class="bi bi-house"></i> Retour à l'accueil
+                        </a>
+                        <a href="{% url 'payment_home' %}" class="btn btn-outline-primary px-4 py-2"
+                           style="border-radius: 8px;">
+                            <i class="bi bi-credit-card"></i> Nouveau paiement
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+@keyframes drawCheck {
+    to { stroke-dashoffset: 0; }
+}
+</style>
+{% endblock %}

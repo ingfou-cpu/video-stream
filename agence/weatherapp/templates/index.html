@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; text-align: center; }
+        input[type="text"] { padding: 0.5rem; width: 250px; border-radius: 5px; border: 1px solid #ccc; }
+        button { padding: 0.5rem 1rem; border: none; border-radius: 5px; background: #007BFF; color: white; cursor: pointer; }
+        .weather, .recent { margin-top: 1.5rem; }
+        .error { color: red; margin-top: 1rem; }
+        img { margin-top: 0.5rem; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 0.5rem 0; }
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="city" placeholder="Enter city name">
+        <button type="submit">Get Weather</button>
+    </form>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if weather %}
+        <div class="weather">
+            <h2>{{ weather.city }}</h2>
+            <p>Temperature: {{ weather.temperature }} °C</p>
+            <p>Humidity: {{ weather.humidity }} %</p>
+            <p>Pressure: {{ weather.pressure }} hPa</p>
+            <p>Conditions: {{ weather.description }}</p>
+            <img src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon">
+        </div>
+    {% endif %}
+
+    {% if recent_searches %}
+        <div class="recent">
+            <h3>Recent Searches</h3>
+            <ul>
+                {% for search in recent_searches %}
+                    <li>{{ search.city_name }} - {{ search.temperature }}°C - {{ search.description }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Taux de Change</title>
+</head>
+<body>
+    <h1>Taux de change actuels</h1>
+
+    {% if erreur %}
+        <p style="color: red;">{{ erreur }}</p>
+    {% else %}
+        <ul>
+            {% for devise, valeur in taux.items %}
+                <li>1 EUR = {{ valeur }} {{ devise }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
+
+</body>
+</html>

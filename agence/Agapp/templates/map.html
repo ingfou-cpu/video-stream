@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section style="padding: 8rem 0 3rem; background: var(--eb-dark);">
+    <div class="container px-4 px-lg-5">
+        <div class="section-title">
+            <h2 style="color: white;">Carte des destinations</h2>
+            <p style="color: rgba(255,255,255,0.5);">Explorez nos destinations sur la carte</p>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 3rem 0 5rem; background: var(--eb-light);">
+    <div class="container px-4 px-lg-5">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <div id="map" style="height: 500px; border-radius: 24px; overflow: hidden; box-shadow: var(--eb-shadow-md);"></div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var map = L.map('map').setView([33.7, 3.0], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            {% for d in destinations %}
+            L.marker([{{ d.latitude|default:"33.7" }}, {{ d.longitude|default:"3.0" }}])
+                .addTo(map)
+                .bindPopup('<strong>{{ d.name }}</strong><br>{{ d.price }} DA<br><a href="{% url "reselieuChoisi" d.id %}" style="color: var(--eb-primary);">Voir l\'offre</a>');
+            {% endfor %}
+        });
+        </script>
+    </div>
+</section>
+{% endblock %}

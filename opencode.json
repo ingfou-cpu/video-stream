@@ -22,20 +22,6 @@
       "url": "https://mcp.grep.app",
       "enabled": true
     },
-    "sentry": {
-      "type": "remote",
-      "url": "https://mcp.sentry.dev/mcp",
-      "oauth": {},
-      "enabled": true
-    },
-    "github": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
-      "enabled": true,
-      "environment": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_TOKEN}"
-      }
-    },
     "21st-dev": {
       "type": "local",
       "command": ["npx", "-y", "@21st-dev/magic@latest"],

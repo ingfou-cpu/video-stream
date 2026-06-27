@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+        <!-- Projects-->
+        <section class="projects-section bg-light" id="projects">
+            <div class="container px-4 px-lg-5">
+                 <!-- Featured Project Row-->
+                 <h1><center><b><em> Destinations et lieux Touristiques </em></b> </center></h1>
+                <!-- {{ Destination }}-->
+                {% for Destinations in Destination %}
+                <!-- Featured Project Row-->
+                <div class="row gx-0 mb-4 mb-lg-5 align-items-center">
+                    <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{Destinations.image.url}}" alt="..." /></div>
+                    <div class="col-xl-4 col-lg-5">
+                        <div class="featured-text text-center text-lg-left">
+                            <h4>{{Destinations.name}}</h4>
+                            <p class="text-black-50 mb-0"> {{Destinations.description}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mb-5">
+                    <a href="{% url 'reservation' %}" class="btn btn-success btn-lg">
+                        <i class="fas fa-check-circle me-2"></i>Choisir cette destination
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        <!-- Signup-->
+
+{% endblock %}

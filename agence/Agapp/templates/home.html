@@ -1,0 +1,453 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Masthead / Hero -->
+<header class="masthead">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-glow-line"></div>
+    <div class="container px-4 px-lg-5 h-100 d-flex align-items-center">
+        <div class="row w-100 gx-5 align-items-center">
+            <div class="col-lg-7">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Bienvenue chez
+                </div>
+                <h1 class="hero-title">El Bayadh Travels</h1>
+                <p class="hero-subtitle">Explorez le monde avec nos offres de voyage exceptionnelles !</p>
+                <div class="hero-actions">
+                    <a href="#projects" class="hero-btn hero-btn-primary">
+                        <span>Découvrir nos destinations</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'circuit' %}" class="hero-btn hero-btn-outline">
+                        <i class="fas fa-map"></i>
+                        <span>Voir les circuits</span>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">50+</span>
+                        <span class="hero-stat-label">Destinations</span>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">1000+</span>
+                        <span class="hero-stat-label">Voyageurs</span>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value">15+</span>
+                        <span class="hero-stat-label">Circuits</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+                <div class="hero-showcase">
+                    <div class="hero-showcase-glow"></div>
+                    <div class="hero-showcase-card">
+                        <div class="hero-showcase-header">
+                            <div class="hero-showcase-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                        <div class="hero-showcase-body">
+                            <div class="hsc-icon"><i class="fas fa-sun"></i></div>
+                            <h4>Sahara Algérien</h4>
+                            <p>Des dunes infinies aux oasis cachées, partez à la découverte du plus grand désert du monde.</p>
+                            <div class="hsc-features">
+                                <div class="hsc-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Circuits guidés</span>
+                                </div>
+                                <div class="hsc-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Hébergement nomade</span>
+                                </div>
+                                <div class="hsc-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Transport inclus</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Destinations Carousel -->
+<section style="padding: 4rem 0; background: var(--eb-light-2);">
+    <div class="container px-4 px-lg-5">
+        <div class="section-title">
+            <h2>Destinations et lieux Touristiques</h2>
+            <p>Découvrez nos destinations soigneusement sélectionnées pour des expériences inoubliables</p>
+        </div>
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" data-bs-wrap="true">
+            <div class="carousel-indicators">
+                {% for Destinations in Destination %}
+                    <button type="button"
+                            data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide-to="{{ forloop.counter0 }}"
+                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                            aria-label="Slide {{ forloop.counter }}">
+                    </button>
+                {% endfor %}
+            </div>
+            <div class="carousel-inner">
+                {% for Destinations in Destination %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <a href="{% url 'reselieuChoisi' Destinations.id %}">
+                            <img src="{{ Destinations.image.url }}" class="d-block w-100 carousel-img-clickable" alt="{{ Destinations.name }}">
+                        </a>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5><a href="{% url 'reselieuChoisi' Destinations.id %}" class="text-white text-decoration-none">{{ Destinations.name }}</a></h5>
+                            <p>{{ Destinations.description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Destinations Grid -->
+<section class="projects-section bg-light" id="projects">
+    <div class="container px-4 px-lg-5">
+        <div class="section-title">
+            <h2>Nos Destinations</h2>
+            <p>Chaque destination est une nouvelle aventure qui vous attend</p>
+        </div>
+        <div class="destination-grid">
+            {% for Destinations in Destination %}
+            <div class="destination-card">
+                <img src="{{ Destinations.image.url }}" class="card-img" alt="{{ Destinations.name }}">
+                <div class="card-body">
+                    <h4>{{ Destinations.name }}</h4>
+                    <p>{{ Destinations.description|truncatewords:25 }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'reselieuChoisi' Destinations.id %}" class="btn-destination">
+                        <i class="fas fa-check-circle"></i> Choisir cette destination
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+        <!-- Weather Section -->
+<style>
+    .weather-section-2 {
+        background: linear-gradient(135deg, #0f2027 0%, #203a43 40%, #2c5364 100%);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    .weather-section-2::before {
+        content: '';
+        position: absolute;
+        top: -50%; left: -50%;
+        width: 200%; height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+        animation: weatherPulse 8s ease-in-out infinite;
+    }
+    @keyframes weatherPulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 1; }
+    }
+    .weather-title-2 {
+        font-size: 2.4em; font-weight: 800; color: #fff;
+        text-align: center; margin-bottom: 8px;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        letter-spacing: -0.5px;
+    }
+    .weather-subtitle-2 {
+        text-align: center; color: rgba(255,255,255,0.6);
+        font-size: 1.05em; margin-bottom: 40px;
+    }
+    .weather-search-box {
+        max-width: 520px; margin: 0 auto 40px;
+        display: flex; gap: 0;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(12px);
+        border-radius: 60px;
+        border: 1px solid rgba(255,255,255,0.15);
+        padding: 6px;
+        transition: all 0.3s ease;
+    }
+    .weather-search-box:focus-within {
+        background: rgba(255,255,255,0.18);
+        border-color: rgba(255,255,255,0.3);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .weather-search-box input {
+        flex: 1; border: none; background: transparent;
+        color: #fff; padding: 14px 24px; font-size: 1.05em;
+        outline: none;
+    }
+    .weather-search-box input::placeholder { color: rgba(255,255,255,0.5); }
+    .weather-search-box button {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff; border: none; padding: 14px 32px;
+        border-radius: 54px; font-weight: 700; font-size: 1em;
+        cursor: pointer; transition: all 0.3s ease;
+        display: flex; align-items: center; gap: 8px;
+    }
+    .weather-search-box button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(102,126,234,0.5);
+    }
+    .weather-main-card {
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(16px);
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.12);
+        padding: 40px;
+        max-width: 600px; margin: 0 auto;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease;
+    }
+    .weather-main-card:hover { transform: translateY(-4px); }
+    .weather-city-name {
+        font-size: 1.4em; font-weight: 700; color: #fff;
+        margin-bottom: 4px;
+    }
+    .weather-city-country {
+        font-size: 0.9em; color: rgba(255,255,255,0.5);
+        margin-bottom: 16px;
+    }
+    .weather-icon-main {
+        width: 120px; height: 120px;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        margin: 8px 0;
+    }
+    .weather-temp-main {
+        font-size: 4em; font-weight: 800; color: #fff;
+        line-height: 1; margin: 8px 0;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .weather-desc-main {
+        font-size: 1.15em; color: rgba(255,255,255,0.7);
+        margin-bottom: 28px; text-transform: capitalize;
+    }
+    .weather-stats {
+        display: flex; justify-content: center; gap: 32px;
+        flex-wrap: wrap;
+    }
+    .weather-stat {
+        text-align: center; min-width: 90px;
+    }
+    .weather-stat-icon {
+        font-size: 1.6em; margin-bottom: 4px;
+        filter: grayscale(0.2);
+    }
+    .weather-stat-label {
+        font-size: 0.75em; color: rgba(255,255,255,0.45);
+        text-transform: uppercase; letter-spacing: 1px;
+        margin-bottom: 2px;
+    }
+    .weather-stat-value {
+        font-size: 1.2em; font-weight: 700; color: #fff;
+    }
+    .weather-error-box {
+        max-width: 520px; margin: 0 auto 24px;
+        background: rgba(231,76,60,0.15);
+        border: 1px solid rgba(231,76,60,0.3);
+        border-radius: 16px;
+        padding: 16px 24px;
+        color: #f5b7b1; text-align: center;
+        font-weight: 600;
+    }
+    .forecast-title-2 {
+        font-size: 1.3em; font-weight: 700; color: #fff;
+        text-align: center; margin-top: 40px; margin-bottom: 24px;
+    }
+    .forecast-scroll {
+        display: flex; gap: 14px; overflow-x: auto;
+        padding: 4px 0 16px;
+        max-width: 900px; margin: 0 auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+    .forecast-scroll::-webkit-scrollbar { height: 4px; }
+    .forecast-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+    .forecast-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+    .forecast-day-2 {
+        flex: 0 0 115px;
+        background: rgba(255,255,255,0.06);
+        backdrop-filter: blur(8px);
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 20px 12px;
+        text-align: center;
+        scroll-snap-align: start;
+        transition: all 0.3s ease;
+    }
+    .forecast-day-2:hover {
+        background: rgba(255,255,255,0.12);
+        transform: translateY(-4px);
+        border-color: rgba(255,255,255,0.2);
+    }
+    .forecast-day-2.today {
+        background: linear-gradient(135deg, rgba(102,126,234,0.3), rgba(118,75,162,0.3));
+        border-color: rgba(102,126,234,0.4);
+    }
+    .forecast-day-label {
+        font-size: 0.85em; font-weight: 700; color: #fff;
+        margin-bottom: 2px;
+    }
+    .forecast-day-date {
+        font-size: 0.72em; color: rgba(255,255,255,0.4);
+        margin-bottom: 10px;
+    }
+    .forecast-day-emoji {
+        font-size: 2em; margin-bottom: 8px;
+        display: block;
+    }
+    .forecast-day-desc {
+        font-size: 0.7em; color: rgba(255,255,255,0.5);
+        margin-bottom: 10px;
+        line-height: 1.3;
+        min-height: 28px;
+    }
+    .forecast-day-temps {
+        display: flex; justify-content: center; gap: 6px;
+        align-items: baseline;
+    }
+    .forecast-day-max {
+        font-size: 1.15em; font-weight: 800; color: #fff;
+    }
+    .forecast-day-min {
+        font-size: 0.85em; font-weight: 500; color: rgba(255,255,255,0.4);
+    }
+</style>
+
+<section class="weather-section-2" id="weather">
+    <div class="container px-4 px-lg-5 position-relative" style="z-index: 1;">
+        <h2 class="weather-title-2">🌤️ Météo en direct</h2>
+        <p class="weather-subtitle-2">Consultez les conditions météorologiques de n'importe quelle ville</p>
+
+        <!-- Search -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="weather-search-box">
+                <input type="text" name="city" placeholder="Rechercher une ville..." value="{{ request.POST.city }}" autocomplete="off">
+                <button type="submit"><i class="fas fa-search"></i> Chercher</button>
+            </div>
+        </form>
+
+        {% if weather_error %}
+        <div class="weather-error-box">
+            <i class="fas fa-exclamation-circle me-2"></i>{{ weather_error }}
+        </div>
+        {% endif %}
+
+        {% if weather_data %}
+        <!-- Current Weather -->
+        <div class="weather-main-card">
+            <div class="weather-city-name"><i class="fas fa-map-marker-alt" style="color:#e74c3c; margin-right:6px;"></i>{{ weather_data.city }}</div>
+            <div class="weather-city-country">Météo actuelle</div>
+            <img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@4x.png" alt="{{ weather_data.description }}" class="weather-icon-main">
+            <div class="weather-temp-main">{{ weather_data.temperature }}°</div>
+            <div class="weather-desc-main">{{ weather_data.description }}</div>
+            <div class="weather-stats">
+                <div class="weather-stat">
+                    <div class="weather-stat-icon">💧</div>
+                    <div class="weather-stat-label">Humidité</div>
+                    <div class="weather-stat-value">{{ weather_data.humidity }}%</div>
+                </div>
+                <div class="weather-stat">
+                    <div class="weather-stat-icon">🔽</div>
+                    <div class="weather-stat-label">Pression</div>
+                    <div class="weather-stat-value">{{ weather_data.pressure }} hPa</div>
+                </div>
+                <div class="weather-stat">
+                    <div class="weather-stat-icon">☁️</div>
+                    <div class="weather-stat-label">Conditions</div>
+                    <div class="weather-stat-value" style="font-size:0.95em;">{{ weather_data.description }}</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if forecast_7days %}
+        <!-- 7-Day Forecast -->
+        <h3 class="forecast-title-2"><i class="fas fa-calendar-week me-2"></i>Prévisions — 7 jours</h3>
+        <div class="forecast-scroll">
+            {% for day in forecast_7days %}
+            <div class="forecast-day-2 {% if forloop.first %}today{% endif %}">
+                <div class="forecast-day-label">{{ day.day_label }}</div>
+                <div class="forecast-day-date">{{ day.date_display }}</div>
+                <span class="forecast-day-emoji">{{ day.emoji }}</span>
+                <div class="forecast-day-desc">{{ day.description }}</div>
+                <div class="forecast-day-temps">
+                    <span class="forecast-day-max">{{ day.temp_max }}°</span>
+                    <span class="forecast-day-min">{{ day.temp_min }}°</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+        <!-- Contact-->
+        <section class="contact-section" id="contact">
+            <div class="container px-4 px-lg-5">
+                <div class="section-title">
+                    <h2 style="color: white;">Contactez-nous</h2>
+                    <p style="color: rgba(255,255,255,0.5);">Nous sommes à votre écoute pour organiser votre prochain voyage</p>
+                </div>
+                <div class="row gx-4 gx-lg-5">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-map-marked-alt mb-2"></i>
+                                <h4 class="text-uppercase m-0">Adresse</h4>
+                                <hr class="my-4 mx-auto" />
+                                <div class="small">El Bayadh, Algérie</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-envelope mb-2"></i>
+                                <h4 class="text-uppercase m-0">Email</h4>
+                                <hr class="my-4 mx-auto" />
+                                <div class="small"><a href="mailto:contact@elbayadhtravels.dz">contact@elbayadhtravels.dz</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card py-4 h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-mobile-alt mb-2"></i>
+                                <h4 class="text-uppercase m-0">Téléphone</h4>
+                                <hr class="my-4 mx-auto" />
+                                <div class="small">+213 (0) 00 00 00 00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social d-flex justify-content-center">
+                    <a href="#!"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#!"><i class="fab fa-instagram"></i></a>
+                    <a href="#!"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#!"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </section>
+{% endblock %}

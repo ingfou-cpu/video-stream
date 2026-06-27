@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %} 
+
+<section class="signup-section" id="signup" style="padding: 8rem 0 5rem;">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5">
+            <div class="col-md-8 col-lg-6 mx-auto text-center">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success mb-4">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="section-title">
+                    <h2 style="color: white;">Contactez-nous</h2>
+                    <p style="color: rgba(255,255,255,0.5);">Envoyez-nous un message et nous vous répondrons dans les plus brefs délais</p>
+                </div>
+                
+                {% if submitted %}
+                    <div style="background: rgba(255,255,255,0.06); border-radius: 24px; padding: 3rem; border: 1px solid rgba(255,255,255,0.08);">
+                        <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--eb-secondary-light); margin-bottom: 1.5rem;"></i>
+                        <h3 style="color: white; font-weight: 700; margin-bottom: 0.5rem;">Merci pour votre message !</h3>
+                        <p style="color: rgba(255,255,255,0.5); font-size: 1.1rem;">Nous vous répondrons dès que possible.</p>
+                        <a href="{% url 'home' %}" class="btn btn-primary mt-3">
+                            <i class="fas fa-home me-2"></i>Retour à l'accueil
+                        </a>
+                    </div>
+                {% else %}
+                    <form action="" method="post" style="text-align: left;">
+                        {% csrf_token %}
+                        <fieldset>
+                            <legend style="text-align: center; font-size: 1.8rem;">Envoyez-nous un message</legend>
+                            {{ form.as_p }} 
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">
+                                    <i class="fas fa-paper-plane me-2"></i>Envoyer
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+

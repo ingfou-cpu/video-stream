@@ -1,0 +1,385 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %} 
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #1a1a2e;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 60px 0 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .page-header h1 { font-size: 2.2em; font-weight: 700; margin-bottom: 10px; }
+        .page-header p { color: rgba(255,255,255,0.7); font-size: 1.1em; }
+        .destination-banner {
+            max-width: 900px; margin: 0 auto 30px; border-radius: 12px;
+            overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .destination-banner img { width: 100%; height: 300px; object-fit: cover; }
+        .destination-info {
+            max-width: 900px; margin: 0 auto 30px; background: white;
+            padding: 25px 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .destination-info h2 { color: #1a1a2e; margin-bottom: 10px; }
+        .destination-info p { color: #666; line-height: 1.7; }
+        .container-form { max-width: 900px; margin: 0 auto; padding: 0 15px 50px; }
+        .card-form {
+            background: white; border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); padding: 35px; margin-bottom: 25px;
+        }
+        .card-form h3 {
+            color: #1a1a2e; border-bottom: 3px solid #0f3460;
+            padding-bottom: 12px; margin-bottom: 25px; font-size: 1.3em;
+        }
+        .form-row { display: flex; gap: 20px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 200px; margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: 700; color: #34495e; font-size: 0.95em; }
+        input, select, textarea {
+            width: 100%; padding: 11px 14px; border: 2px solid #e0e0e0;
+            border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #0f3460; }
+        .btn-calculer {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: white; border: none; border-radius: 8px;
+            font-size: 1.1em; font-weight: 700; cursor: pointer; margin-top: 10px;
+        }
+        .btn-calculer:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(15,52,96,0.4); }
+        .btn-confirmer {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white; border: none; border-radius: 8px;
+            font-size: 1.1em; font-weight: 700; cursor: pointer; margin-top: 15px;
+        }
+        .btn-confirmer:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(39,174,96,0.4); }
+        .alert-confirmation {
+            padding: 15px 20px; border-radius: 8px; margin-bottom: 20px;
+            font-weight: 600; font-size: 1.05em;
+        }
+        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .resultat-section {
+            display: none; background: white; border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); padding: 35px; margin-bottom: 25px;
+        }
+        .resultat-section h3 {
+            color: #1a1a2e; border-bottom: 3px solid #27ae60;
+            padding-bottom: 12px; margin-bottom: 20px; font-size: 1.3em;
+        }
+        .ligne-resultat {
+            display: flex; justify-content: space-between;
+            padding: 10px 0; border-bottom: 1px dashed #ddd; font-size: 1em;
+        }
+        .ligne-resultat.total {
+            font-weight: 800; font-size: 1.3em; color: #27ae60;
+            border-top: 3px solid #27ae60; border-bottom: none; margin-top: 12px; padding-top: 18px;
+        }
+        .ligne-resultat.tva { color: #e74c3c; }
+        .hotel-cards { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px; }
+        .hotel-card {
+            border: 2px solid #e0e0e0; border-radius: 10px; padding: 15px;
+            cursor: pointer; transition: all 0.3s; flex: 1; min-width: 180px; text-align: center;
+        }
+        .hotel-card:hover { border-color: #0f3460; box-shadow: 0 2px 10px rgba(15,52,96,0.15); }
+        .hotel-card.selected { border-color: #0f3460; background-color: #f0f4ff; }
+        .hotel-card .stars { color: #f39c12; margin-bottom: 5px; }
+        .hotel-card .hotel-name { font-weight: 700; color: #1a1a2e; margin-bottom: 5px; }
+        .hotel-card .hotel-price { color: #0f3460; font-weight: 700; font-size: 1.1em; }
+        .badge-destination {
+            display: inline-block; background: #0f3460; color: white;
+            padding: 4px 14px; border-radius: 20px; font-size: 0.85em; margin-bottom: 10px;
+        }
+        .price-card {
+            background: white; border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); padding: 25px 35px; margin-bottom: 15px;
+            border-left: 5px solid #8e44ad;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .price-card .price-label { font-size: 1.1em; font-weight: 700; color: #34495e; }
+        .price-card .price-value { font-size: 1.8em; font-weight: 800; color: #8e44ad; }
+    </style>
+</head>
+<body>
+
+    <!-- Page Header -->
+    <div class="page-header" style="margin-top: 70px;">
+        <h1>🌍 Réservation pour {{ destination.name }}</h1>
+        <p>Remplissez le formulaire ci-dessous pour calculer les frais de votre réservation</p>
+    </div>
+
+    <!-- Destination Banner -->
+    <div class="destination-banner">
+        {% if destination.image %}
+            <img src="{{ destination.image.url }}" alt="{{ destination.name }}">
+        {% else %}
+            <img src="static/assets/img/bg-masthead.jpg" alt="{{ destination.name }}">
+        {% endif %}
+    </div>
+
+    <!-- Destination Info -->
+    <div class="destination-info">
+        <span class="badge-destination">📍 {{ destination.city_name }} ID: {{ destination.id }}</span>
+        <h2>{{ destination.name }}</h2>
+        <p>{{ destination.description }}</p>
+    </div>
+
+    <!-- Weather Card -->
+    {% if dest_weather %}
+    <div class="destination-info" style="border-left: 5px solid #3498db;">
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+                <h3 style="color: #3498db; margin-bottom: 8px; font-size: 1.2em;">
+                    <i class="fas fa-cloud-sun" style="margin-right: 8px;"></i>Météo actuelle
+                </h3>
+                <p style="color: #666; margin-bottom: 5px;"><strong>{{ dest_weather.city }}</strong></p>
+                <p style="font-size: 2.2em; font-weight: 800; color: #2c3e50; margin: 0;">{{ dest_weather.temperature }} °C</p>
+                <p style="color: #666; margin: 0;">{{ dest_weather.description }}</p>
+            </div>
+            <div style="text-align: center;">
+                <img src="https://openweathermap.org/img/wn/{{ dest_weather.icon }}@2x.png" alt="Météo" style="width: 80px;">
+            </div>
+            <div style="display: flex; gap: 25px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5em;">💧</div>
+                    <div style="font-size: 0.85em; color: #999;">Humidité</div>
+                    <div style="font-weight: 700; color: #2c3e50;">{{ dest_weather.humidity }}%</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.5em;">🔽</div>
+                    <div style="font-size: 0.85em; color: #999;">Pression</div>
+                    <div style="font-weight: 700; color: #2c3e50;">{{ dest_weather.pressure }} hPa</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="container-form">
+        <!-- Message de confirmation -->
+        {% if confirmation_message %}
+        <div class="alert-confirmation {% if '✅' in confirmation_message %}alert-success{% else %}alert-error{% endif %}">
+            {{ confirmation_message }}
+        </div>
+        {% endif %}
+
+        <!-- Formulaire de réservation -->
+        <form id="reservationForm" method="POST" action="{% url 'reselieuChoisi' destination.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="destination" value="{{ destination.id }}">
+
+            <div class="card-form">
+                <h3>👤 Informations personnelles</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer_name">Nom complet :</label>
+                        <input type="text" id="customer_name" name="customer_name" placeholder="Entrez votre nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer_email">Email :</label>
+                        <input type="email" id="customer_email" name="customer_email" placeholder="votre@email.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone_number">Numéro de téléphone :</label>
+                        <input type="tel" id="phone_number" name="phone_number" placeholder="Ex: 0555 123 456" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre_personnes">Nombre de personnes :</label>
+                        <input type="number" id="nombre_personnes" name="nombre_personnes" min="1" value="1" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-form">
+                <h3>🏨 Choix de l'hôtel</h3>
+                <p style="color: #666; margin-bottom: 15px;">Sélectionnez un hôtel pour {{ destination.name }} :</p>
+                <div class="hotel-cards">
+                    {% for hotel in hotels %}
+                    <div class="hotel-card" onclick="selectHotel('{{ hotel.id }}')" id="hotel-card-{{ hotel.id }}" data-price="{{ hotel.price }}" data-name="{{ hotel.hotel_name|escape }}">
+                        <div class="stars">
+                            {% for i in "x"|rjust:hotel.calification_stars %}⭐{% endfor %}
+                        </div>
+                        <div class="hotel-name">{{ hotel.hotel_name }}</div>
+                        <div class="hotel-price">{{ hotel.price }} DA / nuit</div>
+                    </div>
+                    {% empty %}
+                    <p style="color: #999;">Aucun hôtel disponible pour cette destination.</p>
+                    {% endfor %}
+                </div>
+                <input type="hidden" id="hotel_id" name="hotel" value="">
+            </div>
+
+            <div class="card-form">
+                <h3>📅 Dates & Transport</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="check_out">Date de départ :</label>
+                        <input type="date" id="check_out" name="check_out" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="check_in">Date d'arrivée :</label>
+                        <input type="date" id="check_in" name="check_in" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="means_of_transport">Moyen de transport :</label>
+                        <select id="means_of_transport" name="means_of_transport" required onchange="updateTransportPrice()">
+                            <option value="">-- Sélectionnez --</option>
+                            <option value="avion" data-price="50000">✈️ Avion — 50 000 DA</option>
+                            <option value="train" data-price="15000">🚂 Train — 15 000 DA</option>
+                            <option value="bus" data-price="8000">🚌 Bus — 8 000 DA</option>
+                            <option value="voiture" data-price="25000">🚗 Voiture de location — 25 000 DA</option>
+                        </select>
+                        <input type="hidden" id="transport_price" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre_enfants">Nombre d'enfants :</label>
+                        <input type="number" id="nombre_enfants" name="nombre_enfants" min="0" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-calculer" onclick="calculerTotal()">🧮 Calculer le Total</button>
+        </form>
+
+        <!-- Section Résultats -->
+        <div class="resultat-section" id="resultatSection">
+            <h3>📊 Détail des Coûts</h3>
+            <div class="ligne-resultat">
+                <span>Hôtel sélectionné :</span>
+                <span id="resHotel">-</span>
+            </div>
+            <div class="ligne-resultat">
+                <span>Prix Destination (par personne) :</span>
+                <span id="coutDestination">0 DA</span>
+            </div>
+            <div class="ligne-resultat">
+                <span>Coût Hôtel (prix/nuit × nuits × personnes) :</span>
+                <span id="coutHotel">0 DA</span>
+            </div>
+            <div class="ligne-resultat">
+                <span>Coût Transport (prix × personnes) :</span>
+                <span id="coutTransport">0 DA</span>
+            </div>
+            <div class="ligne-resultat">
+                <span>Supplément enfants (50% hôtel/enfant) :</span>
+                <span id="supplementEnfants">0 DA</span>
+            </div>
+            <div class="ligne-resultat">
+                <span><strong>Sous-total HT :</strong></span>
+                <span id="sousTotal">0 DA</span>
+            </div>
+            <div class="ligne-resultat tva">
+                <span>TVA (19%) :</span>
+                <span id="montantTVA">0 DA</span>
+            </div>
+            <div class="ligne-resultat total">
+                <span>💰 TOTAL TTC :</span>
+                <span id="totalTTC">0 DA</span>
+            </div>
+            <button type="button" class="btn-confirmer" id="btnConfirmer" onclick="document.getElementById('reservationForm').submit()">
+                ✅ Confirmer la Réservation
+            </button>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+    <script>
+        let selectedHotelPrice = 0;
+        let selectedHotelName = '';
+
+        function selectHotel(hotelId) {
+            var id = parseInt(hotelId, 10);
+            document.querySelectorAll('.hotel-card').forEach(function(card) {
+                card.classList.remove('selected');
+            });
+            var card = document.getElementById('hotel-card-' + id);
+            card.classList.add('selected');
+            document.getElementById('hotel_id').value = id;
+            selectedHotelPrice = parseFloat(card.getAttribute('data-price'));
+            selectedHotelName = card.getAttribute('data-name');
+        }
+
+        function updateTransportPrice() {
+            var select = document.getElementById('means_of_transport');
+            var option = select.options[select.selectedIndex];
+            if (option.value && option.getAttribute('data-price')) {
+                document.getElementById('transport_price').value = option.getAttribute('data-price');
+            } else {
+                document.getElementById('transport_price').value = 0;
+            }
+        }
+
+        function calculerTotal() {
+            var hotelId = document.getElementById('hotel_id').value;
+            if (!hotelId) {
+                alert('Veuillez sélectionner un hôtel.');
+                return;
+            }
+
+            var checkIn = document.getElementById('check_in').value;
+            var checkOut = document.getElementById('check_out').value;
+            if (!checkIn || !checkOut) {
+                alert('Veuillez saisir les dates de départ et d\'arrivée.');
+                return;
+            }
+
+            var dateIn = new Date(checkIn);
+            var dateOut = new Date(checkOut);
+
+            if (dateOut >= dateIn) {
+                alert('La date de départ doit être avant la date d\'arrivée.');
+                return;
+            }
+
+            var diffTime = dateIn - dateOut;
+            var nombreNuits = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (nombreNuits <= 0) {
+                alert('Erreur dans le calcul des dates.');
+                return;
+            }
+
+            var nombrePersonnes = parseInt(document.getElementById('nombre_personnes').value) || 1;
+            var nombreEnfants = parseInt(document.getElementById('nombre_enfants').value) || 0;
+            var prixTransport = parseFloat(document.getElementById('transport_price').value) || 0;
+
+            var destinationPrice = parseFloat('{{ destination.price }}') || 0;
+            var coutDestination = destinationPrice * nombrePersonnes;
+            var coutHotel = selectedHotelPrice * nombreNuits * nombrePersonnes;
+            var coutTransport = prixTransport * (nombrePersonnes + nombreEnfants);
+            var supplementEnfants = (selectedHotelPrice * nombreNuits * 0.5) * nombreEnfants;
+            var sousTotal = coutDestination + coutHotel + coutTransport + supplementEnfants;
+            var tauxTVA = 0.19;
+            var montantTVA = sousTotal * tauxTVA;
+            var totalTTC = sousTotal + montantTVA;
+
+            document.getElementById('resHotel').textContent = selectedHotelName + ' — ' + nombreNuits + ' nuit(s)';
+            document.getElementById('coutDestination').textContent = coutDestination.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('coutHotel').textContent = coutHotel.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('coutTransport').textContent = coutTransport.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('supplementEnfants').textContent = supplementEnfants.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('sousTotal').textContent = sousTotal.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('montantTVA').textContent = montantTVA.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('totalTTC').textContent = totalTTC.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('resultatSection').style.display = 'block';
+            document.getElementById('btnConfirmer').style.display = 'block';
+
+            document.getElementById('resultatSection').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
+{% endblock %}

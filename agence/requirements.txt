@@ -1,0 +1,45 @@
+# Example requirement, can be anything that pip knows
+# cache c:\users\administrator\appdata\local\pip\cache\
+# install with `python -m pip install -r requirements.txt`, and make sure that CI does the same
+#youtube_dl==2020.12.2
+#youtube_dl==2021.12.17
+#python -m pip install --upgrade pip
+#python -m pip uninstall pafy
+#python -m pip install --upgrade -r requirements.txt
+#python -m pip install -r requirements.txt
+#python -m pip show pytube
+#python -m  pip freeze > requirements.txt
+
+pafy
+django
+python-vlc
+numpy
+ffmpeg
+youtube_dl
+elevate
+pywebcopy
+bs4
+openpyxl
+pyodbc
+pypyodbc
+moviepy
+requests
+nuitka
+pandas
+yt_dlp
+pytube
+pytubefix
+pydub
+httpx
+mechanize
+Scrapy 
+pathlib 
+playwright
+tuitka
+selenium 
+ttkthemes
+python-mpv
+dotenv
+stripe
+Pillow
+sentry-sdk

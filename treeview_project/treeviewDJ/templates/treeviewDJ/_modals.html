@@ -1,0 +1,108 @@
+{% load treeview_extras %}
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Ajouter un enregistrement</h2>
+      <button class="modal-close" onclick="closeModal('add-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" action="{% url 'add_record' %}" id="add-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <div class="form-grid">
+          {% for col in columns %}
+          <div class="form-group">
+            <label>{{ col.label }}</label>
+            <input type="{{ col.type }}" name="{{ col.field }}" placeholder="{{ col.label }}">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('add-modal')">Annuler</button>
+          <button type="submit" class="btn btn-success">Ajouter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Modifier l'enregistrement</h2>
+      <button class="modal-close" onclick="closeModal('edit-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" id="edit-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <div class="form-grid">
+          {% for col in columns %}
+          <div class="form-group">
+            <label>{{ col.label }}</label>
+            <input type="{{ col.type }}" name="{{ col.field }}" id="edit-{{ col.field }}">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('edit-modal')">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="search-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Recherche avancée</h2>
+      <button class="modal-close" onclick="closeModal('search-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">
+        Opérateurs : <code>=val</code> (égal), <code>!=val</code> (différent), <code>&gt;n</code>, <code>&lt;n</code>, <code>&gt;=n</code>, <code>&lt;=n</code>, ou texte libre (contient).
+      </p>
+      <form id="search-form" onsubmit="event.preventDefault();performSearch();">
+        <div class="form-grid">
+          {% for col in columns %}
+          <div class="form-group">
+            <label>{{ col.label }}</label>
+            <input type="text" name="{{ col.field }}" value="{{ filters|dictlookup:col.field|default:'' }}" placeholder="=val ou !=val ou >0">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('search-modal')">Annuler</button>
+          <button type="reset" class="btn btn-ghost">Effacer</button>
+          <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="import-modal">
+  <div class="modal" style="max-width:450px;">
+    <div class="modal-header">
+      <h2>Import Excel</h2>
+      <button class="modal-close" onclick="closeModal('import-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">
+        En-têtes : SOUS_SECTEUR, N_OPERATI, CHAPITRE_, LIBELLE_OP, AP_INITIAL, COMMUNE, GEST_
+      </p>
+      <form method="POST" action="{% url 'import_excel' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label>Fichier .xlsx</label>
+          <input type="file" name="file" accept=".xlsx" required style="padding:6px;">
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('import-modal')">Annuler</button>
+          <button type="submit" class="btn btn-success">Importer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

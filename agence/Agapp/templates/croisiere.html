@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<section style="padding: 8rem 0 3rem; background: var(--eb-dark);">
+    <div class="container px-4 px-lg-5">
+        <div class="section-title">
+            <h2 style="color: white;">Forfaits & Circuits</h2>
+            <p style="color: rgba(255,255,255,0.5);">Des voyages organisés pour tous les goûts</p>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 3rem 0 5rem; background: var(--eb-light);">
+    <div class="container px-4 px-lg-5">
+        {% if pack_travel %}
+        <div class="row g-4">
+            {% for pack in pack_travel %}
+            <div class="col-lg-6">
+                <div class="circuit-card h-100">
+                    <div class="circuit-header">
+                        <img src="{{ pack.image.url }}" alt="{{ pack.pack_name }}">
+                        <div class="circuit-overlay">
+                            <h2>{{ pack.pack_name }}</h2>
+                        </div>
+                    </div>
+                    <div class="circuit-body">
+                        <p>{{ pack.description|truncatewords:40 }}</p>
+                    </div>
+                    <div class="circuit-footer">
+                        <div>
+                            <div class="circuit-price">{{ pack.price|intcomma }} <small>DA</small></div>
+                            {% if pack.date %}
+                            <small style="color: #8a7a6a;">À partir du {{ pack.date|date:"d/m/Y" }}</small>
+                            {% endif %}
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="{% url 'circuitChoisi' pack.id %}" class="btn btn-primary">
+                                <i class="fas fa-info-circle me-1"></i> Détails
+                            </a>
+                            <a href="{% url 'reservCroisiere' pack.id %}" class="btn btn-success">
+                                <i class="fas fa-check-circle me-1"></i> Réserver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-suitcase-rolling" style="font-size: 3rem; color: var(--eb-primary); opacity: 0.5; margin-bottom: 1rem;"></i>
+            <p style="color: #8a7a6a; font-size: 1.1rem;">Aucun forfait disponible pour le moment. Revenez bientôt !</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
