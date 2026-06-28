@@ -11413,7 +11413,6 @@ form {
      Carousel - Images cliquables & Défilement fluide
      ============================================ */
   .carousel {
-      max-width: 900px;
       margin: 0 auto;
       border-radius: 12px;
       overflow: hidden;
@@ -11421,7 +11420,7 @@ form {
   }
   
   .carousel-inner {
-      max-height: 450px;
+      max-height: 650px;
   }
   
   .carousel-item {
@@ -11431,7 +11430,7 @@ form {
   .carousel-img-clickable {
       cursor: pointer;
       width: 100%;
-      height: 450px;
+      height: 650px;
       object-fit: cover;
       transition: transform 0.3s ease, opacity 0.3s ease;
   }
@@ -11507,11 +11506,11 @@ form {
       
       .carousel-inner,
       .carousel-img-clickable {
-          height: 300px;
+          height: 350px;
       }
       
       .carousel-caption h5 {
-          font-size: 1.2rem;
+          font-size: 1.4rem;
       }
       
       .carousel-caption p {
@@ -11522,7 +11521,7 @@ form {
   @media (max-width: 480px) {
       .carousel-inner,
       .carousel-img-clickable {
-          height: 220px;
+          height: 280px;
       }
       
       .carousel-caption {
@@ -11877,10 +11876,12 @@ h2 { font-weight: 500; }
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   background:
-    radial-gradient(ellipse at 20% 50%, rgba(109, 93, 251, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(74, 63, 158, 0.15) 0%, transparent 50%);
+    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.7) 100%),
+    url('../assets/img/a.jpg') center/cover no-repeat;
   pointer-events: none;
+  animation: kenBurns 30s ease-in-out infinite alternate;
+  will-change: transform, background-position;
+  transition: background-position 2s ease-out;
 }
 
 .masthead::after {
@@ -11905,15 +11906,20 @@ h2 { font-weight: 500; }
   pointer-events: none;
 }
 
+@keyframes kenBurns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 8px 18px;
   border-radius: 9999px;
-  background: rgba(109, 93, 251, 0.12);
-  border: 1px solid rgba(109, 93, 251, 0.2);
-  color: var(--ka-brick-light);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
@@ -11940,7 +11946,7 @@ h2 { font-weight: 500; }
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 500;
   line-height: 1.04;
-  color: var(--ka-sand-light);
+  color: #fff;
   letter-spacing: 0;
   margin-bottom: 1rem;
   animation: fadeSlideUp 0.8s ease-out 0.15s both;
@@ -11955,7 +11961,7 @@ h2 { font-weight: 500; }
   font-family: 'Playfair Display', serif;
   font-size: clamp(1rem, 1.8vw, 1.2rem);
   font-weight: 400;
-  color: var(--ka-shadow);
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.6;
   max-width: 520px;
   margin-bottom: 2rem;
@@ -12008,7 +12014,8 @@ h2 { font-weight: 500; }
 
 .hero-btn-outline {
   background: transparent;
-  color: var(--ka-sand-light);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
   border: 1.5px solid rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
 }
@@ -12036,7 +12043,7 @@ h2 { font-weight: 500; }
   font-family: 'Inter', sans-serif;
   font-size: 2rem;
   font-weight: 500;
-  color: var(--ka-sand-light);
+  color: #fff;
   line-height: 1.04;
 }
 
@@ -12044,7 +12051,7 @@ h2 { font-weight: 500; }
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--ka-shadow);
+  color: rgba(255, 255, 255, 0.6);
   letter-spacing: 0.05em;
 }
 
@@ -12304,7 +12311,7 @@ h2 { font-weight: 500; }
 }
 
 .carousel-img-clickable {
-  height: 500px;
+  height: 650px;
   object-fit: cover;
   transition: transform 0.6s ease;
 }
@@ -12952,7 +12959,7 @@ hr.my-4 {
   }
 
   .carousel-img-clickable {
-    height: 350px;
+    height: 450px;
   }
 
   .destination-grid {
@@ -12988,7 +12995,7 @@ hr.my-4 {
   }
 
   .carousel-img-clickable {
-    height: 250px;
+    height: 350px;
   }
 
   .carousel-caption {
@@ -12996,7 +13003,7 @@ hr.my-4 {
   }
 
   .carousel-caption h5 {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 
   .destination-grid {
@@ -13037,7 +13044,7 @@ hr.my-4 {
   }
 
   .carousel-img-clickable {
-    height: 200px;
+    height: 280px;
   }
 
   .projects-section {
