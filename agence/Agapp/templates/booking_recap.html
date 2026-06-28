@@ -7,26 +7,26 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div style="text-align: center; margin-bottom: 2.5rem;">
-                    <h1 style="color: var(--eb-dark); font-weight: 900;">Récapitulatif de votre réservation</h1>
-                    <p style="color: #8a7a6a;">Vérifiez les détails avant de procéder au paiement</p>
+                    <h1 style="color: var(--eb-dark); font-weight: 500; font-family: 'Inter', sans-serif;">Récapitulatif de votre réservation</h1>
+                    <p style="color: var(--ka-shadow);">Vérifiez les détails avant de procéder au paiement</p>
                 </div>
 
-                <div style="background: #fff; border-radius: 24px; overflow: hidden; box-shadow: var(--eb-shadow-md);">
+                <div style="background: var(--eb-light-2); border-radius: 8px; overflow: hidden; box-shadow: var(--eb-shadow-md); border: 1px solid rgba(255,255,255,0.06);">
                     {% if destination.image %}
                     <img src="{{ destination.image.url }}" alt="{{ destination.name }}" style="width: 100%; height: 250px; object-fit: cover;">
                     {% endif %}
                     <div style="padding: 2rem;">
-                        <h3 style="color: var(--eb-dark); font-weight: 800;">{{ destination.name }}</h3>
-                        <p style="color: #8a7a6a; line-height: 1.7;">{{ destination.description }}</p>
+                        <h3 style="color: var(--eb-dark); font-weight: 500; font-family: 'Inter', sans-serif;">{{ destination.name }}</h3>
+                        <p style="color: var(--ka-shadow); line-height: 1.6; font-family: 'Playfair Display', serif;">{{ destination.description }}</p>
 
-                        <hr style="border-color: rgba(0,0,0,0.06); margin: 1.5rem 0;">
+                        <hr style="border-color: rgba(255,255,255,0.06); margin: 1.5rem 0;">
 
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                             <div>
-                                <small style="color: #8a7a6a;">Prix par personne</small>
-                                <div style="font-size: 2rem; font-weight: 900; color: var(--eb-primary);">{{ destination.price }} <small style="font-size: 1rem;">DA</small></div>
+                                <small style="color: var(--ka-shadow); font-family: 'JetBrains Mono', monospace;">Prix par personne</small>
+                                <div style="font-size: 2rem; font-weight: 500; color: var(--eb-primary); font-family: 'Inter', sans-serif;">{{ destination.price }} <small style="font-size: 1rem;">DA</small></div>
                             </div>
-                            <a href="{% url 'checkout_destination' destination.id %}" class="btn" style="background: var(--eb-gradient-primary); color: #fff; border: none; border-radius: 60px; padding: 16px 48px; font-weight: 700; font-size: 1.05rem;">
+                            <a href="{% url 'checkout_destination' destination.id %}" class="btn" style="background: var(--eb-gradient-primary); color: #fff; border: none; border-radius: 9999px; padding: 16px 48px; font-weight: 500; font-size: 1.05rem; font-family: 'Inter', sans-serif;">
                                 <i class="fas fa-lock me-2"></i>Payer maintenant
                             </a>
                         </div>
@@ -34,22 +34,22 @@
                 </div>
 
                 {% if hotels %}
-                <h4 style="color: var(--eb-dark); font-weight: 700; margin: 2rem 0 1rem;">Hôtels disponibles</h4>
+                <h4 style="color: var(--eb-dark); font-weight: 500; margin: 2rem 0 1rem; font-family: 'Inter', sans-serif;">Hôtels disponibles</h4>
                 <div class="row g-3">
                     {% for hotel in hotels %}
                     <div class="col-md-6">
-                        <div style="background: #fff; border-radius: 16px; overflow: hidden; box-shadow: var(--eb-shadow-sm);">
+                        <div style="background: var(--eb-light-2); border-radius: 8px; overflow: hidden; box-shadow: var(--eb-shadow-sm); border: 1px solid rgba(255,255,255,0.06);">
                             {% if hotel.image %}
                             <img src="{{ hotel.image.url }}" alt="{{ hotel.hotel_name }}" style="width: 100%; height: 140px; object-fit: cover;">
                             {% endif %}
                             <div style="padding: 1rem;">
-                                <h5 style="color: var(--eb-dark); font-weight: 700;">{{ hotel.hotel_name }}</h5>
-                                <div style="color: #f1c40f; font-size: 0.85rem;">
+                                <h5 style="color: var(--eb-dark); font-weight: 500; font-family: 'Inter', sans-serif;">{{ hotel.hotel_name }}</h5>
+                                <div style="color: var(--eb-primary); font-size: 0.85rem;">
                                     {% for i in "12345"|make_list %}
-                                        {% if forloop.counter <= hotel.calification_stars %}<i class="fas fa-star"></i>{% else %}<i class="far fa-star" style="color: #ddd;"></i>{% endif %}
+                                        {% if forloop.counter <= hotel.calification_stars %}<i class="fas fa-star"></i>{% else %}<i class="far fa-star" style="color: var(--ka-shadow);"></i>{% endif %}
                                     {% endfor %}
                                 </div>
-                                <div style="font-weight: 700; color: var(--eb-primary); margin-top: 0.4rem;">{{ hotel.price }} DA</div>
+                                <div style="font-weight: 500; color: var(--eb-primary); margin-top: 0.4rem;">{{ hotel.price }} DA</div>
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                 {% endif %}
 
                 <div style="text-align: center; margin-top: 2rem;">
-                    <a href="{% url 'home' %}" style="color: var(--eb-primary); text-decoration: none; font-weight: 600;">
+                    <a href="{% url 'home' %}" style="color: var(--eb-primary); text-decoration: none; font-weight: 500; font-family: 'Inter', sans-serif;">
                         <i class="fas fa-arrow-left me-1"></i>Retour à l'accueil
                     </a>
                 </div>

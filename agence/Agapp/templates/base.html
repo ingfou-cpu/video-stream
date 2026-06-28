@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="El Bayadh Travels - Agence de voyage locale en Algérie, circuits touristiques, réservation d'hôtels et voyages organisés" />
         <meta name="author" content="El Bayadh Travels" />
-        <meta name="theme-color" content="#B86B4A" />
+        <meta name="theme-color" content="#c97b3a" />
         <title>El Bayadh Travels — Votre agence de voyage en Algérie</title>
         <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
         <!-- Bootstrap Icons -->
@@ -15,21 +15,21 @@
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9pt..40pt,300;9pt..40pt,400;9pt..40pt,500;9pt..40pt,600;9pt..40pt,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <script src="https://code.jquery.com/jquery-4.0.0.min.js" integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
     </head>
-    <body id="page-top" data-theme="light">
-        <button id="darkModeToggle" onclick="toggleDarkMode()" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,248,240,0.15); background: rgba(26,15,10,0.6); backdrop-filter: blur(8px); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
-            <i class="fas fa-moon"></i>
+    <body id="page-top" data-theme="dark">
+        <button id="darkModeToggle" onclick="toggleDarkMode()" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(24,24,27,0.8); backdrop-filter: blur(8px); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.3);">
+            <i class="fas fa-sun"></i>
         </button>
         {% include 'navbar.html' %}
 
         {% if messages %}
         <div style="position: fixed; top: 80px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 8px;">
             {% for message in messages %}
-            <div class="toast-notification" style="padding: 14px 20px; border-radius: 60px; font-size: 0.9rem; font-weight: 600; box-shadow: 0 8px 30px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s ease-out; {% if message.tags == 'success' %}background: #27ae60; color: #fff;{% elif message.tags == 'error' %}background: #e74c3c; color: #fff;{% elif message.tags == 'info' %}background: var(--eb-accent); color: #fff;{% else %}background: rgba(255,255,255,0.95); color: var(--eb-dark);{% endif %}">
+            <div class="toast-notification" style="padding: 14px 20px; border-radius: 9999px; font-size: 0.9rem; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s ease-out; font-family: 'Inter', sans-serif; {% if message.tags == 'success' %}background: #27ae60; color: #fff;{% elif message.tags == 'error' %}background: #e74c3c; color: #fff;{% elif message.tags == 'info' %}background: var(--eb-accent); color: #fff;{% else %}background: rgba(255,255,255,0.95); color: var(--eb-dark);{% endif %}">
                 <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'info' %}fa-info-circle{% else %}fa-bell{% endif %}"></i>
                 {{ message }}
                 <span onclick="this.parentElement.remove()" style="cursor: pointer; opacity: 0.6; margin-left: 4px; font-size: 1.1rem;">&times;</span>
@@ -41,38 +41,38 @@
         {% block content %}
         {% endblock %}
         <!-- Footer-->
-        <footer class="footer bg-black small text-center text-white-50">
+        <footer class="footer small text-center">
             <div class="container px-4 px-lg-5">
                 <div class="row justify-content-center mb-4">
                     <div class="col-md-4 mb-3 mb-md-0">
-                        <i class="fas fa-route me-2" style="color: var(--eb-secondary-light);"></i>
-                        <span style="color: rgba(255,255,255,0.5);">El Bayadh Travels</span>
-                        <p style="color: rgba(255,255,255,0.25); font-size: 0.8rem; margin-top: 0.3rem;">Votre agence de voyage en Algérie</p>
+                        <i class="fas fa-route me-2" style="color: var(--eb-primary-light);"></i>
+                        <span style="color: var(--eb-secondary-light);">El Bayadh Travels</span>
+                        <p style="color: var(--ka-shadow); font-size: 0.8rem; margin-top: 0.3rem;">Votre agence de voyage en Algérie</p>
                     </div>
                     <div class="col-md-4 mb-3 mb-md-0">
-                        <h6 style="color: var(--eb-secondary-light); font-weight: 700; margin-bottom: 0.8rem;">Newsletter</h6>
+                        <h6 style="color: var(--eb-sand-light); font-weight: 500; margin-bottom: 0.8rem; font-family: 'Inter', sans-serif;">Newsletter</h6>
                         <form method="post" action="{% url 'newsletter_subscribe' %}">
                             {% csrf_token %}
                             <div style="display: flex; gap: 4px; max-width: 320px; margin: 0 auto;">
-                                <input type="email" name="email" placeholder="Votre email" required style="flex: 1; padding: 8px 14px; border-radius: 60px 0 0 60px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); color: #fff; font-size: 0.85rem; outline: none;">
-                                <button type="submit" style="padding: 8px 18px; border-radius: 0 60px 60px 0; border: none; background: var(--eb-gradient-primary); color: #fff; font-weight: 600; font-size: 0.85rem; cursor: pointer;"><i class="fas fa-paper-plane"></i></button>
+                                <input type="email" name="email" placeholder="Votre email" required style="flex: 1; padding: 8px 14px; border-radius: 9999px 0 0 9999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: #fff; font-size: 0.85rem; outline: none;">
+                                <button type="submit" style="padding: 8px 18px; border-radius: 0 9999px 9999px 0; border: none; background: var(--eb-gradient-primary); color: #fff; font-weight: 500; font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif;"><i class="fas fa-paper-plane"></i></button>
                             </div>
                         </form>
                     </div>
                     <div class="col-md-4">
-                        <i class="fas fa-envelope me-2" style="color: var(--eb-secondary-light);"></i>
-                        <span style="color: rgba(255,255,255,0.3);">contact@elbayadhtravels.dz</span>
+                        <i class="fas fa-envelope me-2" style="color: var(--eb-primary-light);"></i>
+                        <span style="color: var(--eb-secondary-light);">contact@elbayadhtravels.dz</span>
                     </div>
                 </div>
-                <hr style="border-color: rgba(255,255,255,0.06); margin-bottom: 1.5rem;">
+                <hr style="border-color: rgba(255,255,255,0.04); margin-bottom: 1.5rem;">
                 <div class="row">
                     <div class="col-md-6 text-md-start mb-2 mb-md-0">
-                        <span style="color: rgba(255,255,255,0.3); font-size: 0.8rem;">Copyright &copy; El Bayadh Travels 2026</span>
+                        <span style="color: var(--ka-shadow); font-size: 0.8rem;">Copyright &copy; El Bayadh Travels 2026</span>
                     </div>
                     <div class="col-md-6 text-md-end">
-                        <a href="{% url 'about' %}" style="color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">À propos</a>
-                        <a href="{% url 'contact' %}" style="color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">Contact</a>
-                        <a href="{% url 'blog_list' %}" style="color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">Blog</a>
+                        <a href="{% url 'about' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">À propos</a>
+                        <a href="{% url 'contact' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">Contact</a>
+                        <a href="{% url 'blog_list' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">Blog</a>
                     </div>
                 </div>
             </div>
@@ -87,12 +87,12 @@
             const btn = document.getElementById('darkModeToggle').querySelector('i');
             const isDark = body.getAttribute('data-theme') === 'dark';
             body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-            btn.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+            btn.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
             localStorage.setItem('theme', isDark ? 'light' : 'dark');
         }
         document.addEventListener('DOMContentLoaded', () => {
             const saved = localStorage.getItem('theme');
-            if (saved === 'dark') toggleDarkMode();
+            if (saved === 'light') toggleDarkMode();
             const toasts = document.querySelectorAll('.toast-notification');
             toasts.forEach(t => { setTimeout(() => { if (t) t.remove(); }, 5000); });
         });

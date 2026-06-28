@@ -369,23 +369,22 @@ class circuitChoisiView(DetailView):
     })"""
 #============================= Corrency payment =============================#
 def convertir_devise(request):
-    # Remplacez par votre clé API (Ne la partagez jamais publiquement)
-    api_key =  settings.VOTRE_CLE_API_FIXER
-       
-    #url = f'http://fixer.io{api_key}&symbols=USD,EUR,DZD'
-    url = f'http://data.fixer.io/api/latest?access_key={api_key}&symbols=USD,EUR,DZD'
+    url = 'https://api.frankfurter.app/latest?from=EUR&to=USD,DZD,CNY'
 
     taux_de_change = {}
     erreur = None
 
     try:
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         data = response.json()
 
-        if response.status_code == 200 and data.get('success'):
-            taux_de_change = data.get('rates')
+        if response.status_code == 200 and 'rates' in data:
+            raw = data.get('rates', {})
+            raw['EUR'] = 1.0
+            wanted = {'USD', 'DZD', 'EUR', 'CNY'}
+            taux_de_change = {k: v for k, v in raw.items() if k in wanted}
         else:
-            erreur = f"Erreur API : {data.get('error', {}).get('info', 'Inconnue')}"
+            erreur = "Impossible de récupérer les taux de change."
     except Exception as e:
         erreur = f"Connexion impossible : {str(e)}"
 

@@ -6,7 +6,7 @@
 .converter-page-wrapper {
     min-height: 80vh;
     padding: 2rem 1rem;
-    background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%);
+    background: var(--ka-dark);
 }
 
 .converter-container {
@@ -25,7 +25,7 @@
     width: 72px;
     height: 72px;
     margin: 0 auto 1.25rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6D5DFB 0%, #4A3F9E 100%);
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -53,7 +53,7 @@
 }
 
 .header-subtitle #update-info {
-    color: #667eea;
+    color: #6D5DFB;
     font-weight: 600;
 }
 
@@ -89,7 +89,7 @@
 
 .search-bar input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #6D5DFB;
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12), 0 4px 16px rgba(102, 126, 234, 0.1);
 }
 
@@ -136,13 +136,13 @@
 }
 
 .select-wrapper select:hover {
-    border-color: #667eea;
+    border-color: #6D5DFB;
     box-shadow: 0 4px 16px rgba(102, 126, 234, 0.12);
 }
 
 .select-wrapper select:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #6D5DFB;
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
 }
 
@@ -187,7 +187,7 @@
 }
 
 .rate-card.active {
-    border-color: #667eea;
+    border-color: #6D5DFB;
     background: linear-gradient(135deg, #f8f9ff 0%, #f0f0ff 100%);
     box-shadow: 0 8px 24px rgba(102, 126, 234, 0.18);
 }
@@ -202,7 +202,7 @@
     position: absolute;
     top: -1px;
     right: -1px;
-    background: #667eea;
+    background: #6D5DFB;
     color: #fff;
     font-size: 0.65rem;
     font-weight: 700;
@@ -220,7 +220,7 @@
     width: 44px;
     height: 44px;
     margin: 0 auto 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6D5DFB 0%, #4A3F9E 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -268,7 +268,7 @@
 }
 
 .rate-card.active .rate-value {
-    color: #667eea;
+    color: #6D5DFB;
 }
 
 /* --- Conversion Window --- */
@@ -291,7 +291,7 @@
 
 .conversion-header i {
     font-size: 1.3rem;
-    color: #667eea;
+    color: #6D5DFB;
 }
 
 .conversion-header h3 {
@@ -342,7 +342,7 @@
 
 .input-wrapper input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #6D5DFB;
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
 }
 
@@ -355,7 +355,7 @@
     height: 50px;
     border: none;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6D5DFB 0%, #4A3F9E 100%);
     color: #fff;
     font-size: 1.2rem;
     cursor: pointer;
@@ -421,7 +421,7 @@
 .result-amount {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #667eea;
+    color: #6D5DFB;
     font-variant-numeric: tabular-nums;
 }
 
@@ -447,7 +447,7 @@
 }
 
 .result-rate i {
-    color: #667eea;
+    color: #6D5DFB;
     font-size: 0.8rem;
 }
 
@@ -488,7 +488,7 @@
     align-items: center;
     gap: 6px;
     padding: 12px 28px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6D5DFB 0%, #4A3F9E 100%);
     color: #fff;
     font-weight: 600;
     font-size: 0.9rem;
@@ -527,7 +527,7 @@
 }
 
 .footer-info i {
-    color: #667eea;
+    color: #6D5DFB;
 }
 
 /* =====================================================
@@ -554,7 +554,7 @@
 
 .chart-header i {
     font-size: 1.2rem;
-    color: #667eea;
+    color: #6D5DFB;
 }
 
 .chart-header h3 {
@@ -606,7 +606,7 @@
 
 .chart-pair #chart-from,
 .chart-pair #chart-to {
-    color: #667eea;
+    color: #6D5DFB;
 }
 
 .chart-trend {
@@ -813,7 +813,7 @@
     }
 
     .search-bar input:focus {
-        border-color: #667eea;
+        border-color: #6D5DFB;
     }
 
     .rate-card {
@@ -836,7 +836,7 @@
 
     .rate-card.active {
         background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%);
-        border-color: #667eea;
+        border-color: #6D5DFB;
     }
 
     .rate-card.base-currency {

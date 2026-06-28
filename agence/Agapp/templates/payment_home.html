@@ -6,7 +6,7 @@
 <br><br><br><br><br><br><br><br><br><br>
 <div class="container py-5">
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold" style="color: #667eea;">
+        <h1 class="display-4 fw-bold" style="color: #6D5DFB; font-family: 'Inter', sans-serif;">
             <i class="bi bi-credit-card-2-front"></i> Paiement en ligne
         </h1>
         <p class="lead text-muted">Réservez et payez en toute sécurité avec Stripe</p>
@@ -52,7 +52,7 @@
                     <p class="text-muted mb-1"><i class="bi bi-building"></i> {{ dest.city_name }}</p>
                     <p class="card-text text-muted small flex-grow-1">{{ dest.description|truncatewords:20 }}</p>
                     <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="h4 mb-0" style="color: #667eea;">{{ dest.price|floatformat:2 }} €</span>
+                        <span class="h4 mb-0" style="color: #6D5DFB;">{{ dest.price|floatformat:2 }} €</span>
                     </div>
                     <form method="post" action="{% url 'checkout_destination' dest.id %}" class="mt-3">
                         {% csrf_token %}
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100"
-                                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                                style="background: linear-gradient(135deg, #6D5DFB 0%, #4A3F9E 100%); border: none; border-radius: 9999px;">
                             <i class="bi bi-lock"></i> Payer maintenant
                         </button>
                     </form>

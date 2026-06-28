@@ -1,0 +1,320 @@
+- generic [ref=e1]:
+  - button [active] [ref=e2] [cursor=pointer]:
+    - img [ref=e3]
+  - navigation [ref=e5]:
+    - list [ref=e8]:
+      - listitem [ref=e9]:
+        - link "Destinations" [ref=e10] [cursor=pointer]:
+          - /url: /#projects
+          - img [ref=e11]
+          - text: Destinations
+      - listitem [ref=e13]:
+        - link "Circuits" [ref=e14] [cursor=pointer]:
+          - /url: /circuit/
+          - img [ref=e15]
+          - text: Circuits
+      - listitem [ref=e17]:
+        - button "Paiements" [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+          - text: Paiements
+      - listitem [ref=e21]:
+        - button "Avis" [ref=e22] [cursor=pointer]:
+          - img [ref=e23]
+          - text: Avis
+      - listitem [ref=e25]:
+        - link "À propos" [ref=e26] [cursor=pointer]:
+          - /url: /about/
+          - img [ref=e27]
+          - text: À propos
+      - listitem [ref=e29]:
+        - link "Contact" [ref=e30] [cursor=pointer]:
+          - /url: /contact/
+          - img [ref=e31]
+          - text: Contact
+      - listitem [ref=e33]:
+        - link "Weather" [ref=e34] [cursor=pointer]:
+          - /url: /#weather
+          - img [ref=e35]
+          - text: Weather
+      - listitem [ref=e37]:
+        - link "Devises" [ref=e38] [cursor=pointer]:
+          - /url: /currency/
+          - img [ref=e39]
+          - text: Devises
+      - listitem [ref=e41]:
+        - link "Recherche" [ref=e42] [cursor=pointer]:
+          - /url: /search/
+          - img [ref=e43]
+          - text: Recherche
+      - listitem [ref=e45]:
+        - link "Carte" [ref=e46] [cursor=pointer]:
+          - /url: /map/
+          - img [ref=e47]
+          - text: Carte
+      - listitem [ref=e49]:
+        - link "Blog" [ref=e50] [cursor=pointer]:
+          - /url: /blog/
+          - img [ref=e51]
+          - text: Blog
+      - listitem [ref=e53]:
+        - button "Langue" [ref=e54] [cursor=pointer]:
+          - img [ref=e55]
+          - text: Langue
+      - listitem [ref=e57]:
+        - link "Connexion" [ref=e58] [cursor=pointer]:
+          - /url: /login/
+          - img [ref=e59]
+          - text: Connexion
+  - banner [ref=e61]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]: Bienvenue chez
+        - heading "El Bayadh Travels" [level=1] [ref=e67]
+        - paragraph [ref=e68]: Explorez le monde avec nos offres de voyage exceptionnelles !
+        - generic [ref=e69]:
+          - link "Découvrir nos destinations" [ref=e70] [cursor=pointer]:
+            - /url: "#projects"
+            - generic [ref=e71]: Découvrir nos destinations
+            - img [ref=e72]
+          - link "Voir les circuits" [ref=e74] [cursor=pointer]:
+            - /url: /circuit/
+            - img [ref=e75]
+            - generic [ref=e77]: Voir les circuits
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]: 50+
+            - generic [ref=e81]: Destinations
+          - generic [ref=e83]:
+            - generic [ref=e84]: 1000+
+            - generic [ref=e85]: Voyageurs
+          - generic [ref=e87]:
+            - generic [ref=e88]: 15+
+            - generic [ref=e89]: Circuits
+      - generic [ref=e97]:
+        - text: ⵣ
+        - img [ref=e99]
+        - heading "Sahara Algérien" [level=4] [ref=e101]
+        - paragraph [ref=e102]: Des dunes infinies aux oasis cachées, partez à la découverte du plus grand désert du monde.
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - img [ref=e105]
+            - generic [ref=e107]: Circuits guidés
+          - generic [ref=e108]:
+            - img [ref=e109]
+            - generic [ref=e111]: Hébergement nomade
+          - generic [ref=e112]:
+            - img [ref=e113]
+            - generic [ref=e115]: Transport inclus
+  - generic [ref=e117]:
+    - generic [ref=e118]:
+      - heading "Destinations et lieux Touristiques" [level=2] [ref=e119]
+      - paragraph [ref=e120]: Découvrez nos destinations soigneusement sélectionnées pour des expériences inoubliables
+    - generic [ref=e121]:
+      - generic [ref=e122]:
+        - button "Slide 1" [ref=e123] [cursor=pointer]
+        - button "Slide 2" [ref=e124] [cursor=pointer]
+        - button "Slide 3" [ref=e125] [cursor=pointer]
+        - button "Slide 4" [ref=e126] [cursor=pointer]
+      - generic [ref=e128]:
+        - link "Le Parc culturel de l'Ahaggar" [ref=e129] [cursor=pointer]:
+          - /url: /reselieuChoisi/1/
+          - img "Le Parc culturel de l'Ahaggar" [ref=e130]
+        - generic [ref=e131]:
+          - heading "Le Parc culturel de l'Ahaggar" [level=5] [ref=e132]:
+            - link "Le Parc culturel de l'Ahaggar" [ref=e133] [cursor=pointer]:
+              - /url: /reselieuChoisi/1/
+          - paragraph [ref=e134]: Le Parc culturel de l'Ahaggar est un parc national situé à l'extrême sud de l'Algérie, s'étendant sur les wilayas de Tamanrasset, In Salah, In Guezzam et Bordj Badji Mokhtar.
+      - button "Previous" [ref=e135] [cursor=pointer]:
+        - generic [ref=e137]: Previous
+      - button "Next" [ref=e138] [cursor=pointer]:
+        - generic [ref=e140]: Next
+  - generic [ref=e142]:
+    - generic [ref=e143]:
+      - heading "Nos Destinations" [level=2] [ref=e144]
+      - paragraph [ref=e145]: Chaque destination est une nouvelle aventure qui vous attend
+    - generic [ref=e146]:
+      - generic [ref=e147] [cursor=pointer]:
+        - img "Le Parc culturel de l'Ahaggar" [ref=e148]
+        - generic [ref=e149]:
+          - heading "Le Parc culturel de l'Ahaggar" [level=4] [ref=e150]
+          - paragraph [ref=e151]: Le Parc culturel de l'Ahaggar est un parc national situé à l'extrême sud de l'Algérie, s'étendant sur les wilayas de Tamanrasset, In Salah, In Guezzam …
+        - link "Choisir cette destination" [ref=e153]:
+          - /url: /reselieuChoisi/1/
+          - img [ref=e154]
+          - text: Choisir cette destination
+      - generic [ref=e156] [cursor=pointer]:
+        - img "Le Parc Culturel du Tassili n'Ajjer" [ref=e157]
+        - generic [ref=e158]:
+          - heading "Le Parc Culturel du Tassili n'Ajjer" [level=4] [ref=e159]
+          - paragraph [ref=e160]: Le Parc Culturel du Tassili n'Ajjer, situé au sud-est de l'Algérie près de Djanet, est le plus grand parc national du pays avec une superficie …
+        - link "Choisir cette destination" [ref=e162]:
+          - /url: /reselieuChoisi/2/
+          - img [ref=e163]
+          - text: Choisir cette destination
+      - generic [ref=e165] [cursor=pointer]:
+        - img "Le gouvernorat de Kairouan" [ref=e166]
+        - generic [ref=e167]:
+          - heading "Le gouvernorat de Kairouan" [level=4] [ref=e168]
+          - paragraph [ref=e169]: Le gouvernorat de Kairouan est une région située au centre-est de la Tunisie, à l'intérieur des terres, reconnue pour ses profondes racines historiques et son …
+        - link "Choisir cette destination" [ref=e171]:
+          - /url: /reselieuChoisi/4/
+          - img [ref=e172]
+          - text: Choisir cette destination
+      - generic [ref=e174] [cursor=pointer]:
+        - img "Hammamet" [ref=e175]
+        - generic [ref=e176]:
+          - heading "Hammamet" [level=4] [ref=e177]
+          - paragraph [ref=e178]: Laissez-vous séduire par le charme et les superbes plages d'Hammamet ! Situé sur la côte sud Est de la péninsule du Cap Bon, Hammamet c’est …
+        - link "Choisir cette destination" [ref=e180]:
+          - /url: /reselieuChoisi/5/
+          - img [ref=e181]
+          - text: Choisir cette destination
+  - generic [ref=e184]:
+    - heading "Météo en direct" [level=2] [ref=e185]
+    - paragraph [ref=e186]: Consultez les conditions météorologiques de n'importe quelle ville
+    - generic [ref=e188]:
+      - textbox "Rechercher une ville..." [ref=e189]
+      - button "Chercher" [ref=e190] [cursor=pointer]:
+        - img [ref=e191]
+        - text: Chercher
+    - generic [ref=e193]:
+      - generic [ref=e194]:
+        - img [ref=e195]
+        - text: Algiers, DZ
+      - generic [ref=e197]: Météo actuelle
+      - img "Broken Clouds" [ref=e198]
+      - generic [ref=e199]: 26,01°
+      - generic [ref=e200]: Broken Clouds
+      - generic [ref=e201]:
+        - generic [ref=e202]:
+          - generic [ref=e203]: 💧
+          - generic [ref=e204]: Humidité
+          - generic [ref=e205]: 46%
+        - generic [ref=e206]:
+          - generic [ref=e207]: 🔽
+          - generic [ref=e208]: Pression
+          - generic [ref=e209]: 1016 hPa
+        - generic [ref=e210]:
+          - generic [ref=e211]: ☁️
+          - generic [ref=e212]: Conditions
+          - generic [ref=e213]: Broken Clouds
+    - heading "Prévisions — 7 jours" [level=3] [ref=e214]:
+      - img [ref=e215]
+      - text: Prévisions — 7 jours
+    - generic [ref=e217]:
+      - generic [ref=e218]:
+        - generic [ref=e219]: Aujourd'hui
+        - generic [ref=e220]: 28 juin
+        - generic [ref=e221]: 🌫️
+        - generic [ref=e222]: Brouillard
+        - generic [ref=e223]:
+          - generic [ref=e224]: 28°
+          - generic [ref=e225]: 22°
+      - generic [ref=e226]:
+        - generic [ref=e227]: Demain
+        - generic [ref=e228]: 29 juin
+        - generic [ref=e229]: 🌫️
+        - generic [ref=e230]: Brouillard
+        - generic [ref=e231]:
+          - generic [ref=e232]: 28°
+          - generic [ref=e233]: 23°
+      - generic [ref=e234]:
+        - generic [ref=e235]: Mardi
+        - generic [ref=e236]: 30 juin
+        - generic [ref=e237]: 🌦️
+        - generic [ref=e238]: Averses
+        - generic [ref=e239]:
+          - generic [ref=e240]: 26°
+          - generic [ref=e241]: 23°
+      - generic [ref=e242]:
+        - generic [ref=e243]: Mercredi
+        - generic [ref=e244]: 1 juill.
+        - generic [ref=e245]: 🌫️
+        - generic [ref=e246]: Brouillard
+        - generic [ref=e247]:
+          - generic [ref=e248]: 28°
+          - generic [ref=e249]: 23°
+      - generic [ref=e250]:
+        - generic [ref=e251]: Jeudi
+        - generic [ref=e252]: 2 juill.
+        - generic [ref=e253]: ⛅
+        - generic [ref=e254]: Partiellement nuageux
+        - generic [ref=e255]:
+          - generic [ref=e256]: 27°
+          - generic [ref=e257]: 23°
+      - generic [ref=e258]:
+        - generic [ref=e259]: Vendredi
+        - generic [ref=e260]: 3 juill.
+        - generic [ref=e261]: 🌤️
+        - generic [ref=e262]: Principalement dégagé
+        - generic [ref=e263]:
+          - generic [ref=e264]: 27°
+          - generic [ref=e265]: 23°
+      - generic [ref=e266]:
+        - generic [ref=e267]: Samedi
+        - generic [ref=e268]: 4 juill.
+        - generic [ref=e269]: 🌤️
+        - generic [ref=e270]: Principalement dégagé
+        - generic [ref=e271]:
+          - generic [ref=e272]: 28°
+          - generic [ref=e273]: 22°
+  - generic [ref=e275]:
+    - generic [ref=e276]:
+      - heading "Contactez-nous" [level=2] [ref=e277]
+      - paragraph [ref=e278]: Nous sommes à votre écoute pour organiser votre prochain voyage
+    - generic [ref=e279]:
+      - generic [ref=e282]:
+        - img [ref=e283]
+        - heading "Adresse" [level=4] [ref=e285]
+        - separator [ref=e286]
+        - generic [ref=e287]: El Bayadh, Algérie
+      - generic [ref=e290]:
+        - img [ref=e291]
+        - heading "Email" [level=4] [ref=e293]
+        - separator [ref=e294]
+        - link "contact@elbayadhtravels.dz" [ref=e296] [cursor=pointer]:
+          - /url: mailto:contact@elbayadhtravels.dz
+      - generic [ref=e299]:
+        - img [ref=e300]
+        - heading "Téléphone" [level=4] [ref=e302]
+        - separator [ref=e303]
+        - generic [ref=e304]: +213 (0) 00 00 00 00
+    - generic [ref=e305]:
+      - link [ref=e306] [cursor=pointer]:
+        - /url: "#!"
+        - img [ref=e307]
+      - link [ref=e309] [cursor=pointer]:
+        - /url: "#!"
+        - img [ref=e310]
+      - link [ref=e312] [cursor=pointer]:
+        - /url: "#!"
+        - img [ref=e313]
+      - link [ref=e315] [cursor=pointer]:
+        - /url: "#!"
+        - img [ref=e316]
+  - contentinfo [ref=e318]:
+    - generic [ref=e319]:
+      - generic [ref=e320]:
+        - generic [ref=e321]:
+          - img [ref=e322]
+          - text: El Bayadh Travels
+          - paragraph [ref=e324]: Votre agence de voyage en Algérie
+        - generic [ref=e325]:
+          - heading "Newsletter" [level=6] [ref=e326]
+          - generic [ref=e328]:
+            - textbox "Votre email" [ref=e329]
+            - button [ref=e330] [cursor=pointer]:
+              - img [ref=e331]
+        - generic [ref=e333]:
+          - img [ref=e334]
+          - text: contact@elbayadhtravels.dz
+      - separator [ref=e336]
+      - generic [ref=e337]:
+        - generic [ref=e338]: Copyright © El Bayadh Travels 2026
+        - generic [ref=e339]:
+          - link "À propos" [ref=e340] [cursor=pointer]:
+            - /url: /about/
+          - link "Contact" [ref=e341] [cursor=pointer]:
+            - /url: /contact/
+          - link "Blog" [ref=e342] [cursor=pointer]:
+            - /url: /blog/

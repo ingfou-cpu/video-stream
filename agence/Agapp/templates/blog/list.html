@@ -2,23 +2,23 @@
 {% load static %}
 
 {% block content %}
-<section style="padding: 8rem 0 3rem; background: var(--eb-dark);">
+<section style="padding: 8rem 0 3rem; background: var(--eb-light);">
     <div class="container px-4 px-lg-5">
         <div class="section-title">
-            <h2 style="color: white;">Blog Voyage</h2>
-            <p style="color: rgba(255,255,255,0.5);">Inspirations, guides et récits d'aventure</p>
+            <h2 style="color: var(--eb-dark);">Blog Voyage</h2>
+            <p style="color: var(--ka-shadow);">Inspirations, guides et récits d'aventure</p>
         </div>
     </div>
 </section>
 
-<section style="padding: 3rem 0 5rem; background: var(--eb-light);">
+<section style="padding: 3rem 0 5rem; background: var(--eb-light-2);">
     <div class="container px-4 px-lg-5">
         {% if articles %}
         <div class="row g-4">
             {% for article in articles %}
             <div class="col-lg-4 col-md-6">
                 <a href="{% url 'blog_detail' article.slug %}" style="text-decoration: none;">
-                    <div style="background: #fff; border-radius: 20px; overflow: hidden; box-shadow: var(--eb-shadow-sm); transition: all 0.35s cubic-bezier(0.4,0,0.2,1); height: 100%;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--eb-shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--eb-shadow-sm)'">
+                    <div style="background: var(--eb-light); border-radius: 8px; overflow: hidden; box-shadow: var(--eb-shadow-sm); transition: all 0.35s cubic-bezier(0.4,0,0.2,1); height: 100%; border: 1px solid rgba(255,255,255,0.06);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--eb-shadow-lg)';this.style.borderColor='rgba(109,93,251,0.2)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--eb-shadow-sm)';this.style.borderColor='rgba(255,255,255,0.06)'">
                         {% if article.image %}
                         <img src="{{ article.image.url }}" alt="{{ article.title }}" style="width: 100%; height: 200px; object-fit: cover;">
                         {% else %}
@@ -27,10 +27,10 @@
                         </div>
                         {% endif %}
                         <div style="padding: 1.5rem;">
-                            <small style="color: var(--eb-primary); font-weight: 600;">{{ article.created_at|date:"d F Y" }}</small>
-                            <h4 style="color: var(--eb-dark); font-weight: 700; margin-top: 0.3rem;">{{ article.title }}</h4>
-                            <p style="color: #8a7a6a; font-size: 0.9rem; line-height: 1.6;">{{ article.excerpt }}</p>
-                            <span style="color: var(--eb-primary); font-weight: 600; font-size: 0.85rem;">Lire la suite <i class="fas fa-arrow-right ms-1" style="font-size: 0.75rem;"></i></span>
+                            <small style="color: var(--eb-primary); font-weight: 500; font-family: 'JetBrains Mono', monospace;">{{ article.created_at|date:"d F Y" }}</small>
+                            <h4 style="color: var(--eb-dark); font-weight: 500; margin-top: 0.3rem; font-family: 'Inter', sans-serif;">{{ article.title }}</h4>
+                            <p style="color: var(--ka-shadow); font-size: 0.9rem; line-height: 1.6; font-family: 'Playfair Display', serif;">{{ article.excerpt }}</p>
+                            <span style="color: var(--eb-primary); font-weight: 500; font-size: 0.85rem; font-family: 'Inter', sans-serif;">Lire la suite <i class="fas fa-arrow-right ms-1" style="font-size: 0.75rem;"></i></span>
                         </div>
                     </div>
                 </a>
@@ -40,7 +40,7 @@
         {% else %}
         <div style="text-align: center; padding: 4rem 0;">
             <i class="fas fa-journal-whills" style="font-size: 3rem; color: var(--eb-primary); opacity: 0.3; margin-bottom: 1rem;"></i>
-            <p style="color: #8a7a6a;">Aucun article pour le moment. Revenez bientôt !</p>
+            <p style="color: var(--ka-shadow);">Aucun article pour le moment. Revenez bientôt !</p>
         </div>
         {% endif %}
     </div>

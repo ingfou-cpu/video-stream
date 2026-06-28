@@ -1,58 +1,49 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-    <div class="container px-4 px-lg-5">
+    <div class="container-fluid px-0">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav me-auto gap-1 gap-lg-2">
-                <li class="nav-item" id="brand-item"><a class="nav-link px-1 px-lg-2" id="brand-link" href="{% url 'home' %}"><i class="fas fa-route me-1"></i><strong>El bayadh travels</strong></a></li>
+            <ul class="navbar-nav gap-1 gap-lg-2 mx-auto" id="mainNav-center">
                 <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'home' %}"><i class="fas fa-home me-1"></i>Accueil</a></li>
                 <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'home' %}#projects"><i class="fas fa-umbrella-beach me-1"></i>Destinations</a></li>
                 <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'circuit' %}"><i class="fas fa-map me-1"></i>Circuits</a></li>
-                
-                <!-- Menu Paiements -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle px-1 px-lg-2" href="#" id="navbarDropdownPaiements" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-credit-card me-1"></i>Paiements</a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2 mt-2" aria-labelledby="navbarDropdownPaiements" style="border-radius: 12px;">
+                    <ul class="dropdown-menu shadow border-0 py-2 mt-2" aria-labelledby="navbarDropdownPaiements" style="border-radius: 12px;">
                         <li><a class="dropdown-item py-2" href="{% url 'payment_home' %}"><i class="fas fa-wallet me-2 text-primary"></i>Réserver & Payer</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item py-2" href="{% url 'payment_history' %}"><i class="fas fa-history me-2 text-primary"></i>Mes transactions</a></li>
                     </ul>
                 </li>
-
-                <!-- Menu Témoignages -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle px-1 px-lg-2" href="#" id="navbarDropdownAvis" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-star me-1"></i> Avis
+                        <i class="fas fa-star me-1"></i>Avis
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2 mt-2" aria-labelledby="navbarDropdownAvis" style="border-radius: 12px;">
-                        <li><a class="dropdown-item py-2" href="{% url 'testimonial_form' %}"><i class="fas fa-comments me-2 text-primary"></i> Lire les avis</a></li>
-                        <li><a class="dropdown-item py-2" href="{% url 'temoignage' %}"><i class="fas fa-pen-alt me-2 text-primary"></i> Laisser un avis</a></li>
+                    <ul class="dropdown-menu shadow border-0 py-2 mt-2" aria-labelledby="navbarDropdownAvis" style="border-radius: 12px;">
+                        <li><a class="dropdown-item py-2" href="{% url 'testimonial_form' %}"><i class="fas fa-comments me-2 text-primary"></i>Lire les avis</a></li>
+                        <li><a class="dropdown-item py-2" href="{% url 'temoignage' %}"><i class="fas fa-pen-alt me-2 text-primary"></i>Laisser un avis</a></li>
                     </ul>
                 </li>
-
-                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'about' %}"><i class="fas fa-info-circle me-1"></i> À propos</a></li>
-                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'contact' %}"><i class="fas fa-envelope me-1"></i> Contact</a></li>
-                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'home' %}#weather"><i class="fas fa-cloud me-1"></i> Weather</a></li>
-                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'currency' %}"><i class="fas fa-money-bill-wave me-1"></i> Devises</a></li>
-                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'search' %}"><i class="fas fa-search me-1"></i> Recherche</a></li>
-                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'map' %}"><i class="fas fa-map-marked-alt me-1"></i> Carte</a></li>
-                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'blog_list' %}"><i class="fas fa-newspaper me-1"></i> Blog</a></li>
-            </ul>
-            <ul class="navbar-nav ms-2 gap-1 gap-lg-2">
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'about' %}"><i class="fas fa-info-circle me-1"></i>À propos</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'contact' %}"><i class="fas fa-envelope me-1"></i>Contact</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'home' %}#weather"><i class="fas fa-cloud me-1"></i>Weather</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'currency' %}"><i class="fas fa-money-bill-wave me-1"></i>Devises</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'search' %}"><i class="fas fa-search me-1"></i>Recherche</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'map' %}"><i class="fas fa-map-marked-alt me-1"></i>Carte</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'blog_list' %}"><i class="fas fa-newspaper me-1"></i>Blog</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'admin:index' %}"><i class="fas fa-shield-alt me-1"></i>Admin</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle px-1 px-lg-2" href="#" id="navbarDropdownLang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-globe me-1"></i>
+                        <i class="fas fa-globe me-1"></i>Langue
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2 mt-2" aria-labelledby="navbarDropdownLang" style="border-radius: 12px; min-width: auto;">
+                    <ul class="dropdown-menu shadow border-0 py-2 mt-2" aria-labelledby="navbarDropdownLang" style="border-radius: 12px; min-width: auto;">
                         <li><a class="dropdown-item py-2" href="{% url 'set_language' 'fr' %}">🇫🇷 Français</a></li>
                         <li><a class="dropdown-item py-2" href="{% url 'set_language' 'ar' %}">🇩🇿 العربية</a></li>
                     </ul>
                 </li>
-            </ul>
-            <ul class="navbar-nav ms-1 gap-1 gap-lg-2">
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle px-1 px-lg-2" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,7 +56,7 @@
                     </ul>
                 </li>
                 {% else %}
-                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'login' %}"><i class="fas fa-sign-in-alt me-1"></i> Connexion</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'login' %}"><i class="fas fa-sign-in-alt me-1"></i>Connexion</a></li>
                 {% endif %}
             </ul>
         </div>
