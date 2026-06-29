@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/convertisseur.css' %}">
@@ -11,28 +11,28 @@
             <div class="header-icon">
                 <i class="fas fa-exchange-alt"></i>
             </div>
-            <h1>Convertisseur de Devises</h1>
-            <p class="header-subtitle">Taux de change en temps réel — <span id="update-info">Chargement...</span></p>
+            <h1>{% trans "Convertisseur de Devises" %}</h1>
+            <p class="header-subtitle">{% trans "Taux de change en temps réel —" %} <span id="update-info">{% trans "Chargement..." %}</span></p>
         </div>
 
         {% if erreur %}
         <div class="error-container">
             <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
-            <h2>Erreur de connexion</h2>
+            <h2>{% trans "Erreur de connexion" %}</h2>
             <p>{{ erreur }}</p>
-            <button class="btn-retry" onclick="location.reload()"><i class="fas fa-redo me-1"></i>Réessayer</button>
+            <button class="btn-retry" onclick="location.reload()"><i class="fas fa-redo me-1"></i>{% trans "Réessayer" %}</button>
         </div>
         {% else %}
 
         <!-- Currency Search -->
         <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
-            <input type="text" id="currency-search" placeholder="Rechercher une devise..." oninput="filterCurrencies()">
+            <input type="text" id="currency-search" placeholder="{% trans "Rechercher une devise..." %}" oninput="filterCurrencies()">
         </div>
 
         <!-- Base Currency Selector -->
         <div class="base-currency-selector">
-            <label for="base-currency"><i class="fas fa-flag me-1"></i> Devise de base :</label>
+            <label for="base-currency"><i class="fas fa-flag me-1"></i> {% trans "Devise de base :" %}</label>
             <div class="select-wrapper">
                 <select id="base-currency" onchange="changeBaseCurrency(this.value)">
                     {% for devise, valeur in taux.items %}
@@ -56,24 +56,31 @@
                  tabindex="0"
                  role="button">
                 {% if devise == 'EUR' %}
-                <span class="badge badge-base">Base</span>
+                <span class="badge badge-base">{% trans "Base" %}</span>
                 {% endif %}
                 <div class="card-flag">{{ devise|slice:":1" }}</div>
                 <div class="card-body">
                     <div class="currency-code">{{ devise }}</div>
                     <div class="currency-name" id="name-{{ devise }}">
-                        {% if devise == 'USD' %}Dollar Américain
-                        {% elif devise == 'EUR' %}Euro
-                        {% elif devise == 'JPY' %}Yen Japonais
-                        {% elif devise == 'GBP' %}Livre Sterling
-                        {% elif devise == 'AUD' %}Dollar Australien
-                        {% elif devise == 'CAD' %}Dollar Canadien
-                        {% elif devise == 'CHF' %}Franc Suisse
-                        {% elif devise == 'CNY' %}Yuan Chinois
-                        {% elif devise == 'DZD' %}Dinar Algérien
-                        {% elif devise == 'MAD' %}Dirham Marocain
-                        {% elif devise == 'TND' %}Dinar Tunisien
-                        {% else %}Devise{% endif %}
+                        {% if devise == 'USD' %}{% trans "Dollar Américain" %}
+                        {% elif devise == 'EUR' %}{% trans "Euro" %}
+                        {% elif devise == 'JPY' %}{% trans "Yen Japonais" %}
+                        {% elif devise == 'GBP' %}{% trans "Livre Sterling" %}
+                        {% elif devise == 'AUD' %}{% trans "Dollar Australien" %}
+                        {% elif devise == 'CAD' %}{% trans "Dollar Canadien" %}
+                        {% elif devise == 'CHF' %}{% trans "Franc Suisse" %}
+                        {% elif devise == 'CNY' %}{% trans "Yuan Chinois" %}
+                        {% elif devise == 'DZD' %}{% trans "Dinar Algérien" %}
+                        {% elif devise == 'MAD' %}{% trans "Dirham Marocain" %}
+                        {% elif devise == 'TND' %}{% trans "Dinar Tunisien" %}
+                        {% elif devise == 'TRY' %}{% trans "Lire Turque" %}
+                        {% elif devise == 'SAR' %}{% trans "Riyal Saoudien" %}
+                        {% elif devise == 'AED' %}{% trans "Dirham Émirati" %}
+                        {% elif devise == 'QAR' %}{% trans "Riyal Qatari" %}
+                        {% elif devise == 'BHD' %}{% trans "Dinar Bahreïni" %}
+                        {% elif devise == 'KWD' %}{% trans "Dinar Koweïtien" %}
+                        {% elif devise == 'OMR' %}{% trans "Rial Omani" %}
+                        {% else %}{% trans "Devise" %}{% endif %}
                     </div>
                     <div class="rate-value" id="rate-{{ devise }}">{{ valeur }}</div>
                 </div>
@@ -86,19 +93,19 @@
         <div class="conversion-window">
             <div class="conversion-header">
                 <i class="fas fa-calculator"></i>
-                <h3>Convertir un montant</h3>
+                <h3>{% trans "Convertir un montant" %}</h3>
             </div>
 
             <div class="conversion-form">
                 <div class="conversion-group">
-                    <label for="amount">Montant</label>
+                    <label for="amount">{% trans "Montant" %}</label>
                     <div class="input-wrapper">
                         <input type="number" id="amount" placeholder="100" value="100" min="0" step="0.01" oninput="convertCurrency()">
                     </div>
                 </div>
 
                 <div class="conversion-group">
-                    <label for="from-currency">De</label>
+                    <label for="from-currency">{% trans "De" %}</label>
                     <div class="select-wrapper">
                         <select id="from-currency" onchange="convertCurrency()">
                             {% for devise, valeur in taux.items %}
@@ -114,7 +121,7 @@
                 </button>
 
                 <div class="conversion-group">
-                    <label for="to-currency">Vers</label>
+                    <label for="to-currency">{% trans "Vers" %}</label>
                     <div class="select-wrapper">
                         <select id="to-currency" onchange="convertCurrency()">
                             {% for devise, valeur in taux.items %}
@@ -129,7 +136,7 @@
             <!-- Result -->
             <div class="conversion-result" id="conversion-result">
                 <div class="result-row">
-                    <span class="result-label">Résultat</span>
+                    <span class="result-label">{% trans "Résultat" %}</span>
                     <span class="result-amount" id="result-amount">--</span>
                 </div>
                 <div class="result-divider"></div>
@@ -145,7 +152,7 @@
         <div class="chart-section" id="chart-section">
             <div class="chart-header">
                 <i class="fas fa-chart-line"></i>
-                <h3>Évolution sur 7 jours</h3>
+                <h3>{% trans "Évolution sur 7 jours" %}</h3>
                 <button class="chart-toggle-btn" id="chart-toggle-btn" onclick="toggleChart()">
                     <i class="fas fa-chevron-up"></i>
                 </button>
@@ -153,17 +160,17 @@
             <div class="chart-body" id="chart-body">
                 <div class="chart-pair-info">
                     <span class="chart-pair" id="chart-pair"><span id="chart-from">EUR</span> → <span id="chart-to">USD</span></span>
-                    <span class="chart-trend" id="chart-trend"><i class="fas fa-minus"></i> Stable</span>
+                    <span class="chart-trend" id="chart-trend"><i class="fas fa-minus"></i> {% trans "Stable" %}</span>
                 </div>
                 <div class="chart-loading" id="chart-loading">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Chargement...</span>
+                        <span class="visually-hidden">{% trans "Chargement..." %}</span>
                     </div>
-                    <span>Chargement des données historiques...</span>
+                    <span>{% trans "Chargement des données historiques..." %}</span>
                 </div>
                 <div class="chart-error-msg" id="chart-error-msg">
                     <i class="fas fa-exclamation-circle"></i>
-                    <span id="chart-error-text">Erreur de chargement</span>
+                    <span id="chart-error-text">{% trans "Erreur de chargement" %}</span>
                 </div>
                 <div class="chart-canvas-wrapper" id="chart-canvas-wrapper">
                     <canvas id="rate-chart"></canvas>
@@ -175,11 +182,11 @@
         <div class="converter-footer">
             <div class="footer-info">
                 <i class="fas fa-database me-1"></i>
-                <span>Taux actuels via Fixer.io — Historique via Frankfurter API</span>
+                <span>{% trans "Taux actuels via Fixer.io — Historique via Frankfurter API" %}</span>
             </div>
             <div class="footer-info">
                 <i class="fas fa-clock me-1"></i>
-                <span>Dernière mise à jour : <span id="last-updated">--</span></span>
+                <span>{% trans "Dernière mise à jour :" %} <span id="last-updated">--</span></span>
             </div>
         </div>
         {% endif %}

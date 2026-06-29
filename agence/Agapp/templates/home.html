@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <!-- Masthead / Hero -->
@@ -10,34 +10,34 @@
             <div class="col-lg-7">
                 <div class="hero-badge">
                     <span class="hero-badge-dot"></span>
-                    Bienvenue chez
+                    {% trans "Bienvenue chez" %}
                 </div>
-                <h1 class="hero-title">El Bayadh Travels</h1>
-                <p class="hero-subtitle">Explorez le monde avec nos offres de voyage exceptionnelles !</p>
+                <h1 class="hero-title">{% trans "El Bayadh Travels" %}</h1>
+                <p class="hero-subtitle">{% trans "Explorez le monde avec nos offres de voyage exceptionnelles !" %}</p>
                 <div class="hero-actions">
                     <a href="#projects" class="hero-btn hero-btn-primary">
-                        <span>Découvrir nos destinations</span>
+                        <span>{% trans "Découvrir nos destinations" %}</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
                     <a href="{% url 'circuit' %}" class="hero-btn hero-btn-outline">
                         <i class="fas fa-map"></i>
-                        <span>Voir les circuits</span>
+                        <span>{% trans "Voir les circuits" %}</span>
                     </a>
                 </div>
                 <div class="hero-stats">
                     <div class="hero-stat">
                         <span class="hero-stat-value">50+</span>
-                        <span class="hero-stat-label">Destinations</span>
+                        <span class="hero-stat-label">{% trans "Destinations" %}</span>
                     </div>
                     <div class="hero-stat-divider"></div>
                     <div class="hero-stat">
                         <span class="hero-stat-value">1000+</span>
-                        <span class="hero-stat-label">Voyageurs</span>
+                        <span class="hero-stat-label">{% trans "Voyageurs" %}</span>
                     </div>
                     <div class="hero-stat-divider"></div>
                     <div class="hero-stat">
                         <span class="hero-stat-value">15+</span>
-                        <span class="hero-stat-label">Circuits</span>
+                        <span class="hero-stat-label">{% trans "Circuits" %}</span>
                     </div>
                 </div>
             </div>
@@ -49,20 +49,20 @@
                         </div>
                         <div class="ksar-frame-content">
                             <div class="ksar-icon"><i class="fas fa-sun"></i></div>
-                            <h4>Sahara Algérien</h4>
-                            <p>Des dunes infinies aux oasis cachées, partez à la découverte du plus grand désert du monde.</p>
+                            <h4>{% trans "Sahara Algérien" %}</h4>
+                            <p>{% trans "Des dunes infinies aux oasis cachées, partez à la découverte du plus grand désert du monde." %}</p>
                             <div class="ksar-features">
                                 <div class="ksar-feature">
                                     <i class="fas fa-check-circle"></i>
-                                    <span>Circuits guidés</span>
+                                    <span>{% trans "Circuits guidés" %}</span>
                                 </div>
                                 <div class="ksar-feature">
                                     <i class="fas fa-check-circle"></i>
-                                    <span>Hébergement nomade</span>
+                                    <span>{% trans "Hébergement nomade" %}</span>
                                 </div>
                                 <div class="ksar-feature">
                                     <i class="fas fa-check-circle"></i>
-                                    <span>Transport inclus</span>
+                                    <span>{% trans "Transport inclus" %}</span>
                                 </div>
                             </div>
                         </div>
@@ -74,11 +74,11 @@
 </header>
 
 <!-- Destinations Carousel -->
-<section style="padding: 4rem 0; background: var(--eb-dark);">
+<section style="padding: 4rem 0; background: linear-gradient(to right, var(--eb-dark), #1a3c34, var(--eb-dark));">
     <div class="container px-4 px-lg-5">
         <div class="section-title">
-            <h2 style="color: var(--ka-sand-light);">Destinations et lieux Touristiques</h2>
-            <p style="color: var(--ka-shadow);">Découvrez nos destinations soigneusement sélectionnées pour des expériences inoubliables</p>
+            <h2 style="color: var(--ka-sand-light);">{% trans "Destinations et lieux Touristiques" %}</h2>
+            <p style="color: var(--ka-shadow);">{% trans "Découvrez nos destinations soigneusement sélectionnées pour des expériences inoubliables" %}</p>
         </div>
         <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" data-bs-wrap="true">
             <div class="carousel-indicators">
@@ -106,11 +106,10 @@
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">{% trans "Previous" %}</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">{% trans "Next" %}</span>
             </button>
         </div>
     </div>
@@ -120,8 +119,8 @@
 <section class="projects-section bg-light" id="projects">
     <div class="container px-4 px-lg-5">
         <div class="section-title">
-            <h2>Nos Destinations</h2>
-            <p>Chaque destination est une nouvelle aventure qui vous attend</p>
+            <h2>{% trans "Nos Destinations" %}</h2>
+            <p>{% trans "Chaque destination est une nouvelle aventure qui vous attend" %}</p>
         </div>
         <div class="destination-grid">
             {% for Destinations in Destination %}
@@ -133,7 +132,7 @@
                 </div>
                 <div class="card-footer">
                     <a href="{% url 'reselieuChoisi' Destinations.id %}" class="btn-destination">
-                        <i class="fas fa-check-circle"></i> Choisir cette destination
+                        <i class="fas fa-check-circle"></i> {% trans "Choisir cette destination" %}
                     </a>
                 </div>
             </div>
@@ -341,15 +340,15 @@
 
 <section class="weather-section-2" id="weather">
     <div class="container px-4 px-lg-5 position-relative" style="z-index: 1;">
-        <h2 class="weather-title-2">Météo en direct</h2>
-        <p class="weather-subtitle-2">Consultez les conditions météorologiques de n'importe quelle ville</p>
+        <h2 class="weather-title-2">{% trans "Météo en direct" %}</h2>
+        <p class="weather-subtitle-2">{% trans "Consultez les conditions météorologiques de n'importe quelle ville" %}</p>
 
         <!-- Search -->
         <form method="post">
             {% csrf_token %}
             <div class="weather-search-box">
-                <input type="text" name="city" placeholder="Rechercher une ville..." value="{{ request.POST.city }}" autocomplete="off">
-                <button type="submit"><i class="fas fa-search"></i> Chercher</button>
+                <input type="text" name="city" placeholder="{% trans 'Rechercher une ville...' %}" value="{{ request.POST.city }}" autocomplete="off">
+                <button type="submit"><i class="fas fa-search"></i> {% trans "Chercher" %}</button>
             </div>
         </form>
 
@@ -363,24 +362,24 @@
         <!-- Current Weather -->
         <div class="weather-main-card">
             <div class="weather-city-name"><i class="fas fa-map-marker-alt" style="color:#e74c3c; margin-right:6px;"></i>{{ weather_data.city }}</div>
-            <div class="weather-city-country">Météo actuelle</div>
+            <div class="weather-city-country">{% trans "Météo actuelle" %}</div>
             <img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@4x.png" alt="{{ weather_data.description }}" class="weather-icon-main">
             <div class="weather-temp-main">{{ weather_data.temperature }}°</div>
             <div class="weather-desc-main">{{ weather_data.description }}</div>
             <div class="weather-stats">
                 <div class="weather-stat">
                     <div class="weather-stat-icon">💧</div>
-                    <div class="weather-stat-label">Humidité</div>
+                    <div class="weather-stat-label">{% trans "Humidité" %}</div>
                     <div class="weather-stat-value">{{ weather_data.humidity }}%</div>
                 </div>
                 <div class="weather-stat">
                     <div class="weather-stat-icon">🔽</div>
-                    <div class="weather-stat-label">Pression</div>
+                    <div class="weather-stat-label">{% trans "Pression" %}</div>
                     <div class="weather-stat-value">{{ weather_data.pressure }} hPa</div>
                 </div>
                 <div class="weather-stat">
                     <div class="weather-stat-icon">☁️</div>
-                    <div class="weather-stat-label">Conditions</div>
+                    <div class="weather-stat-label">{% trans "Conditions" %}</div>
                     <div class="weather-stat-value" style="font-size:0.95em;">{{ weather_data.description }}</div>
                 </div>
             </div>
@@ -389,7 +388,7 @@
 
         {% if forecast_7days %}
         <!-- 7-Day Forecast -->
-        <h3 class="forecast-title-2"><i class="fas fa-calendar-week me-2"></i>Prévisions — 7 jours</h3>
+        <h3 class="forecast-title-2"><i class="fas fa-calendar-week me-2"></i>{% trans "Prévisions — 7 jours" %}</h3>
         <div class="forecast-scroll">
             {% for day in forecast_7days %}
             <div class="forecast-day-2 {% if forloop.first %}today{% endif %}">
@@ -411,17 +410,17 @@
         <section class="contact-section" id="contact">
             <div class="container px-4 px-lg-5">
                 <div class="section-title">
-                    <h2>Contactez-nous</h2>
-                    <p>Nous sommes à votre écoute pour organiser votre prochain voyage</p>
+                    <h2>{% trans "Contactez-nous" %}</h2>
+                    <p>{% trans "Nous sommes à votre écoute pour organiser votre prochain voyage" %}</p>
                 </div>
                 <div class="row gx-4 gx-lg-5">
                     <div class="col-md-4 mb-3 mb-md-0">
                         <div class="card py-4 h-100">
                             <div class="card-body text-center">
                                 <i class="fas fa-map-marked-alt mb-2"></i>
-                                <h4 class="text-uppercase m-0">Adresse</h4>
+                                <h4 class="text-uppercase m-0">{% trans "Adresse" %}</h4>
                                 <hr class="my-4 mx-auto" />
-                                <div class="small">El Bayadh, Algérie</div>
+                                <div class="small">{% trans "El Bayadh, Algérie" %}</div>
                             </div>
                         </div>
                     </div>
@@ -429,7 +428,7 @@
                         <div class="card py-4 h-100">
                             <div class="card-body text-center">
                                 <i class="fas fa-envelope mb-2"></i>
-                                <h4 class="text-uppercase m-0">Email</h4>
+                                <h4 class="text-uppercase m-0">{% trans "Email" %}</h4>
                                 <hr class="my-4 mx-auto" />
                                 <div class="small"><a href="mailto:contact@elbayadhtravels.dz">contact@elbayadhtravels.dz</a></div>
                             </div>
@@ -439,7 +438,7 @@
                         <div class="card py-4 h-100">
                             <div class="card-body text-center">
                                 <i class="fas fa-mobile-alt mb-2"></i>
-                                <h4 class="text-uppercase m-0">Téléphone</h4>
+                                <h4 class="text-uppercase m-0">{% trans "Téléphone" %}</h4>
                                 <hr class="my-4 mx-auto" />
                                 <div class="small">+213 (0) 00 00 00 00</div>
                             </div>

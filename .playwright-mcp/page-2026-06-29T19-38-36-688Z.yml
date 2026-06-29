@@ -1,0 +1,147 @@
+- generic [active] [ref=e1]:
+  - button [ref=e2] [cursor=pointer]
+  - navigation [ref=e3]:
+    - list [ref=e6]:
+      - listitem [ref=e7]:
+        - link "Accueil" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - text: Accueil
+      - listitem [ref=e9]:
+        - link "Destinations" [ref=e10] [cursor=pointer]:
+          - /url: /#projects
+          - text: Destinations
+      - listitem [ref=e11]:
+        - link "Circuits" [ref=e12] [cursor=pointer]:
+          - /url: /circuit/
+          - text: Circuits
+      - listitem [ref=e13]:
+        - button "Paiements" [ref=e14] [cursor=pointer]: Paiements
+      - listitem [ref=e15]:
+        - button "Avis" [ref=e16] [cursor=pointer]: Avis
+      - listitem [ref=e17]:
+        - link "À propos" [ref=e18] [cursor=pointer]:
+          - /url: /about/
+          - text: À propos
+      - listitem [ref=e19]:
+        - link "Contact" [ref=e20] [cursor=pointer]:
+          - /url: /contact/
+          - text: Contact
+      - listitem [ref=e21]:
+        - link "Weather" [ref=e22] [cursor=pointer]:
+          - /url: /#weather
+          - text: Weather
+      - listitem [ref=e23]:
+        - link "Devises" [ref=e24] [cursor=pointer]:
+          - /url: /currency/
+          - text: Devises
+      - listitem [ref=e25]:
+        - link "Recherche" [ref=e26] [cursor=pointer]:
+          - /url: /search/
+          - text: Recherche
+      - listitem [ref=e27]:
+        - link "Carte" [ref=e28] [cursor=pointer]:
+          - /url: /map/
+          - text: Carte
+      - listitem [ref=e29]:
+        - link "Blog" [ref=e30] [cursor=pointer]:
+          - /url: /blog/
+          - text: Blog
+      - listitem [ref=e31]:
+        - button "Langue" [ref=e32] [cursor=pointer]: Langue
+      - listitem [ref=e33]:
+        - link "Connexion" [ref=e34] [cursor=pointer]:
+          - /url: /login/
+          - text: Connexion
+  - generic [ref=e36]:
+    - generic [ref=e37]:
+      - heading "Convertisseur de Devises" [level=1] [ref=e39]
+      - paragraph [ref=e40]: Taux de change en temps réel — Taux mis à jour
+    - textbox "Rechercher une devise..." [ref=e42]
+    - generic [ref=e43]:
+      - generic [ref=e44]: "Devise de base :"
+      - combobox "Devise de base :" [ref=e46] [cursor=pointer]:
+        - option "CNY"
+        - option "USD"
+        - option "EUR" [selected]
+    - generic [ref=e47]:
+      - button "C CNY Yuan Chinois 7,7492" [ref=e48] [cursor=pointer]:
+        - generic [ref=e49]: C
+        - generic [ref=e50]:
+          - generic [ref=e51]: CNY
+          - generic [ref=e52]: Yuan Chinois
+          - generic [ref=e53]: 7,7492
+      - button "U USD Dollar Américain 1,1406" [ref=e54] [cursor=pointer]:
+        - generic [ref=e55]: U
+        - generic [ref=e56]:
+          - generic [ref=e57]: USD
+          - generic [ref=e58]: Dollar Américain
+          - generic [ref=e59]: 1,1406
+      - button "Base E EUR Euro 1,0" [ref=e60] [cursor=pointer]:
+        - generic [ref=e61]: Base
+        - generic [ref=e62]: E
+        - generic [ref=e63]:
+          - generic [ref=e64]: EUR
+          - generic [ref=e65]: Euro
+          - generic [ref=e66]: 1,0
+    - generic [ref=e67]:
+      - heading "Convertir un montant" [level=3] [ref=e69]
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]: Montant
+          - spinbutton "Montant" [ref=e74]: "100"
+        - generic [ref=e75]:
+          - generic [ref=e76]: De
+          - combobox "De" [ref=e78] [cursor=pointer]:
+            - option "CNY"
+            - option "USD"
+            - option "EUR" [selected]
+        - button "Inverser les devises" [ref=e79] [cursor=pointer]
+        - generic [ref=e80]:
+          - generic [ref=e81]: Vers
+          - combobox "Vers" [ref=e83] [cursor=pointer]:
+            - option "CNY"
+            - option "USD" [selected]
+            - option "EUR"
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]: Résultat
+          - generic [ref=e87]: 100,00 USD
+        - generic [ref=e89]: 100,00 EUR = 100,00 USD
+        - generic [ref=e91]: 1 EUR = 1.0000 USD
+    - generic [ref=e92]:
+      - generic [ref=e93]:
+        - heading "Évolution sur 7 jours" [level=3] [ref=e94]
+        - button [ref=e95] [cursor=pointer]
+      - generic [ref=e96]:
+        - generic [ref=e97]:
+          - generic [ref=e98]: EUR → USD
+          - generic [ref=e99]: Stable
+        - generic [ref=e100]:
+          - status [ref=e101]:
+            - generic [ref=e102]: Chargement...
+          - generic [ref=e103]: Chargement des données historiques...
+    - generic [ref=e104]:
+      - generic [ref=e106]: Taux actuels via Fixer.io — Historique via Frankfurter API
+      - generic [ref=e108]: "Dernière mise à jour : 29/06/2026 20:38:36"
+  - contentinfo [ref=e109]:
+    - generic [ref=e110]:
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - text: El Bayadh Travels
+          - paragraph [ref=e113]: Votre agence de voyage en Algérie
+        - generic [ref=e114]:
+          - heading "Newsletter" [level=6] [ref=e115]
+          - generic [ref=e117]:
+            - textbox "Votre email" [ref=e118]
+            - button [ref=e119] [cursor=pointer]
+        - generic [ref=e120]: contact@elbayadhtravels.dz
+      - separator [ref=e121]
+      - generic [ref=e122]:
+        - generic [ref=e123]: Copyright © El Bayadh Travels 2026
+        - generic [ref=e124]:
+          - link "À propos" [ref=e125] [cursor=pointer]:
+            - /url: /about/
+          - link "Contact" [ref=e126] [cursor=pointer]:
+            - /url: /contact/
+          - link "Blog" [ref=e127] [cursor=pointer]:
+            - /url: /blog/

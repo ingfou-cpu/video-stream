@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - button [ref=e2] [cursor=pointer]:
+    - img [ref=e3]
+  - navigation [ref=e5]:
+    - list [ref=e8]:
+      - listitem [ref=e9]:
+        - link "الرئيسية" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+          - text: الرئيسية
+      - listitem [ref=e13]:
+        - link "الوجهات" [ref=e14] [cursor=pointer]:
+          - /url: /#projects
+          - img [ref=e15]
+          - text: الوجهات
+      - listitem [ref=e17]:
+        - link "الجولات" [ref=e18] [cursor=pointer]:
+          - /url: /circuit/
+          - img [ref=e19]
+          - text: الجولات
+      - listitem [ref=e21]:
+        - button "المدفوعات" [ref=e22] [cursor=pointer]:
+          - img [ref=e23]
+          - text: المدفوعات
+      - listitem [ref=e25]:
+        - button "التقييمات" [ref=e26] [cursor=pointer]:
+          - img [ref=e27]
+          - text: التقييمات
+      - listitem [ref=e29]:
+        - link "حول" [ref=e30] [cursor=pointer]:
+          - /url: /about/
+          - img [ref=e31]
+          - text: حول
+      - listitem [ref=e33]:
+        - link "اتصال" [ref=e34] [cursor=pointer]:
+          - /url: /contact/
+          - img [ref=e35]
+          - text: اتصال
+      - listitem [ref=e37]:
+        - link "الطقس" [ref=e38] [cursor=pointer]:
+          - /url: /#weather
+          - img [ref=e39]
+          - text: الطقس
+      - listitem [ref=e41]:
+        - link "العملات" [ref=e42] [cursor=pointer]:
+          - /url: /currency/
+          - img [ref=e43]
+          - text: العملات
+      - listitem [ref=e45]:
+        - link "بحث" [ref=e46] [cursor=pointer]:
+          - /url: /search/
+          - img [ref=e47]
+          - text: بحث
+      - listitem [ref=e49]:
+        - link "الخريطة" [ref=e50] [cursor=pointer]:
+          - /url: /map/
+          - img [ref=e51]
+          - text: الخريطة
+      - listitem [ref=e53]:
+        - link "المدونة" [ref=e54] [cursor=pointer]:
+          - /url: /blog/
+          - img [ref=e55]
+          - text: المدونة
+      - listitem [ref=e57]:
+        - button "اللغة" [ref=e58] [cursor=pointer]:
+          - img [ref=e59]
+          - text: اللغة
+      - listitem [ref=e61]:
+        - link "تسجيل الدخول" [ref=e62] [cursor=pointer]:
+          - /url: /login/
+          - img [ref=e63]
+          - text: تسجيل الدخول
+  - generic [ref=e67]:
+    - generic [ref=e68]:
+      - text: 29 يونيو 2026 · بواسطة El Bayadh Travels
+      - 'heading "Voyage a Kairouan : la cite des 100 mosquees" [level=1] [ref=e69]'
+      - generic [ref=e70]:
+        - paragraph [ref=e71]: Le gouvernorat de Kairouan est une region situee au centre-est de la Tunisie, a l'interieur des terres, reconnue pour ses profondes racines historiques et son importance culturelle.
+        - paragraph [ref=e72]: Fondee au VIIe siecle, Kairouan est consideree comme la quatrieme ville sainte de l'Islam apres La Mecque, Medine et Jerusalem. La Grande Mosquee de Kairouan, avec son imposant minaret et ses 414 colonnes de marbre, est l'un des plus anciens et des plus importants monuments islamiques d'Afrique du Nord.
+        - paragraph [ref=e73]: Les souks de la medina de Kairouan sont un veritable voyage dans le temps. On y trouve des tapis tisses a la main, de la poterie traditionnelle, des cuivres grave et des pâtisseries locales.
+        - paragraph [ref=e74]: Ne manquez pas de visiter le bassin des Aghlabides, impressionnant reservoir d'eau datant du IXe siecle, temoignage du genie hydraulique de l'epoque.
+      - link "العودة إلى المقالات" [ref=e75] [cursor=pointer]:
+        - /url: /blog/
+        - img [ref=e76]: 
+        - text: العودة إلى المقالات
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - heading "الوجهة المرتبطة" [level=5] [ref=e81]
+        - link "Le gouvernorat de Kairouan" [ref=e82] [cursor=pointer]:
+          - /url: /reselieuChoisi/4/
+          - text: Le gouvernorat de Kairouan
+          - img [ref=e83]: 
+      - heading "أحدث المقالات" [level=5] [ref=e85]
+      - link "Exploration du Tassili n'Ajjer et ses merveilles 29/06/2026" [ref=e86] [cursor=pointer]:
+        - /url: /blog/exploration-tassili-najjer/
+        - text: Exploration du Tassili n'Ajjer et ses merveilles
+        - generic [ref=e87]: 29/06/2026
+      - link "Decouverte du Parc culturel de l'Ahaggar 29/06/2026" [ref=e88] [cursor=pointer]:
+        - /url: /blog/decouverte-ahaggar/
+        - text: Decouverte du Parc culturel de l'Ahaggar
+        - generic [ref=e89]: 29/06/2026
+  - contentinfo [ref=e90]:
+    - generic [ref=e91]:
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - img [ref=e94]
+          - text: البيض للأسفار
+          - paragraph [ref=e96]: وكالتكم للأسفار في الجزائر
+        - generic [ref=e97]:
+          - heading "النشرة البريدية" [level=6] [ref=e98]
+          - generic [ref=e100]:
+            - textbox "بريدكم الإلكتروني" [ref=e101]
+            - button [ref=e102] [cursor=pointer]:
+              - img [ref=e103]
+        - generic [ref=e105]:
+          - img [ref=e106]
+          - text: contact@elbayadhtravels.dz
+      - separator [ref=e108]
+      - generic [ref=e109]:
+        - generic [ref=e110]: جميع الحقوق محفوظة © البيض للأسفار 2026
+        - generic [ref=e111]:
+          - link "حول" [ref=e112] [cursor=pointer]:
+            - /url: /about/
+          - link "اتصال" [ref=e113] [cursor=pointer]:
+            - /url: /contact/
+          - link "المدونة" [ref=e114] [cursor=pointer]:
+            - /url: /blog/

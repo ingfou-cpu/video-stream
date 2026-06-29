@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <section style="padding: 8rem 0 5rem; background: var(--eb-gradient-dark); min-height: 100vh;">
@@ -14,12 +14,12 @@
                     <p style="color: var(--ka-shadow);">{{ user.email }}</p>
                     <hr style="border-color: rgba(255,255,255,0.06); margin: 1.5rem 0;">
                     <a href="{% url 'logout' %}" class="btn" style="background: rgba(231,76,60,0.15); color: #e74c3c; border: 1px solid rgba(231,76,60,0.2); border-radius: 9999px; padding: 10px 24px; font-weight: 500; width: 100%; font-family: 'Inter', sans-serif;">
-                        <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                        <i class="fas fa-sign-out-alt me-2"></i>{% trans "Déconnexion" %}
                     </a>
                 </div>
             </div>
             <div class="col-lg-8">
-                <h3 style="color: #fff; font-weight: 500; margin-bottom: 1.5rem; font-family: 'Inter', sans-serif;">Mes réservations</h3>
+                <h3 style="color: #fff; font-weight: 500; margin-bottom: 1.5rem; font-family: 'Inter', sans-serif;">{% trans "Mes réservations" %}</h3>
                 {% if bookings %}
                 {% for booking in bookings %}
                 <div style="background: rgba(24,24,27,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
@@ -28,15 +28,15 @@
                             <h5 style="color: #fff; font-weight: 500; margin: 0; font-family: 'Inter', sans-serif;">{{ booking.destination.name }}</h5>
                             <small style="color: var(--ka-shadow);">{{ booking.check_in_date|date:"d/m/Y" }}</small>
                         </div>
-                        <span style="padding: 4px 14px; border-radius: 9999px; font-size: 0.8rem; font-weight: 500; background: rgba(109,93,251,0.15); color: var(--eb-primary); border: 1px solid rgba(109,93,251,0.2); font-family: 'Inter', sans-serif;">Confirmé</span>
+                        <span style="padding: 4px 14px; border-radius: 9999px; font-size: 0.8rem; font-weight: 500; background: rgba(109,93,251,0.15); color: var(--eb-primary); border: 1px solid rgba(109,93,251,0.2); font-family: 'Inter', sans-serif;">{% trans "Confirmé" %}</span>
                     </div>
                 </div>
                 {% endfor %}
                 {% else %}
                 <div style="background: rgba(24,24,27,0.5); border: 1px dashed rgba(255,255,255,0.06); border-radius: 8px; padding: 3rem; text-align: center;">
                     <i class="fas fa-suitcase" style="font-size: 2.5rem; color: rgba(255,255,255,0.2); margin-bottom: 1rem;"></i>
-                    <p style="color: var(--ka-shadow);">Aucune réservation pour le moment.</p>
-                    <a href="{% url 'home' %}" class="btn" style="background: var(--eb-gradient-primary); color: #fff; border: none; border-radius: 9999px; padding: 10px 24px; font-weight: 500; font-family: 'Inter', sans-serif;">Découvrir nos destinations</a>
+                    <p style="color: var(--ka-shadow);">{% trans "Aucune réservation pour le moment." %}</p>
+                    <a href="{% url 'home' %}" class="btn" style="background: var(--eb-gradient-primary); color: #fff; border: none; border-radius: 9999px; padding: 10px 24px; font-weight: 500; font-family: 'Inter', sans-serif;">{% trans "Découvrir nos destinations" %}</a>
                 </div>
                 {% endif %}
             </div>

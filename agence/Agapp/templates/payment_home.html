@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% load humanize %}
 
 {% block content %}
@@ -7,12 +7,12 @@
 <div class="container py-5">
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold" style="color: #6D5DFB; font-family: 'Inter', sans-serif;">
-            <i class="bi bi-credit-card-2-front"></i> Paiement en ligne
+            <i class="bi bi-credit-card-2-front"></i> {% trans "Paiement en ligne" %}
         </h1>
-        <p class="lead text-muted">Réservez et payez en toute sécurité avec Stripe</p>
+        <p class="lead text-muted">{% trans "Réservez et payez en toute sécurité avec Stripe" %}</p>
         <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
-            <span class="badge bg-success"><i class="bi bi-shield-lock"></i> Paiement sécurisé</span>
-            <span class="badge bg-primary"><i class="bi bi-stripe"></i> Propulsé par Stripe</span>
+            <span class="badge bg-success"><i class="bi bi-shield-lock"></i> {% trans "Paiement sécurisé" %}</span>
+            <span class="badge bg-primary"><i class="bi bi-stripe"></i> {% trans "Propulsé par Stripe" %}</span>
         </div>
     </div>
 
@@ -31,7 +31,7 @@
 
     <!-- Section Destinations -->
     <h2 class="mb-4 border-bottom pb-2">
-        <i class="bi bi-geo-alt-fill text-primary"></i> Destinations
+        <i class="bi bi-geo-alt-fill text-primary"></i> {% trans "Destinations" %}
     </h2>
     {% if destinations %}
     <div class="row g-4 mb-5">
@@ -72,7 +72,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100"
                                 style="background: linear-gradient(135deg, #6D5DFB 0%, #4A3F9E 100%); border: none; border-radius: 9999px;">
-                            <i class="bi bi-lock"></i> Payer maintenant
+                            <i class="bi bi-lock"></i> {% trans "Payer maintenant" %}
                         </button>
                     </form>
                 </div>
@@ -83,13 +83,13 @@
     {% else %}
     <div class="text-center py-5">
         <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-        <p class="text-muted mt-2">Aucune destination disponible pour le moment.</p>
+        <p class="text-muted mt-2">{% trans "Aucune destination disponible pour le moment." %}</p>
     </div>
     {% endif %}
 
     <!-- Section Packs / Circuits -->
     <h2 class="mb-4 border-bottom pb-2">
-        <i class="bi bi-map-fill text-success"></i> Packs & Circuits
+        <i class="bi bi-map-fill text-success"></i> {% trans "Packs & Circuits" %}
     </h2>
     {% if packs %}
     <div class="row g-4 mb-5">
@@ -121,20 +121,20 @@
                         <div class="row g-2 mb-2">
                             <div class="col-12">
                                 <input type="text" name="customer_name" class="form-control form-control-sm"
-                                       placeholder="Votre nom complet" required>
+                                       placeholder="{% trans "Votre nom complet" %}" required>
                             </div>
                             <div class="col-6">
                                 <input type="email" name="customer_email" class="form-control form-control-sm"
-                                       placeholder="Email" required>
+                                       placeholder="{% trans "Email" %}" required>
                             </div>
                             <div class="col-6">
                                 <input type="tel" name="customer_phone" class="form-control form-control-sm"
-                                       placeholder="Téléphone">
+                                       placeholder="{% trans "Téléphone" %}">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success w-100"
                                 style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border: none;">
-                            <i class="bi bi-lock"></i> Payer maintenant
+                            <i class="bi bi-lock"></i> {% trans "Payer maintenant" %}
                         </button>
                     </form>
                 </div>
@@ -145,13 +145,13 @@
     {% else %}
     <div class="text-center py-5">
         <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
-        <p class="text-muted mt-2">Aucun pack disponible pour le moment.</p>
+        <p class="text-muted mt-2">{% trans "Aucun pack disponible pour le moment." %}</p>
     </div>
     {% endif %}
 
     <div class="text-center mt-4">
         <a href="{% url 'home' %}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Retour à l'accueil
+            <i class="bi bi-arrow-left"></i> {% trans "Retour à l'accueil" %}
         </a>
     </div>
 </div>

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% load humanize %}
 
 {% block content %}
@@ -7,8 +7,8 @@
 <section style="padding: 8rem 0 3rem; background: var(--eb-light);">
     <div class="container px-4 px-lg-5">
         <div class="section-title">
-            <h2 style="color: var(--eb-dark);">Circuits Touristiques</h2>
-            <p style="color: var(--ka-shadow);">Des expériences uniques au cœur du Sahara algérien</p>
+            <h2 style="color: var(--eb-dark);">{% trans "Circuits Touristiques" %}</h2>
+            <p style="color: var(--ka-shadow);">{% trans "Des expériences uniques au cœur du Sahara algérien" %}</p>
         </div>
     </div>
 </section>
@@ -29,14 +29,14 @@
             <div class="circuit-footer">
                 <div>
                     <div class="circuit-price">{{ pack_travels.price|intcomma }} <small>DA</small></div>
-                    <small style="color: var(--ka-shadow);">À partir du {{ pack_travels.date|date:"d/m/Y" }}</small>
+                    <small style="color: var(--ka-shadow);">{% trans "À partir du" %} {{ pack_travels.date|date:"d/m/Y" }}</small>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#dev-content-{{ forloop.counter }}" aria-expanded="false" aria-controls="dev-content-{{ forloop.counter }}">
-                        <i class="fas fa-info-circle me-1"></i> Détails
+                        <i class="fas fa-info-circle me-1"></i> {% trans "Détails" %}
                     </button>
                     <a href="{% url 'circuitChoisi' pack_travels.id %}" class="btn btn-success">
-                        <i class="fas fa-check-circle me-1"></i> Choisir
+                        <i class="fas fa-check-circle me-1"></i> {% trans "Choisir" %}
                     </a>
                 </div>
             </div>
@@ -52,16 +52,16 @@
                     <div class="d-flex justify-content-center mb-4">
                         <ul class="nav nav-pills" id="pills-tab-{{ forloop.counter }}" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="pills-itineraire-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-itineraire-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-itineraire-{{ forloop.counter }}" aria-selected="true">Itinéraire</button>
+                                <button class="nav-link active" id="pills-itineraire-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-itineraire-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-itineraire-{{ forloop.counter }}" aria-selected="true">{% trans "Itinéraire" %}</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-prix-dates-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-prix-dates-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-prix-dates-{{ forloop.counter }}" aria-selected="false">Prix & Dates</button>
+                                <button class="nav-link" id="pills-prix-dates-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-prix-dates-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-prix-dates-{{ forloop.counter }}" aria-selected="false">{% trans "Prix & Dates" %}</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-fiche-technique-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-fiche-technique-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-fiche-technique-{{ forloop.counter }}" aria-selected="false">Fiche technique</button>
+                                <button class="nav-link" id="pills-fiche-technique-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-fiche-technique-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-fiche-technique-{{ forloop.counter }}" aria-selected="false">{% trans "Fiche technique" %}</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-nos-engagements-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-nos-engagements-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-nos-engagements-{{ forloop.counter }}" aria-selected="false">Nos engagements</button>
+                                <button class="nav-link" id="pills-nos-engagements-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-nos-engagements-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-nos-engagements-{{ forloop.counter }}" aria-selected="false">{% trans "Nos engagements" %}</button>
                             </li>
                         </ul>
                     </div>
@@ -69,92 +69,92 @@
                     <!-- Pills Content -->
                     <div class="tab-content col-lg-10 mx-auto" id="pills-tabContent-{{ forloop.counter }}">
                         <div class="tab-pane fade show active" id="pills-itineraire-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-itineraire-{{ forloop.counter }}-tab">
-                            <h3 class="text-white text-center mb-4">Itinéraire</h3>
+                            <h3 class="text-white text-center mb-4">{% trans "Itinéraire" %}</h3>
                             <p class="text-white-50 text-center" style="line-height: 1.8;">{{ pack_travels.itinerary|linebreaksbr }}</p>
                         </div>
 
                         <div class="tab-pane fade" id="pills-prix-dates-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-prix-dates-{{ forloop.counter }}-tab">
-                            <h3 class="text-white text-center mb-4">Dates disponibles et prix par personne</h3>
+                            <h3 class="text-white text-center mb-4">{% trans "Dates disponibles et prix par personne" %}</h3>
                             <div style="background: rgba(255,255,255,0.04); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.06); max-width: 500px; margin: 0 auto;">
                                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
-                                    <span style="color: rgba(255,255,255,0.5); font-weight: 600;">Prix</span>
+                                    <span style="color: rgba(255,255,255,0.5); font-weight: 600;">{% trans "Prix" %}</span>
                                     <span style="color: var(--eb-secondary-light); font-weight: 800; font-size: 1.3rem;">{{ pack_travels.price|intcomma }} DA</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0;">
-                                    <span style="color: rgba(255,255,255,0.5); font-weight: 600;">Disponible dès le</span>
+                                    <span style="color: rgba(255,255,255,0.5); font-weight: 600;">{% trans "Disponible dès le" %}</span>
                                     <span style="color: white; font-weight: 600;">{{ pack_travels.date|date:"d/m/Y" }}</span>
                                 </div>
                             </div>
 
-                            <h3 class="text-white text-center mt-5 mb-4">Ce qui est inclus</h3>
+                            <h3 class="text-white text-center mt-5 mb-4">{% trans "Ce qui est inclus" %}</h3>
                             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem;">
                                 <div style="background: rgba(45, 139, 111, 0.08); border: 1px solid rgba(45, 139, 111, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>Accueil et prise en charge à l'aéroport
+                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>{% trans "Accueil et prise en charge à l'aéroport" %}
                                 </div>
                                 <div style="background: rgba(45, 139, 111, 0.08); border: 1px solid rgba(45, 139, 111, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>Frais d'entrée parcs nationaux
+                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>{% trans "Frais d'entrée parcs nationaux" %}
                                 </div>
                                 <div style="background: rgba(45, 139, 111, 0.08); border: 1px solid rgba(45, 139, 111, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>Véhicules 4×4 pour les déplacements
+                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>{% trans "Véhicules 4×4 pour les déplacements" %}
                                 </div>
                                 <div style="background: rgba(45, 139, 111, 0.08); border: 1px solid rgba(45, 139, 111, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>Repas et boissons inclus
+                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>{% trans "Repas et boissons inclus" %}
                                 </div>
                                 <div style="background: rgba(45, 139, 111, 0.08); border: 1px solid rgba(45, 139, 111, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>Guide professionnel Touareg
+                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>{% trans "Guide professionnel Touareg" %}
                                 </div>
                                 <div style="background: rgba(45, 139, 111, 0.08); border: 1px solid rgba(45, 139, 111, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>Matériel de bivouac
+                                    <i class="fas fa-check-circle me-2" style="color: #3CAE8A;"></i>{% trans "Matériel de bivouac" %}
                                 </div>
                             </div>
 
-                            <h3 class="text-white text-center mt-5 mb-4">Non inclus</h3>
+                            <h3 class="text-white text-center mt-5 mb-4">{% trans "Non inclus" %}</h3>
                             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem;">
                                 <div style="background: rgba(199, 107, 74, 0.08); border: 1px solid rgba(199, 107, 74, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-times-circle me-2" style="color: var(--eb-primary);"></i>Transport aérien
+                                    <i class="fas fa-times-circle me-2" style="color: var(--eb-primary);"></i>{% trans "Transport aérien" %}
                                 </div>
                                 <div style="background: rgba(199, 107, 74, 0.08); border: 1px solid rgba(199, 107, 74, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-times-circle me-2" style="color: var(--eb-primary);"></i>Assurance voyage
+                                    <i class="fas fa-times-circle me-2" style="color: var(--eb-primary);"></i>{% trans "Assurance voyage" %}
                                 </div>
                                 <div style="background: rgba(199, 107, 74, 0.08); border: 1px solid rgba(199, 107, 74, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-times-circle me-2" style="color: var(--eb-primary);"></i>Dépenses personnelles
+                                    <i class="fas fa-times-circle me-2" style="color: var(--eb-primary);"></i>{% trans "Dépenses personnelles" %}
                                 </div>
                                 <div style="background: rgba(199, 107, 74, 0.08); border: 1px solid rgba(199, 107, 74, 0.15); border-radius: 12px; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-                                    <i class="fas fa-times-circle me-2" style="color: var(--eb-primary);"></i>Frais de visa
+                                    <i class="fas fa-times-circle me-2" style="color: var(--eb-primary);"></i>{% trans "Frais de visa" %}
                                 </div>
                             </div>
                         </div>
 
                         <div class="tab-pane fade" id="pills-fiche-technique-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-fiche-technique-{{ forloop.counter }}-tab">
-                            <h3 class="text-white text-center mb-4">Fiche Technique</h3>
+                            <h3 class="text-white text-center mb-4">{% trans "Fiche Technique" %}</h3>
                             <div style="background: rgba(255,255,255,0.04); border-radius: 16px; padding: 2rem; border: 1px solid rgba(255,255,255,0.06);">
                                 <p class="text-white-50" style="line-height: 1.8; margin: 0;">{{ pack_travels.fiche_technique|linebreaksbr }}</p>
                             </div>
                         </div>
 
                         <div class="tab-pane fade" id="pills-nos-engagements-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-nos-engagements-{{ forloop.counter }}-tab">
-                            <h3 class="text-white text-center mb-4">Nos Engagements</h3>
-                            <p class="text-white-50 text-center mb-4">Notre partenaire s'engage sur cinq points :</p>
+                            <h3 class="text-white text-center mb-4">{% trans "Nos Engagements" %}</h3>
+                            <p class="text-white-50 text-center mb-4">{% trans "Notre partenaire s'engage sur cinq points :" %}</p>
                             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
                                 <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.5rem; text-align: center;">
                                     <i class="fas fa-user-tie" style="font-size: 2rem; color: var(--eb-secondary-light); margin-bottom: 0.75rem;"></i>
-                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">Guide professionnel</div>
+                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">{% trans "Guide professionnel" %}</div>
                                 </div>
                                 <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.5rem; text-align: center;">
                                     <i class="fas fa-handshake" style="font-size: 2rem; color: var(--eb-secondary-light); margin-bottom: 0.75rem;"></i>
-                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">Accompagnement personnalisé</div>
+                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">{% trans "Accompagnement personnalisé" %}</div>
                                 </div>
                                 <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.5rem; text-align: center;">
                                     <i class="fas fa-campground" style="font-size: 2rem; color: var(--eb-secondary-light); margin-bottom: 0.75rem;"></i>
-                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">Matériel de qualité</div>
+                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">{% trans "Matériel de qualité" %}</div>
                                 </div>
                                 <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.5rem; text-align: center;">
                                     <i class="fas fa-utensils" style="font-size: 2rem; color: var(--eb-secondary-light); margin-bottom: 0.75rem;"></i>
-                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">Restauration de qualité</div>
+                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">{% trans "Restauration de qualité" %}</div>
                                 </div>
                                 <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.5rem; text-align: center;">
                                     <i class="fas fa-ambulance" style="font-size: 2rem; color: var(--eb-secondary-light); margin-bottom: 0.75rem;"></i>
-                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">Assistance médicale</div>
+                                    <div style="color: white; font-weight: 600; font-size: 0.9rem;">{% trans "Assistance médicale" %}</div>
                                 </div>
                             </div>
                         </div>
@@ -165,8 +165,8 @@
         {% empty %}
         <div style="text-align: center; padding: 4rem 0;">
             <i class="fas fa-map" style="font-size: 4rem; color: var(--eb-secondary); margin-bottom: 1.5rem;"></i>
-            <h3 style="color: var(--eb-dark);">Aucun circuit pour le moment</h3>
-            <p style="color: var(--ka-shadow);">Revenez bientôt pour découvrir nos nouvelles offres</p>
+            <h3 style="color: var(--eb-dark);">{% trans "Aucun circuit pour le moment" %}</h3>
+            <p style="color: var(--ka-shadow);">{% trans "Revenez bientôt pour découvrir nos nouvelles offres" %}</p>
         </div>
         {% endfor %}
     </div>

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <section style="min-height: 100vh; padding: 8rem 0 5rem; background: var(--eb-gradient-dark); display: flex; align-items: center;">
@@ -9,31 +9,31 @@
                 <div style="background: rgba(24,24,27,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 2.5rem;">
                     <div style="text-align: center; margin-bottom: 2rem;">
                         <i class="fas fa-user-circle" style="font-size: 3rem; color: var(--eb-primary); opacity: 0.6;"></i>
-                        <h2 style="color: #fff; font-weight: 500; margin-top: 0.8rem; font-family: 'Inter', sans-serif;">Connexion</h2>
-                        <p style="color: var(--ka-shadow); font-size: 0.9rem;">Accédez à votre espace client</p>
+                        <h2 style="color: #fff; font-weight: 500; margin-top: 0.8rem; font-family: 'Inter', sans-serif;">{% trans "Connexion" %}</h2>
+                        <p style="color: var(--ka-shadow); font-size: 0.9rem;">{% trans "Accédez à votre espace client" %}</p>
                     </div>
                     <form method="post">
                         {% csrf_token %}
                         <div style="margin-bottom: 1.2rem;">
-                            <label style="color: var(--ka-shadow); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; display: block; font-family: 'JetBrains Mono', monospace;">Nom d'utilisateur</label>
-                            <input type="text" name="username" class="form-control form-control-lg" placeholder="Votre nom d'utilisateur" required style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; border-radius: 8px; padding: 12px 16px;">
+                            <label style="color: var(--ka-shadow); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; display: block; font-family: 'JetBrains Mono', monospace;">{% trans "Nom d'utilisateur" %}</label>
+                            <input type="text" name="username" class="form-control form-control-lg" placeholder="{% trans "Votre nom d'utilisateur" %}" required style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; border-radius: 8px; padding: 12px 16px;">
                         </div>
                         <div style="margin-bottom: 1.5rem;">
-                            <label style="color: var(--ka-shadow); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; display: block; font-family: 'JetBrains Mono', monospace;">Mot de passe</label>
-                            <input type="password" name="password" class="form-control form-control-lg" placeholder="Votre mot de passe" required style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; border-radius: 8px; padding: 12px 16px;">
+                            <label style="color: var(--ka-shadow); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; display: block; font-family: 'JetBrains Mono', monospace;">{% trans "Mot de passe" %}</label>
+                            <input type="password" name="password" class="form-control form-control-lg" placeholder="{% trans "Votre mot de passe" %}" required style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #fff; border-radius: 8px; padding: 12px 16px;">
                         </div>
                         {% if form.errors %}
                         <div style="background: rgba(231,76,60,0.12); border: 1px solid rgba(231,76,60,0.2); border-radius: 8px; padding: 12px 16px; margin-bottom: 1.2rem;">
-                            <p style="color: #f5b7b1; font-size: 0.85rem; margin: 0;">Nom d'utilisateur ou mot de passe incorrect.</p>
+                            <p style="color: #f5b7b1; font-size: 0.85rem; margin: 0;">{% trans "Nom d'utilisateur ou mot de passe incorrect." %}</p>
                         </div>
                         {% endif %}
                         <button type="submit" class="btn w-100" style="background: var(--eb-gradient-primary); color: #fff; border: none; border-radius: 9999px; padding: 14px; font-weight: 500; font-size: 1rem; font-family: 'Inter', sans-serif;">
-                            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                            <i class="fas fa-sign-in-alt me-2"></i>{% trans "Se connecter" %}
                         </button>
                     </form>
                     <p style="text-align: center; margin-top: 1.5rem; color: var(--ka-shadow); font-size: 0.9rem;">
-                        Pas encore de compte ?
-                        <a href="{% url 'register' %}" style="color: var(--eb-primary); text-decoration: none; font-weight: 500;">S'inscrire</a>
+                        {% trans "Pas encore de compte ?" %}
+                        <a href="{% url 'register' %}" style="color: var(--eb-primary); text-decoration: none; font-weight: 500;">{% trans "S'inscrire" %}</a>
                     </p>
                 </div>
             </div>

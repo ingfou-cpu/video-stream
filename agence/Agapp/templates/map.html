@@ -1,32 +1,84 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n l10n %}
 
 {% block content %}
-<section style="padding: 8rem 0 3rem; background: var(--eb-light);">
+<section style="padding: 8rem 0 3rem; background: linear-gradient(to right, var(--eb-dark), #1a3c34, var(--eb-dark));">
     <div class="container px-4 px-lg-5">
         <div class="section-title">
-            <h2 style="color: var(--eb-dark);">Carte des destinations</h2>
-            <p style="color: var(--ka-shadow);">Explorez nos destinations sur la carte</p>
+            <h2 style="color: #fff;">{% trans "Carte satellite" %}</h2>
+            <p style="color: rgba(255,255,255,0.6);">{% trans "Explorez nos destinations et circuits sur la carte satellite" %}</p>
         </div>
     </div>
 </section>
 
-<section style="padding: 3rem 0 5rem; background: var(--eb-light-2);">
-    <div class="container px-4 px-lg-5">
+<section style="padding: 3rem 0 5rem; background: #0a0f0d;">
+    <div class="container-fluid px-4 px-lg-5">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-        <div id="map" style="height: 500px; border-radius: 8px; overflow: hidden; box-shadow: var(--eb-shadow-md); border: 1px solid rgba(255,255,255,0.06);"></div>
+        <div id="map" style="height: 600px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06);"></div>
+        <div id="legend" style="margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+            <span style="display: flex; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
+                <span style="width: 12px; height: 12px; background: #e74c3c; border-radius: 50%; display: inline-block;"></span> {% trans "Destinations" %}
+            </span>
+            <span style="display: flex; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
+                <span style="width: 12px; height: 12px; background: #f39c12; border-radius: 2px; display: inline-block; transform: rotate(45deg);"></span> {% trans "Circuits" %}
+            </span>
+        </div>
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var map = L.map('map').setView([33.7, 3.0], 5);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
+            var map = L.map('map', {
+                zoomControl: true,
+                attributionControl: false
+            }).setView([33.7, 3.0], 5);
+
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '&copy; Esri'
             }).addTo(map);
 
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap, &copy; CARTO',
+                subdomains: 'abcd',
+                pane: 'overlayPane'
+            }).addTo(map);
+
+            var destIcon = L.divIcon({
+                html: '<div style="background: #e74c3c; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.4);"></div>',
+                iconSize: [14, 14],
+                iconAnchor: [7, 7],
+                popupAnchor: [0, -10]
+            });
+
+            var circuitIcon = L.divIcon({
+                html: '<div style="background: #f39c12; width: 14px; height: 14px; border: 2px solid #fff; transform: rotate(45deg); box-shadow: 0 2px 8px rgba(0,0,0,0.4);"></div>',
+                iconSize: [14, 14],
+                iconAnchor: [7, 7],
+                popupAnchor: [0, -10]
+            });
+
             {% for d in destinations %}
-            L.marker([{{ d.latitude|default:"33.7" }}, {{ d.longitude|default:"3.0" }}])
+            L.marker([{{ d.latitude|unlocalize|default:"33.7" }}, {{ d.longitude|unlocalize|default:"3.0" }}], {icon: destIcon})
                 .addTo(map)
-                .bindPopup('<strong>{{ d.name }}</strong><br>{{ d.price }} DA<br><a href="{% url "reselieuChoisi" d.id %}" style="color: var(--eb-primary);">Voir l\'offre</a>');
+                .bindPopup(`
+                    <div style="font-family: 'Inter', sans-serif; min-width: 180px;">
+                        <strong style="font-size: 1rem; color: #2d1f0e;">{{ d.name }}</strong>
+                        <hr style="margin: 0.3rem 0; border-color: rgba(0,0,0,0.1);">
+                        <p style="margin: 0.3rem 0; color: #c97b3a; font-weight: 600;">{{ d.price|unlocalize }} DA</p>
+                        <a href="{% url "reselieuChoisi" d.id %}" style="display: inline-block; margin-top: 0.3rem; padding: 0.3rem 1rem; background: #c97b3a; color: #fff; text-decoration: none; border-radius: 4px; font-size: 0.85rem;">{% trans "Voir l'offre" %}</a>
+                    </div>
+                `);
+            {% endfor %}
+
+            {% for c in circuits %}
+            L.marker([{{ c.latitude|unlocalize|default:"33.7" }}, {{ c.longitude|unlocalize|default:"3.0" }}], {icon: circuitIcon})
+                .addTo(map)
+                .bindPopup(`
+                    <div style="font-family: 'Inter', sans-serif; min-width: 180px;">
+                        <strong style="font-size: 1rem; color: #2d1f0e;">{{ c.pack_name }}</strong>
+                        <hr style="margin: 0.3rem 0; border-color: rgba(0,0,0,0.1);">
+                        <p style="margin: 0.3rem 0; color: #c97b3a; font-weight: 600;">{{ c.price|unlocalize }} DA</p>
+                        <a href="{% url "circuitChoisi" c.id %}" style="display: inline-block; margin-top: 0.3rem; padding: 0.3rem 1rem; background: #f39c12; color: #fff; text-decoration: none; border-radius: 4px; font-size: 0.85rem;">{% trans "Voir le circuit" %}</a>
+                    </div>
+                `);
             {% endfor %}
         });
         </script>

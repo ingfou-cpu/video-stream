@@ -72,6 +72,8 @@ class pack_travel(models.Model):
     itinerary = models.TextField(blank=True)
     date = models.DateField(blank=True, null=True)
     fiche_technique = models.TextField(blank=True)
+    latitude = models.FloatField(default=33.7)
+    longitude = models.FloatField(default=3.0)
     def __str__(self):
         return self.pack_name
 #-------------------reservation pack_travel -------------------------------------------------------#

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}   
+{% load static i18n %}   
 
 {% block content %}
 
@@ -10,20 +10,20 @@
             <div class="container px-4 px-lg-5 about-content">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8">
-                        <p style="color: var(--eb-primary-light); font-size: 0.85rem; letter-spacing: 0.1em; font-weight: 500; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace;">Qui sommes-nous ?</p>
-                        <h1 class="mb-4" style="font-family: 'Inter', sans-serif; font-weight: 500;">El Bayadh Travels</h1>
+                        <p style="color: var(--eb-primary-light); font-size: 0.85rem; letter-spacing: 0.1em; font-weight: 500; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace;">{% trans "Qui sommes-nous ?" %}</p>
+                        <h1 class="mb-4" style="font-family: 'Inter', sans-serif; font-weight: 500;">{% trans "El Bayadh Travels" %}</h1>
                         <p style="font-family: 'Playfair Display', serif;">
-                            L'agence El Bayadh Travels est un acteur local du tourisme situé dans la wilaya d'El Bayadh, en Algérie. Elle se spécialise dans l'accompagnement des voyageurs pour des séjours nationaux et internationaux, offrant une gamme complète de services incluant la réservation de billets d'avion, l'organisation de circuits touristiques, la location de voitures, et la réservation d'hôtels.
+                            {% blocktrans %}L'agence El Bayadh Travels est un acteur local du tourisme situé dans la wilaya d'El Bayadh, en Algérie. Elle se spécialise dans l'accompagnement des voyageurs pour des séjours nationaux et internationaux, offrant une gamme complète de services incluant la réservation de billets d'avion, l'organisation de circuits touristiques, la location de voitures, et la réservation d'hôtels.{% endblocktrans %}
                         </p>
                         <p style="color: var(--ka-shadow) !important; font-size: 1rem; font-family: 'Playfair Display', serif;">
-                            L'agence s'engage à fournir des expériences de voyage personnalisées et mémorables, en mettant l'accent sur la satisfaction du client et en proposant des offres compétitives pour répondre aux besoins variés des voyageurs.
+                            {% blocktrans %}L'agence s'engage à fournir des expériences de voyage personnalisées et mémorables, en mettant l'accent sur la satisfaction du client et en proposant des offres compétitives pour répondre aux besoins variés des voyageurs.{% endblocktrans %}
                         </p>
                         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
                             <a href="{% url 'contact' %}" class="btn btn-primary btn-lg px-5">
-                                <i class="fas fa-envelope me-2"></i>Contactez-nous
+                                <i class="fas fa-envelope me-2"></i>{% trans "Contactez-nous" %}
                             </a>
                             <a href="{% url 'circuit' %}" class="btn btn-outline-light btn-lg px-5">
-                                <i class="fas fa-map me-2"></i>Nos circuits
+                                <i class="fas fa-map me-2"></i>{% trans "Nos circuits" %}
                             </a>
                         </div>
                     </div>

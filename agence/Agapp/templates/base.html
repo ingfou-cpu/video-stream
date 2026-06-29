@@ -1,14 +1,16 @@
 
-{% load static %}
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="El Bayadh Travels - Agence de voyage locale en Algérie, circuits touristiques, réservation d'hôtels et voyages organisés" />
+        <meta name="description" content="{% trans "El Bayadh Travels - Agence de voyage locale en Algérie, circuits touristiques, réservation d'hôtels et voyages organisés" %}" />
         <meta name="author" content="El Bayadh Travels" />
         <meta name="theme-color" content="#c97b3a" />
-        <title>El Bayadh Travels — Votre agence de voyage en Algérie</title>
+        <title>{% trans "El Bayadh Travels — Votre agence de voyage en Algérie" %}</title>
         <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
         <!-- Bootstrap Icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -18,6 +20,32 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <style>
+            [dir="rtl"] .navbar-nav { padding-right: 0; }
+            [dir="rtl"] .ms-auto { margin-right: auto !important; margin-left: 0 !important; }
+            [dir="rtl"] .me-auto { margin-left: auto !important; margin-right: 0 !important; }
+            [dir="rtl"] .me-1 { margin-left: 0.25rem !important; margin-right: 0 !important; }
+            [dir="rtl"] .me-2 { margin-left: 0.5rem !important; margin-right: 0 !important; }
+            [dir="rtl"] .ms-1 { margin-right: 0.25rem !important; margin-left: 0 !important; }
+            [dir="rtl"] .ms-2 { margin-right: 0.5rem !important; margin-left: 0 !important; }
+            [dir="rtl"] .ps-0 { padding-right: 0 !important; padding-left: initial; }
+            [dir="rtl"] .pe-0 { padding-left: 0 !important; padding-right: initial; }
+            [dir="rtl"] .text-start { text-align: right !important; }
+            [dir="rtl"] .text-end { text-align: left !important; }
+            [dir="rtl"] .dropdown-menu { text-align: right; }
+            [dir="rtl"] .fa-arrow-right::before { content: "\f060"; }
+            [dir="rtl"] .fa-chevron-right::before { content: "\f053"; }
+            [dir="rtl"] .fa-chevron-left::before { content: "\f054"; }
+            [dir="rtl"] .fa-arrow-left::before { content: "\f061"; }
+            [dir="rtl"] .carousel-control-prev { right: 0; left: auto; }
+            [dir="rtl"] .carousel-control-next { left: 0; right: auto; }
+            [dir="rtl"] .carousel-control-prev-icon { transform: scaleX(-1); }
+            [dir="rtl"] .carousel-control-next-icon { transform: scaleX(-1); }
+            [dir="rtl"] .hero-btn i { margin-left: 0.5rem; margin-right: 0; }
+            [dir="rtl"] .weather-search-box input { text-align: right; }
+            [dir="rtl"] .weather-search-box button i { margin-left: 0.5rem; margin-right: 0; }
+            [dir="rtl"] .nav-pills { padding-right: 0; }
+        </style>
         <script src="https://code.jquery.com/jquery-4.0.0.min.js" integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
     </head>
     <body id="page-top" data-theme="dark">
@@ -46,15 +74,15 @@
                 <div class="row justify-content-center mb-4">
                     <div class="col-md-4 mb-3 mb-md-0">
                         <i class="fas fa-route me-2" style="color: var(--eb-primary-light);"></i>
-                        <span style="color: var(--eb-secondary-light);">El Bayadh Travels</span>
-                        <p style="color: var(--ka-shadow); font-size: 0.8rem; margin-top: 0.3rem;">Votre agence de voyage en Algérie</p>
+                        <span style="color: var(--eb-secondary-light);">{% trans "El Bayadh Travels" %}</span>
+                        <p style="color: var(--ka-shadow); font-size: 0.8rem; margin-top: 0.3rem;">{% trans "Votre agence de voyage en Algérie" %}</p>
                     </div>
                     <div class="col-md-4 mb-3 mb-md-0">
-                        <h6 style="color: var(--eb-sand-light); font-weight: 500; margin-bottom: 0.8rem; font-family: 'Inter', sans-serif;">Newsletter</h6>
+                        <h6 style="color: var(--eb-sand-light); font-weight: 500; margin-bottom: 0.8rem; font-family: 'Inter', sans-serif;">{% trans "Newsletter" %}</h6>
                         <form method="post" action="{% url 'newsletter_subscribe' %}">
                             {% csrf_token %}
                             <div style="display: flex; gap: 4px; max-width: 320px; margin: 0 auto;">
-                                <input type="email" name="email" placeholder="Votre email" required style="flex: 1; padding: 8px 14px; border-radius: 9999px 0 0 9999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: #fff; font-size: 0.85rem; outline: none;">
+                                <input type="email" name="email" placeholder="{% trans 'Votre email' %}" required style="flex: 1; padding: 8px 14px; border-radius: 9999px 0 0 9999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: #fff; font-size: 0.85rem; outline: none;">
                                 <button type="submit" style="padding: 8px 18px; border-radius: 0 9999px 9999px 0; border: none; background: var(--eb-gradient-primary); color: #fff; font-weight: 500; font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif;"><i class="fas fa-paper-plane"></i></button>
                             </div>
                         </form>
@@ -67,12 +95,12 @@
                 <hr style="border-color: rgba(255,255,255,0.04); margin-bottom: 1.5rem;">
                 <div class="row">
                     <div class="col-md-6 text-md-start mb-2 mb-md-0">
-                        <span style="color: var(--ka-shadow); font-size: 0.8rem;">Copyright &copy; El Bayadh Travels 2026</span>
+                        <span style="color: var(--ka-shadow); font-size: 0.8rem;">{% trans "Copyright © El Bayadh Travels 2026" %}</span>
                     </div>
                     <div class="col-md-6 text-md-end">
-                        <a href="{% url 'about' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">À propos</a>
-                        <a href="{% url 'contact' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">Contact</a>
-                        <a href="{% url 'blog_list' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">Blog</a>
+                        <a href="{% url 'about' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">{% trans "À propos" %}</a>
+                        <a href="{% url 'contact' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">{% trans "Contact" %}</a>
+                        <a href="{% url 'blog_list' %}" style="color: var(--ka-shadow); text-decoration: none; font-size: 0.8rem; margin-left: 1rem;">{% trans "Blog" %}</a>
                     </div>
                 </div>
             </div>

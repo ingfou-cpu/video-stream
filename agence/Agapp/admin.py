@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Destination, Hotel, Booking, Contact, Testimonial, pack_travel, reser_circuit, PaymentRecord
+from .models import Destination, Hotel, Booking, Contact, Testimonial, pack_travel, reser_circuit, PaymentRecord, BlogPost
 # Register your models here.
 
 admin.site.register(Destination)   
@@ -9,6 +9,7 @@ admin.site.register(Contact)
 admin.site.register(Testimonial)
 admin.site.register(pack_travel)
 admin.site.register(reser_circuit)
+admin.site.register(BlogPost)
 
 @admin.register(PaymentRecord)
 class PaymentRecordAdmin(admin.ModelAdmin):

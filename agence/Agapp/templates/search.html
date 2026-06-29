@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <section style="padding: 8rem 0 3rem; background: var(--eb-light);">
     <div class="container px-4 px-lg-5">
         <div class="section-title">
-            <h2 style="color: var(--eb-dark);">Rechercher une destination</h2>
-            <p style="color: var(--ka-shadow);">Trouvez la destination qui vous correspond</p>
+            <h2 style="color: var(--eb-dark);">{% trans "Rechercher une destination" %}</h2>
+            <p style="color: var(--ka-shadow);">{% trans "Trouvez la destination qui vous correspond" %}</p>
         </div>
     </div>
 </section>
@@ -15,10 +15,10 @@
     <div class="container px-4 px-lg-5">
         <form method="get" action="{% url 'search' %}">
             <div style="display: flex; gap: 12px; max-width: 700px; margin: 0 auto 3rem; flex-wrap: wrap;">
-                <input type="text" name="q" placeholder="Nom ou description..." value="{{ query }}" style="flex: 2; min-width: 200px; padding: 14px 20px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.08); background: var(--eb-light); color: var(--eb-dark); font-size: 0.95rem; outline: none; box-shadow: var(--eb-shadow-sm);">
-                <input type="number" name="price_max" placeholder="Prix max (DA)" value="{{ price_max }}" style="flex: 1; min-width: 140px; padding: 14px 20px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.08); background: var(--eb-light); color: var(--eb-dark); font-size: 0.95rem; outline: none; box-shadow: var(--eb-shadow-sm);">
+                <input type="text" name="q" placeholder="{% trans 'Nom ou description...' %}" value="{{ query }}" style="flex: 2; min-width: 200px; padding: 14px 20px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.08); background: var(--eb-light); color: var(--eb-dark); font-size: 0.95rem; outline: none; box-shadow: var(--eb-shadow-sm);">
+                <input type="number" name="price_max" placeholder="{% trans 'Prix max (DA)' %}" value="{{ price_max }}" style="flex: 1; min-width: 140px; padding: 14px 20px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.08); background: var(--eb-light); color: var(--eb-dark); font-size: 0.95rem; outline: none; box-shadow: var(--eb-shadow-sm);">
                 <button type="submit" style="padding: 14px 32px; border-radius: 9999px; border: none; background: var(--eb-gradient-primary); color: #fff; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif;">
-                    <i class="fas fa-search me-2"></i>Chercher
+                    <i class="fas fa-search me-2"></i>{% trans "Chercher" %}
                 </button>
             </div>
         </form>
@@ -42,14 +42,14 @@
                 </div>
                 <div class="card-footer">
                     <a href="{% url 'reselieuChoisi' d.id %}" class="btn-destination">
-                        <i class="fas fa-check-circle"></i> Choisir
+                        <i class="fas fa-check-circle"></i> {% trans "Choisir" %}
                     </a>
                 </div>
             </div>
             {% empty %}
             <div style="text-align: center; padding: 4rem 0; grid-column: 1 / -1;">
                 <i class="fas fa-search" style="font-size: 3rem; color: var(--eb-primary); opacity: 0.3; margin-bottom: 1rem;"></i>
-                <p style="color: var(--ka-shadow);">Aucune destination trouvée.</p>
+                <p style="color: var(--ka-shadow);">{% trans "Aucune destination trouvée." %}</p>
             </div>
             {% endfor %}
         </div>

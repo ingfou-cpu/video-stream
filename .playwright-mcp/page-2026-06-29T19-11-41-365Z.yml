@@ -1,0 +1,112 @@
+- generic [active] [ref=e1]:
+  - button [ref=e2] [cursor=pointer]:
+    - img [ref=e3]
+  - navigation [ref=e5]:
+    - list [ref=e8]:
+      - listitem [ref=e9]:
+        - link "الرئيسية" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+          - text: الرئيسية
+      - listitem [ref=e13]:
+        - link "الوجهات" [ref=e14] [cursor=pointer]:
+          - /url: /#projects
+          - img [ref=e15]
+          - text: الوجهات
+      - listitem [ref=e17]:
+        - link "الجولات" [ref=e18] [cursor=pointer]:
+          - /url: /circuit/
+          - img [ref=e19]
+          - text: الجولات
+      - listitem [ref=e21]:
+        - button "المدفوعات" [ref=e22] [cursor=pointer]:
+          - img [ref=e23]
+          - text: المدفوعات
+      - listitem [ref=e25]:
+        - button "التقييمات" [ref=e26] [cursor=pointer]:
+          - img [ref=e27]
+          - text: التقييمات
+      - listitem [ref=e29]:
+        - link "حول" [ref=e30] [cursor=pointer]:
+          - /url: /about/
+          - img [ref=e31]
+          - text: حول
+      - listitem [ref=e33]:
+        - link "اتصال" [ref=e34] [cursor=pointer]:
+          - /url: /contact/
+          - img [ref=e35]
+          - text: اتصال
+      - listitem [ref=e37]:
+        - link "الطقس" [ref=e38] [cursor=pointer]:
+          - /url: /#weather
+          - img [ref=e39]
+          - text: الطقس
+      - listitem [ref=e41]:
+        - link "العملات" [ref=e42] [cursor=pointer]:
+          - /url: /currency/
+          - img [ref=e43]
+          - text: العملات
+      - listitem [ref=e45]:
+        - link "بحث" [ref=e46] [cursor=pointer]:
+          - /url: /search/
+          - img [ref=e47]
+          - text: بحث
+      - listitem [ref=e49]:
+        - link "الخريطة" [ref=e50] [cursor=pointer]:
+          - /url: /map/
+          - img [ref=e51]
+          - text: الخريطة
+      - listitem [ref=e53]:
+        - link "المدونة" [ref=e54] [cursor=pointer]:
+          - /url: /blog/
+          - img [ref=e55]
+          - text: المدونة
+      - listitem [ref=e57]:
+        - button "اللغة" [ref=e58] [cursor=pointer]:
+          - img [ref=e59]
+          - text: اللغة
+      - listitem [ref=e61]:
+        - link "تسجيل الدخول" [ref=e62] [cursor=pointer]:
+          - /url: /login/
+          - img [ref=e63]
+          - text: تسجيل الدخول
+  - generic [ref=e70]:
+    - paragraph [ref=e71]: من نحن؟
+    - heading "البيض للأسفار" [level=1] [ref=e72]
+    - paragraph [ref=e73]: وكالة البيض للأسفار هي وكالة سياحية محلية تقع في ولاية البيّض بالجزائر. تتخصص في مرافقة المسافرين للرحلات الوطنية والدولية، وتقدم مجموعة متكاملة من الخدمات تشمل حجز تذاكر الطيران، تنظيم الجولات السياحية، استئجار السيارات، وحجز الفنادق.
+    - paragraph [ref=e74]: تلتزم الوكالة بتقديم تجارب سفر مخصصة لا تُنسى، مع التركيز على رضا العميل وتقديم عروض تنافسية لتلبية احتياجات المسافرين المتنوعة.
+    - generic [ref=e75]:
+      - link "اتصل بنا" [ref=e76] [cursor=pointer]:
+        - /url: /contact/
+        - img [ref=e77]
+        - text: اتصل بنا
+      - link "جولاتنا" [ref=e79] [cursor=pointer]:
+        - /url: /circuit/
+        - img [ref=e80]
+        - text: جولاتنا
+  - contentinfo [ref=e82]:
+    - generic [ref=e83]:
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - img [ref=e86]
+          - text: البيض للأسفار
+          - paragraph [ref=e88]: وكالتكم للأسفار في الجزائر
+        - generic [ref=e89]:
+          - heading "النشرة البريدية" [level=6] [ref=e90]
+          - generic [ref=e92]:
+            - textbox "بريدكم الإلكتروني" [ref=e93]
+            - button [ref=e94] [cursor=pointer]:
+              - img [ref=e95]
+        - generic [ref=e97]:
+          - img [ref=e98]
+          - text: contact@elbayadhtravels.dz
+      - separator [ref=e100]
+      - generic [ref=e101]:
+        - generic [ref=e102]: جميع الحقوق محفوظة © البيض للأسفار 2026
+        - generic [ref=e103]:
+          - link "حول" [ref=e104] [cursor=pointer]:
+            - /url: /about/
+          - link "اتصال" [ref=e105] [cursor=pointer]:
+            - /url: /contact/
+          - link "المدونة" [ref=e106] [cursor=pointer]:
+            - /url: /blog/

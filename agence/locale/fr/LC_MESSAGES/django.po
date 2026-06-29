@@ -3,24 +3,812 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: El Bayadh Travels\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-25 00:40+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2026-06-29 20:07+0100\n"
+"PO-Revision-Date: 2026-06-29 19:00+0100\n"
+"Last-Translator: El Bayadh Travels <contact@elbayadhtravels.dz>\n"
+"Language-Team: French <contact@elbayadhtravels.dz>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: .\agence\settings.py:139
+
+#: .\Agapp\templates\404.html:8
+msgid "Page introuvable"
+msgstr ""
+
+#: .\Agapp\templates\404.html:9
+msgid "La page que vous cherchez n'existe pas ou a été déplacée."
+msgstr ""
+
+#: .\Agapp\templates\404.html:11 .\Agapp\templates\contact.html:27
+#: .\Agapp\templates\payment_home.html:154
+msgid "Retour à l'accueil"
+msgstr ""
+
+#: .\Agapp\templates\about.html:13
+msgid "Qui sommes-nous ?"
+msgstr ""
+
+#: .\Agapp\templates\about.html:14 .\Agapp\templates\base.html:77
+#: .\Agapp\templates\home.html:15
+msgid "El Bayadh Travels"
+msgstr ""
+
+#: .\Agapp\templates\about.html:16
+msgid ""
+"L'agence El Bayadh Travels est un acteur local du tourisme situé dans la "
+"wilaya d'El Bayadh, en Algérie. Elle se spécialise dans l'accompagnement des "
+"voyageurs pour des séjours nationaux et internationaux, offrant une gamme "
+"complète de services incluant la réservation de billets d'avion, "
+"l'organisation de circuits touristiques, la location de voitures, et la "
+"réservation d'hôtels."
+msgstr ""
+
+#: .\Agapp\templates\about.html:19
+msgid ""
+"L'agence s'engage à fournir des expériences de voyage personnalisées et "
+"mémorables, en mettant l'accent sur la satisfaction du client et en "
+"proposant des offres compétitives pour répondre aux besoins variés des "
+"voyageurs."
+msgstr ""
+
+#: .\Agapp\templates\about.html:23 .\Agapp\templates\contact.html:17
+#: .\Agapp\templates\home.html:413
+msgid "Contactez-nous"
+msgstr ""
+
+#: .\Agapp\templates\about.html:26
+msgid "Nos circuits"
+msgstr ""
+
+#: .\Agapp\templates\base.html:10
+msgid ""
+"El Bayadh Travels - Agence de voyage locale en Algérie, circuits "
+"touristiques, réservation d'hôtels et voyages organisés"
+msgstr ""
+
+#: .\Agapp\templates\base.html:13
+msgid "El Bayadh Travels — Votre agence de voyage en Algérie"
+msgstr ""
+
+#: .\Agapp\templates\base.html:78
+msgid "Votre agence de voyage en Algérie"
+msgstr ""
+
+#: .\Agapp\templates\base.html:81
+msgid "Newsletter"
+msgstr ""
+
+#: .\Agapp\templates\base.html:85
+msgid "Votre email"
+msgstr ""
+
+#: .\Agapp\templates\base.html:98
+msgid "Copyright © El Bayadh Travels 2026"
+msgstr ""
+
+#: .\Agapp\templates\base.html:101 .\Agapp\templates\navbar.html:30
+msgid "À propos"
+msgstr ""
+
+#: .\Agapp\templates\base.html:102 .\Agapp\templates\navbar.html:31
+msgid "Contact"
+msgstr ""
+
+#: .\Agapp\templates\base.html:103 .\Agapp\templates\navbar.html:36
+msgid "Blog"
+msgstr ""
+
+#: .\Agapp\templates\blog\detail.html:12
+msgid "Par"
+msgstr ""
+
+#: .\Agapp\templates\blog\detail.html:18
+msgid "Retour aux articles"
+msgstr ""
+
+#: .\Agapp\templates\blog\detail.html:25
+msgid "Destination liée"
+msgstr ""
+
+#: .\Agapp\templates\blog\detail.html:31
+msgid "Articles récents"
+msgstr ""
+
+#: .\Agapp\templates\blog\detail.html:38
+msgid "Aucun article récent."
+msgstr ""
+
+#: .\Agapp\templates\blog\list.html:8
+msgid "Blog Voyage"
+msgstr ""
+
+#: .\Agapp\templates\blog\list.html:9
+msgid "Inspirations, guides et récits d'aventure"
+msgstr ""
+
+#: .\Agapp\templates\blog\list.html:33
+msgid "Lire la suite"
+msgstr ""
+
+#: .\Agapp\templates\blog\list.html:43
+msgid "Aucun article pour le moment. Revenez bientôt !"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:10
+msgid "Circuits Touristiques"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:11
+msgid "Des expériences uniques au cœur du Sahara algérien"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:32
+msgid "À partir du"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:36 .\Agapp\templates\croisiere.html:41
+msgid "Détails"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:39 .\Agapp\templates\search.html:45
+msgid "Choisir"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:55
+#: .\Agapp\templates\circuit_touris.html:72
+msgid "Itinéraire"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:58
+msgid "Prix & Dates"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:61
+msgid "Fiche technique"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:64
+msgid "Nos engagements"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:77
+msgid "Dates disponibles et prix par personne"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:80
+msgid "Prix"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:84
+msgid "Disponible dès le"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:89
+msgid "Ce qui est inclus"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:92
+msgid "Accueil et prise en charge à l'aéroport"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:95
+msgid "Frais d'entrée parcs nationaux"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:98
+msgid "Véhicules 4×4 pour les déplacements"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:101
+msgid "Repas et boissons inclus"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:104
+msgid "Guide professionnel Touareg"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:107
+msgid "Matériel de bivouac"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:111
+msgid "Non inclus"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:114
+msgid "Transport aérien"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:117
+msgid "Assurance voyage"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:120
+msgid "Dépenses personnelles"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:123
+msgid "Frais de visa"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:129
+msgid "Fiche Technique"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:136
+msgid "Nos Engagements"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:137
+msgid "Notre partenaire s'engage sur cinq points :"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:141
+msgid "Guide professionnel"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:145
+msgid "Accompagnement personnalisé"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:149
+msgid "Matériel de qualité"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:153
+msgid "Restauration de qualité"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:157
+msgid "Assistance médicale"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:168
+msgid "Aucun circuit pour le moment"
+msgstr ""
+
+#: .\Agapp\templates\circuit_touris.html:169
+msgid "Revenez bientôt pour découvrir nos nouvelles offres"
+msgstr ""
+
+#: .\Agapp\templates\contact.html:18
+msgid ""
+"Envoyez-nous un message et nous vous répondrons dans les plus brefs délais"
+msgstr ""
+
+#: .\Agapp\templates\contact.html:24
+msgid "Merci pour votre message !"
+msgstr ""
+
+#: .\Agapp\templates\contact.html:25
+msgid "Nous vous répondrons dès que possible."
+msgstr ""
+
+#: .\Agapp\templates\contact.html:34
+msgid "Envoyez-nous un message"
+msgstr ""
+
+#: .\Agapp\templates\contact.html:38
+msgid "Envoyer"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:14
+msgid "Convertisseur de Devises"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:15
+msgid "Taux de change en temps réel —"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:15
+#: .\Agapp\templates\convertisseur.html:160
+msgid "Chargement..."
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:21
+msgid "Erreur de connexion"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:23
+msgid "Réessayer"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:30
+msgid "Rechercher une devise..."
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:35
+msgid "Devise de base :"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:59
+msgid "Base"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:65
+msgid "Dollar Américain"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:66
+msgid "Euro"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:67
+msgid "Yen Japonais"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:68
+msgid "Livre Sterling"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:69
+msgid "Dollar Australien"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:70
+msgid "Dollar Canadien"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:71
+msgid "Franc Suisse"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:72
+msgid "Yuan Chinois"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:73
+msgid "Dinar Algérien"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:74
+msgid "Dirham Marocain"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:75
+msgid "Dinar Tunisien"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:76
+msgid "Devise"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:89
+msgid "Convertir un montant"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:94
+msgid "Montant"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:101
+msgid "De"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:117
+msgid "Vers"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:132
+msgid "Résultat"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:148
+msgid "Évolution sur 7 jours"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:156
+msgid "Stable"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:162
+msgid "Chargement des données historiques..."
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:166
+msgid "Erreur de chargement"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:178
+msgid "Taux actuels via Fixer.io — Historique via Frankfurter API"
+msgstr ""
+
+#: .\Agapp\templates\convertisseur.html:182
+msgid "Dernière mise à jour :"
+msgstr ""
+
+#: .\Agapp\templates\croisiere.html:10
+msgid "Forfaits & Circuits"
+msgstr ""
+
+#: .\Agapp\templates\croisiere.html:11
+msgid "Des voyages organisés pour tous les goûts"
+msgstr ""
+
+#: .\Agapp\templates\croisiere.html:36
+#, python-format
+msgid "À partir du %(pack.date|date:\"d/m/Y\")s"
+msgstr ""
+
+#: .\Agapp\templates\croisiere.html:44
+msgid "Réserver"
+msgstr ""
+
+#: .\Agapp\templates\croisiere.html:55
+msgid "Aucun forfait disponible pour le moment. Revenez bientôt !"
+msgstr ""
+
+#: .\Agapp\templates\home.html:13
+msgid "Bienvenue chez"
+msgstr ""
+
+#: .\Agapp\templates\home.html:16
+msgid "Explorez le monde avec nos offres de voyage exceptionnelles !"
+msgstr ""
+
+#: .\Agapp\templates\home.html:19
+#: .\Agapp\templates\registration\profile.html:39
+msgid "Découvrir nos destinations"
+msgstr ""
+
+#: .\Agapp\templates\home.html:24
+msgid "Voir les circuits"
+msgstr ""
+
+#: .\Agapp\templates\home.html:30 .\Agapp\templates\map.html:21
+#: .\Agapp\templates\navbar.html:10 .\Agapp\templates\payment_home.html:34
+msgid "Destinations"
+msgstr ""
+
+#: .\Agapp\templates\home.html:35
+msgid "Voyageurs"
+msgstr ""
+
+#: .\Agapp\templates\home.html:40 .\Agapp\templates\map.html:24
+#: .\Agapp\templates\navbar.html:11
+msgid "Circuits"
+msgstr ""
+
+#: .\Agapp\templates\home.html:52
+msgid "Sahara Algérien"
+msgstr ""
+
+#: .\Agapp\templates\home.html:53
+msgid ""
+"Des dunes infinies aux oasis cachées, partez à la découverte du plus grand "
+"désert du monde."
+msgstr ""
+
+#: .\Agapp\templates\home.html:57
+msgid "Circuits guidés"
+msgstr ""
+
+#: .\Agapp\templates\home.html:61
+msgid "Hébergement nomade"
+msgstr ""
+
+#: .\Agapp\templates\home.html:65
+msgid "Transport inclus"
+msgstr ""
+
+#: .\Agapp\templates\home.html:80
+msgid "Destinations et lieux Touristiques"
+msgstr ""
+
+#: .\Agapp\templates\home.html:81
+msgid ""
+"Découvrez nos destinations soigneusement sélectionnées pour des expériences "
+"inoubliables"
+msgstr ""
+
+#: .\Agapp\templates\home.html:109
+msgid "Previous"
+msgstr ""
+
+#: .\Agapp\templates\home.html:112
+msgid "Next"
+msgstr ""
+
+#: .\Agapp\templates\home.html:122
+msgid "Nos Destinations"
+msgstr ""
+
+#: .\Agapp\templates\home.html:123
+msgid "Chaque destination est une nouvelle aventure qui vous attend"
+msgstr ""
+
+#: .\Agapp\templates\home.html:135
+msgid "Choisir cette destination"
+msgstr ""
+
+#: .\Agapp\templates\home.html:343
+msgid "Météo en direct"
+msgstr ""
+
+#: .\Agapp\templates\home.html:344
+msgid "Consultez les conditions météorologiques de n'importe quelle ville"
+msgstr ""
+
+#: .\Agapp\templates\home.html:350
+msgid "Rechercher une ville..."
+msgstr ""
+
+#: .\Agapp\templates\home.html:351 .\Agapp\templates\search.html:21
+msgid "Chercher"
+msgstr ""
+
+#: .\Agapp\templates\home.html:365
+msgid "Météo actuelle"
+msgstr ""
+
+#: .\Agapp\templates\home.html:372
+msgid "Humidité"
+msgstr ""
+
+#: .\Agapp\templates\home.html:377
+msgid "Pression"
+msgstr ""
+
+#: .\Agapp\templates\home.html:382
+msgid "Conditions"
+msgstr ""
+
+#: .\Agapp\templates\home.html:391
+msgid "Prévisions — 7 jours"
+msgstr ""
+
+#: .\Agapp\templates\home.html:414
+msgid "Nous sommes à votre écoute pour organiser votre prochain voyage"
+msgstr ""
+
+#: .\Agapp\templates\home.html:421
+msgid "Adresse"
+msgstr ""
+
+#: .\Agapp\templates\home.html:423
+msgid "El Bayadh, Algérie"
+msgstr ""
+
+#: .\Agapp\templates\home.html:431 .\Agapp\templates\payment_home.html:128
+msgid "Email"
+msgstr ""
+
+#: .\Agapp\templates\home.html:441 .\Agapp\templates\payment_home.html:132
+msgid "Téléphone"
+msgstr ""
+
+#: .\Agapp\templates\map.html:8
+msgid "Carte satellite"
+msgstr ""
+
+#: .\Agapp\templates\map.html:9
+msgid "Explorez nos destinations et circuits sur la carte satellite"
+msgstr ""
+
+#: .\Agapp\templates\map.html:66
+msgid "Voir l'offre"
+msgstr ""
+
+#: .\Agapp\templates\map.html:79
+msgid "Voir le circuit"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:9
+msgid "Accueil"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:14
+msgid "Paiements"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:16
+msgid "Réserver & Payer"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:18
+msgid "Mes transactions"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:23
+msgid "Avis"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:26
+msgid "Lire les avis"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:27
+msgid "Laisser un avis"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:32
+msgid "Weather"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:33
+msgid "Devises"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:34
+msgid "Recherche"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:35
+msgid "Carte"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:39
+msgid "Langue"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:42 .\agence\settings.py:141
 msgid "Français"
 msgstr ""
 
-#: .\agence\settings.py:140
+#: .\Agapp\templates\navbar.html:43 .\agence\settings.py:142
 msgid "العربية"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:52
+msgid "Mon profil"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:54
+#: .\Agapp\templates\registration\profile.html:17
+msgid "Déconnexion"
+msgstr ""
+
+#: .\Agapp\templates\navbar.html:58
+#: .\Agapp\templates\registration\login.html:12
+msgid "Connexion"
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:10
+msgid "Paiement en ligne"
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:12
+msgid "Réservez et payez en toute sécurité avec Stripe"
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:14
+msgid "Paiement sécurisé"
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:15
+msgid "Propulsé par Stripe"
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:75
+#: .\Agapp\templates\payment_home.html:137
+msgid "Payer maintenant"
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:86
+msgid "Aucune destination disponible pour le moment."
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:92
+msgid "Packs & Circuits"
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:124
+msgid "Votre nom complet"
+msgstr ""
+
+#: .\Agapp\templates\payment_home.html:148
+msgid "Aucun pack disponible pour le moment."
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:13
+msgid "Accédez à votre espace client"
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:18
+#: .\Agapp\templates\registration\register.html:18
+msgid "Nom d'utilisateur"
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:19
+msgid "Votre nom d'utilisateur"
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:22
+#: .\Agapp\templates\registration\register.html:22
+msgid "Mot de passe"
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:23
+msgid "Votre mot de passe"
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:27
+msgid "Nom d'utilisateur ou mot de passe incorrect."
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:31
+#: .\Agapp\templates\registration\register.html:45
+msgid "Se connecter"
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:35
+msgid "Pas encore de compte ?"
+msgstr ""
+
+#: .\Agapp\templates\registration\login.html:36
+msgid "S'inscrire"
+msgstr ""
+
+#: .\Agapp\templates\registration\profile.html:22
+msgid "Mes réservations"
+msgstr ""
+
+#: .\Agapp\templates\registration\profile.html:31
+msgid "Confirmé"
+msgstr ""
+
+#: .\Agapp\templates\registration\profile.html:38
+msgid "Aucune réservation pour le moment."
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:12
+msgid "Inscription"
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:13
+msgid "Créez votre compte client"
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:19
+msgid "Choisissez un nom d'utilisateur"
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:23
+msgid "Choisissez un mot de passe"
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:24
+msgid "Minimum 8 caractères. Pas uniquement numérique."
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:27
+msgid "Confirmation"
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:28
+msgid "Confirmez le mot de passe"
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:40
+msgid "Créer mon compte"
+msgstr ""
+
+#: .\Agapp\templates\registration\register.html:44
+msgid "Déjà inscrit ?"
+msgstr ""
+
+#: .\Agapp\templates\search.html:8
+msgid "Rechercher une destination"
+msgstr ""
+
+#: .\Agapp\templates\search.html:9
+msgid "Trouvez la destination qui vous correspond"
+msgstr ""
+
+#: .\Agapp\templates\search.html:18
+msgid "Nom ou description..."
+msgstr ""
+
+#: .\Agapp\templates\search.html:19
+msgid "Prix max (DA)"
+msgstr ""
+
+#: .\Agapp\templates\search.html:52
+msgid "Aucune destination trouvée."
 msgstr ""

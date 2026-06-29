@@ -368,20 +368,20 @@ class circuitChoisiView(DetailView):
         'confirmation_message': confirmation_message
     })"""
 #============================= Corrency payment =============================#
-def convertir_devise(request):
-    url = 'https://api.frankfurter.app/latest?from=EUR&to=USD,DZD,CNY'
+CURRENCY_API = 'https://api.exchangerate-api.com/v4/latest/EUR'
 
+def convertir_devise(request):
     taux_de_change = {}
     erreur = None
 
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(CURRENCY_API, timeout=10)
         data = response.json()
 
         if response.status_code == 200 and 'rates' in data:
             raw = data.get('rates', {})
             raw['EUR'] = 1.0
-            wanted = {'USD', 'DZD', 'EUR', 'CNY'}
+            wanted = {'EUR', 'USD', 'GBP', 'JPY', 'CNY', 'DZD', 'MAD', 'TND', 'CAD', 'CHF', 'TRY', 'SAR', 'AED', 'QAR', 'BHD', 'KWD', 'OMR'}
             taux_de_change = {k: v for k, v in raw.items() if k in wanted}
         else:
             erreur = "Impossible de récupérer les taux de change."
@@ -396,22 +396,21 @@ def convertir_devise(request):
 
 
 def historical_rates_api(request):
-    """API endpoint qui retourne les taux historiques sur 7 jours via Frankfurter API (gratuite, sans clé)"""
+    """API endpoint qui retourne les taux historiques sur 7 jours"""
     from_currency = request.GET.get('from', 'EUR')
     to_currency = request.GET.get('to', 'USD')
 
-    # Calculer les dates: aujourd'hui - 7 jours
     end_date = datetime.now().strftime('%Y-%m-%d')
     start_date = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
 
-    url = f'https://api.frankfurter.app/{start_date}..{end_date}?from={from_currency}&to={to_currency}'
+    # Frankfurter ne supporte pas DZD, on utilise l'API principale pour ces paires
+    frankfurter = f'https://api.frankfurter.app/{start_date}..{end_date}?from={from_currency}&to={to_currency}'
 
     try:
-        response = requests.get(url, timeout=10)
-        data = response.json()
+        resp = requests.get(frankfurter, timeout=10)
+        data = resp.json()
 
-        if response.status_code == 200 and 'rates' in data:
-            # Transformer en tableau de {date, rate}
+        if resp.status_code == 200 and 'rates' in data:
             historical = []
             for date_str, rate_val in sorted(data['rates'].items()):
                 historical.append({
@@ -420,7 +419,7 @@ def historical_rates_api(request):
                 })
             return JsonResponse({'success': True, 'data': historical, 'base': from_currency, 'target': to_currency})
         else:
-            return JsonResponse({'success': False, 'error': 'Impossible de récupérer les données historiques'})
+            return JsonResponse({'success': False, 'error': 'Données historiques non disponibles pour cette paire'})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
 #============================= VUES PAIEMENT STRIPE =============================#
@@ -767,7 +766,8 @@ def search_destinations(request):
 #-------------------Carte interactive-------------------------------------------------------#
 def map_view(request):
     destinations = Destination.objects.all()
-    return render(request, 'map.html', {'destinations': destinations})
+    circuits = pack_travel.objects.all()
+    return render(request, 'map.html', {'destinations': destinations, 'circuits': circuits})
 
 #-------------------Récap avant paiement-------------------------------------------------------#
 @login_required
@@ -781,8 +781,9 @@ def booking_recap(request, destination_id):
 
 #-------------------Changement de langue-------------------------------------------------------#
 def set_language(request, lang_code):
+    response = redirect(request.META.get('HTTP_REFERER', 'home'))
     if lang_code in ['fr', 'ar']:
         activate(lang_code)
-        request.session['django_language'] = lang_code
-    return redirect(request.META.get('HTTP_REFERER', 'home'))
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang_code)
+    return response
 

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% load humanize %}
 
 {% block content %}
@@ -7,8 +7,8 @@
 <section style="padding: 8rem 0 3rem; background: var(--eb-light);">
     <div class="container px-4 px-lg-5">
         <div class="section-title">
-            <h2 style="color: var(--eb-dark);">Forfaits & Circuits</h2>
-            <p style="color: var(--ka-shadow);">Des voyages organisés pour tous les goûts</p>
+            <h2 style="color: var(--eb-dark);">{% trans "Forfaits & Circuits" %}</h2>
+            <p style="color: var(--ka-shadow);">{% trans "Des voyages organisés pour tous les goûts" %}</p>
         </div>
     </div>
 </section>
@@ -33,15 +33,15 @@
                         <div>
                             <div class="circuit-price">{{ pack.price|intcomma }} <small>DA</small></div>
                             {% if pack.date %}
-                            <small style="color: var(--ka-shadow);">À partir du {{ pack.date|date:"d/m/Y" }}</small>
+                            <small style="color: var(--ka-shadow);">{% blocktrans %}À partir du {{ pack.date|date:"d/m/Y" }}{% endblocktrans %}</small>
                             {% endif %}
                         </div>
                         <div style="display: flex; gap: 0.5rem;">
                             <a href="{% url 'circuitChoisi' pack.id %}" class="btn btn-primary">
-                                <i class="fas fa-info-circle me-1"></i> Détails
+                                <i class="fas fa-info-circle me-1"></i> {% trans "Détails" %}
                             </a>
                             <a href="{% url 'reservCroisiere' pack.id %}" class="btn btn-success">
-                                <i class="fas fa-check-circle me-1"></i> Réserver
+                                <i class="fas fa-check-circle me-1"></i> {% trans "Réserver" %}
                             </a>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
         {% else %}
         <div class="text-center py-5">
             <i class="fas fa-suitcase-rolling" style="font-size: 3rem; color: var(--eb-primary); opacity: 0.5; margin-bottom: 1rem;"></i>
-            <p style="color: var(--ka-shadow); font-size: 1.1rem;">Aucun forfait disponible pour le moment. Revenez bientôt !</p>
+            <p style="color: var(--ka-shadow); font-size: 1.1rem;">{% trans "Aucun forfait disponible pour le moment. Revenez bientôt !" %}</p>
         </div>
         {% endif %}
     </div>

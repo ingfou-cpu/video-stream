@@ -1,0 +1,278 @@
+- generic [active] [ref=e1]:
+  - button [ref=e2] [cursor=pointer]
+  - navigation [ref=e3]:
+    - list [ref=e6]:
+      - listitem [ref=e7]:
+        - link "الرئيسية" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - text: الرئيسية
+      - listitem [ref=e9]:
+        - link "الوجهات" [ref=e10] [cursor=pointer]:
+          - /url: /#projects
+          - text: الوجهات
+      - listitem [ref=e11]:
+        - link "الجولات" [ref=e12] [cursor=pointer]:
+          - /url: /circuit/
+          - text: الجولات
+      - listitem [ref=e13]:
+        - button "المدفوعات" [ref=e14] [cursor=pointer]: المدفوعات
+      - listitem [ref=e15]:
+        - button "التقييمات" [ref=e16] [cursor=pointer]: التقييمات
+      - listitem [ref=e17]:
+        - link "حول" [ref=e18] [cursor=pointer]:
+          - /url: /about/
+          - text: حول
+      - listitem [ref=e19]:
+        - link "اتصال" [ref=e20] [cursor=pointer]:
+          - /url: /contact/
+          - text: اتصال
+      - listitem [ref=e21]:
+        - link "الطقس" [ref=e22] [cursor=pointer]:
+          - /url: /#weather
+          - text: الطقس
+      - listitem [ref=e23]:
+        - link "العملات" [ref=e24] [cursor=pointer]:
+          - /url: /currency/
+          - text: العملات
+      - listitem [ref=e25]:
+        - link "بحث" [ref=e26] [cursor=pointer]:
+          - /url: /search/
+          - text: بحث
+      - listitem [ref=e27]:
+        - link "الخريطة" [ref=e28] [cursor=pointer]:
+          - /url: /map/
+          - text: الخريطة
+      - listitem [ref=e29]:
+        - link "المدونة" [ref=e30] [cursor=pointer]:
+          - /url: /blog/
+          - text: المدونة
+      - listitem [ref=e31]:
+        - button "اللغة" [ref=e32] [cursor=pointer]: اللغة
+      - listitem [ref=e33]:
+        - link "تسجيل الدخول" [ref=e34] [cursor=pointer]:
+          - /url: /login/
+          - text: تسجيل الدخول
+  - banner [ref=e35]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]: مرحباً بكم في
+        - heading "El Bayadh Travels" [level=1] [ref=e41]
+        - paragraph [ref=e42]: استكشفوا العالم مع عروض سفرنا الاستثنائية!
+        - generic [ref=e43]:
+          - link "اكتشفوا وجهاتنا " [ref=e44] [cursor=pointer]:
+            - /url: "#projects"
+            - generic [ref=e45]: اكتشفوا وجهاتنا
+            - generic [ref=e46]: 
+          - link "شاهدوا الجولات" [ref=e47] [cursor=pointer]:
+            - /url: /circuit/
+            - generic [ref=e48]: شاهدوا الجولات
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: 50+
+            - generic [ref=e52]: الوجهات
+          - generic [ref=e54]:
+            - generic [ref=e55]: 1000+
+            - generic [ref=e56]: المسافرون
+          - generic [ref=e58]:
+            - generic [ref=e59]: 15+
+            - generic [ref=e60]: الجولات
+      - generic [ref=e68]:
+        - text: ⵣ
+        - heading "الصحراء الجزائرية" [level=4] [ref=e70]
+        - paragraph [ref=e71]: من الكثبان الرملية اللانهائية إلى الواحات المخفية، انطلقوا لاكتشاف أكبر صحراء في العالم.
+        - generic [ref=e72]:
+          - generic [ref=e74]: جولات مرشدة
+          - generic [ref=e76]: إقامة بدوية
+          - generic [ref=e78]: النقل مشمول
+  - generic [ref=e80]:
+    - generic [ref=e81]:
+      - heading "الوجهات والأماكن السياحية" [level=2] [ref=e82]
+      - paragraph [ref=e83]: اكتشفوا وجهاتنا المختارة بعناية لتجارب لا تُنسى
+    - generic [ref=e84]:
+      - generic [ref=e85]:
+        - button "Slide 1" [ref=e86] [cursor=pointer]
+        - button "Slide 2" [ref=e87] [cursor=pointer]
+        - button "Slide 3" [ref=e88] [cursor=pointer]
+        - button "Slide 4" [ref=e89] [cursor=pointer]
+      - generic [ref=e91]:
+        - link "Le Parc culturel de l'Ahaggar" [ref=e92] [cursor=pointer]:
+          - /url: /reselieuChoisi/1/
+          - img "Le Parc culturel de l'Ahaggar" [ref=e93]
+        - generic [ref=e94]:
+          - heading "Le Parc culturel de l'Ahaggar" [level=5] [ref=e95]:
+            - link "Le Parc culturel de l'Ahaggar" [ref=e96] [cursor=pointer]:
+              - /url: /reselieuChoisi/1/
+          - paragraph [ref=e97]: Le Parc culturel de l'Ahaggar est un parc national situé à l'extrême sud de l'Algérie, s'étendant sur les wilayas de Tamanrasset, In Salah, In Guezzam et Bordj Badji Mokhtar.
+      - button "السابق" [ref=e98] [cursor=pointer]:
+        - generic [ref=e100]: السابق
+      - button "التالي" [ref=e101] [cursor=pointer]:
+        - generic [ref=e102]: التالي
+  - generic [ref=e104]:
+    - generic [ref=e105]:
+      - heading "وجهاتنا" [level=2] [ref=e106]
+      - paragraph [ref=e107]: كل وجهة هي مغامرة جديدة تنتظركم
+    - generic [ref=e108]:
+      - generic [ref=e109] [cursor=pointer]:
+        - img "Le Parc culturel de l'Ahaggar" [ref=e110]
+        - generic [ref=e111]:
+          - heading "Le Parc culturel de l'Ahaggar" [level=4] [ref=e112]
+          - paragraph [ref=e113]: Le Parc culturel de l'Ahaggar est un parc national situé à l'extrême sud de l'Algérie, s'étendant sur les wilayas de Tamanrasset, In Salah, In Guezzam …
+        - link "اختيار هذه الوجهة" [ref=e115]:
+          - /url: /reselieuChoisi/1/
+          - text: اختيار هذه الوجهة
+      - generic [ref=e116] [cursor=pointer]:
+        - img "Le Parc Culturel du Tassili n'Ajjer" [ref=e117]
+        - generic [ref=e118]:
+          - heading "Le Parc Culturel du Tassili n'Ajjer" [level=4] [ref=e119]
+          - paragraph [ref=e120]: Le Parc Culturel du Tassili n'Ajjer, situé au sud-est de l'Algérie près de Djanet, est le plus grand parc national du pays avec une superficie …
+        - link "اختيار هذه الوجهة" [ref=e122]:
+          - /url: /reselieuChoisi/2/
+          - text: اختيار هذه الوجهة
+      - generic [ref=e123] [cursor=pointer]:
+        - img "Le gouvernorat de Kairouan" [ref=e124]
+        - generic [ref=e125]:
+          - heading "Le gouvernorat de Kairouan" [level=4] [ref=e126]
+          - paragraph [ref=e127]: Le gouvernorat de Kairouan est une région située au centre-est de la Tunisie, à l'intérieur des terres, reconnue pour ses profondes racines historiques et son …
+        - link "اختيار هذه الوجهة" [ref=e129]:
+          - /url: /reselieuChoisi/4/
+          - text: اختيار هذه الوجهة
+      - generic [ref=e130] [cursor=pointer]:
+        - img "Hammamet" [ref=e131]
+        - generic [ref=e132]:
+          - heading "Hammamet" [level=4] [ref=e133]
+          - paragraph [ref=e134]: Laissez-vous séduire par le charme et les superbes plages d'Hammamet ! Situé sur la côte sud Est de la péninsule du Cap Bon, Hammamet c’est …
+        - link "اختيار هذه الوجهة" [ref=e136]:
+          - /url: /reselieuChoisi/5/
+          - text: اختيار هذه الوجهة
+  - generic [ref=e138]:
+    - heading "الطقس مباشر" [level=2] [ref=e139]
+    - paragraph [ref=e140]: اطلعوا على أحوال الطقس لأي مدينة
+    - generic [ref=e142]:
+      - textbox "ابحث عن مدينة..." [ref=e143]
+      - button "بحث" [ref=e144] [cursor=pointer]: بحث
+    - generic [ref=e145]:
+      - generic [ref=e146]: Algiers, DZ
+      - generic [ref=e147]: الطقس الحالي
+      - img "Broken Clouds" [ref=e148]
+      - generic [ref=e149]: 26,01°
+      - generic [ref=e150]: Broken Clouds
+      - generic [ref=e151]:
+        - generic [ref=e152]:
+          - generic [ref=e153]: 💧
+          - generic [ref=e154]: الرطوبة
+          - generic [ref=e155]: 46%
+        - generic [ref=e156]:
+          - generic [ref=e157]: 🔽
+          - generic [ref=e158]: الضغط
+          - generic [ref=e159]: 1016 hPa
+        - generic [ref=e160]:
+          - generic [ref=e161]: ☁️
+          - generic [ref=e162]: الأحوال
+          - generic [ref=e163]: Broken Clouds
+    - heading "التوقعات — 7 أيام" [level=3] [ref=e164]: التوقعات — 7 أيام
+    - generic [ref=e165]:
+      - generic [ref=e166]:
+        - generic [ref=e167]: Aujourd'hui
+        - generic [ref=e168]: 29 juin
+        - generic [ref=e169]: 🌫️
+        - generic [ref=e170]: Brouillard
+        - generic [ref=e171]:
+          - generic [ref=e172]: 28°
+          - generic [ref=e173]: 24°
+      - generic [ref=e174]:
+        - generic [ref=e175]: Demain
+        - generic [ref=e176]: 30 juin
+        - generic [ref=e177]: 🌦️
+        - generic [ref=e178]: Averses
+        - generic [ref=e179]:
+          - generic [ref=e180]: 26°
+          - generic [ref=e181]: 23°
+      - generic [ref=e182]:
+        - generic [ref=e183]: Mercredi
+        - generic [ref=e184]: 1 juill.
+        - generic [ref=e185]: 🌫️
+        - generic [ref=e186]: Brouillard
+        - generic [ref=e187]:
+          - generic [ref=e188]: 27°
+          - generic [ref=e189]: 23°
+      - generic [ref=e190]:
+        - generic [ref=e191]: Jeudi
+        - generic [ref=e192]: 2 juill.
+        - generic [ref=e193]: ☁️
+        - generic [ref=e194]: Couvert
+        - generic [ref=e195]:
+          - generic [ref=e196]: 27°
+          - generic [ref=e197]: 23°
+      - generic [ref=e198]:
+        - generic [ref=e199]: Vendredi
+        - generic [ref=e200]: 3 juill.
+        - generic [ref=e201]: ⛅
+        - generic [ref=e202]: Partiellement nuageux
+        - generic [ref=e203]:
+          - generic [ref=e204]: 28°
+          - generic [ref=e205]: 23°
+      - generic [ref=e206]:
+        - generic [ref=e207]: Samedi
+        - generic [ref=e208]: 4 juill.
+        - generic [ref=e209]: ☁️
+        - generic [ref=e210]: Couvert
+        - generic [ref=e211]:
+          - generic [ref=e212]: 27°
+          - generic [ref=e213]: 22°
+      - generic [ref=e214]:
+        - generic [ref=e215]: Dimanche
+        - generic [ref=e216]: 5 juill.
+        - generic [ref=e217]: 🌫️
+        - generic [ref=e218]: Brouillard
+        - generic [ref=e219]:
+          - generic [ref=e220]: 27°
+          - generic [ref=e221]: 22°
+  - generic [ref=e223]:
+    - generic [ref=e224]:
+      - heading "اتصل بنا" [level=2] [ref=e225]
+      - paragraph [ref=e226]: نحن في خدمتكم لتنظيم رحلتكم القادمة
+    - generic [ref=e227]:
+      - generic [ref=e230]:
+        - heading "العنوان" [level=4] [ref=e231]
+        - separator [ref=e232]
+        - generic [ref=e233]: البيّض، الجزائر
+      - generic [ref=e236]:
+        - heading "البريد الإلكتروني" [level=4] [ref=e237]
+        - separator [ref=e238]
+        - link "contact@elbayadhtravels.dz" [ref=e240] [cursor=pointer]:
+          - /url: mailto:contact@elbayadhtravels.dz
+      - generic [ref=e243]:
+        - heading "الهاتف" [level=4] [ref=e244]
+        - separator [ref=e245]
+        - generic [ref=e246]: +213 (0) 00 00 00 00
+    - generic [ref=e247]:
+      - link [ref=e248] [cursor=pointer]:
+        - /url: "#!"
+      - link [ref=e249] [cursor=pointer]:
+        - /url: "#!"
+      - link [ref=e250] [cursor=pointer]:
+        - /url: "#!"
+      - link [ref=e251] [cursor=pointer]:
+        - /url: "#!"
+  - contentinfo [ref=e252]:
+    - generic [ref=e253]:
+      - generic [ref=e254]:
+        - generic [ref=e255]:
+          - text: El Bayadh Travels
+          - paragraph [ref=e256]: وكالتكم للأسفار في الجزائر
+        - generic [ref=e257]:
+          - heading "النشرة البريدية" [level=6] [ref=e258]
+          - generic [ref=e260]:
+            - textbox "بريدكم الإلكتروني" [ref=e261]
+            - button [ref=e262] [cursor=pointer]
+        - generic [ref=e263]: contact@elbayadhtravels.dz
+      - separator [ref=e264]
+      - generic [ref=e265]:
+        - generic [ref=e266]: جميع الحقوق محفوظة © البيوض للأسفار 2026
+        - generic [ref=e267]:
+          - link "حول" [ref=e268] [cursor=pointer]:
+            - /url: /about/
+          - link "اتصال" [ref=e269] [cursor=pointer]:
+            - /url: /contact/
+          - link "المدونة" [ref=e270] [cursor=pointer]:
+            - /url: /blog/
